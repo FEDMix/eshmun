@@ -24,8 +24,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    endif()
 #endif()
 
+#========================= INCLUSION OF Qt ==========================#
+
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+
+#========================= INCLUSION OF VTK ==========================#
+
+set(VTK_DIR $ENV{VTK_DIR})
+find_package(VTK REQUIRED)
+include(${VTK_USE_FILE})
 
 set(PROJECT_SOURCES
         main.cpp
@@ -51,3 +59,5 @@ else()
 endif()
 
 target_link_libraries(Eshmun PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+
+target_link_libraries(Eshmun PRIVATE ${VTK_LIBRARIES})
