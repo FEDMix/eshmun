@@ -35,6 +35,12 @@ set(VTK_DIR $ENV{VTK_DIR})
 find_package(VTK REQUIRED)
 include(${VTK_USE_FILE})
 
+#========================= INCLUSION OF ITK ==========================#
+
+set(ITK_DIR $ENV{ITK_DIR})
+find_package(ITK REQUIRED)
+include(${ITK_USE_FILE})
+
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
@@ -61,3 +67,5 @@ endif()
 target_link_libraries(Eshmun PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 target_link_libraries(Eshmun PRIVATE ${VTK_LIBRARIES})
+
+target_link_libraries(Eshmun PRIVATE ${ITK_LIBRARIES})
