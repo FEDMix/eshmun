@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="1" column="0">
-     <widget class="QVTKOpenGLWidget" name="openGLWidget"/>
+     <widget class="QVTKOpenGLWidget" name="openGLNativeWidget"/>
     </item>
     <item row="0" column="0">
      <widget class="QPushButton" name="pushButton">
