@@ -1,0 +1,19 @@
+name: build
+on: [push]
+jobs:
+  build-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+      - name: install-cmake
+        uses: Symbitic/install-cmake@v0.1.0
+      #- name: Build Directory
+      #  run: mkdir build
+      - name: CMake
+        run: cmake .
+      #  working-directory: build
+      - name: Make
+        run: make
