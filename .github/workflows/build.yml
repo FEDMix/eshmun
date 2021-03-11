@@ -8,8 +8,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
-      - name: install-cmake
-        uses: Symbitic/install-cmake@v0.1.0
+      # - name: install-cmake
+      #  uses: Symbitic/install-cmake@v0.1.0
       #- name: Build Directory
       #  run: mkdir build
       - name: CMake
