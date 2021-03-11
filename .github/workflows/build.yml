@@ -8,7 +8,8 @@ jobs:
         os:
           # - ubuntu-latest
           # - ubuntu-18.04
-          - macos-latest
+          # - macos-latest
+          - windows-2019
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
@@ -19,18 +20,13 @@ jobs:
         run: |
           sudo apt-get update -y -qq
           sudo apt-get install -y -qq cmake build-essential gcc-multilib
-
       - name: Install LLVM and Clang
-        if: runner.os == 'Linux'
         uses: KyleMayes/install-llvm-action@v1
         with:
           version: "11.1.0"
           ubuntu-version: "16.04"
           force-version: true
           directory: ${{ runner.temp }}/llvm
-      - name: Check Brew
-        if: runner.os == 'macOS'
-        run: brew --version
       - name: llvm version check
         run: clang --version
       - name: Cmake version
