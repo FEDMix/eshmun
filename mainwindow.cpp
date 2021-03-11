@@ -1,52 +1,58 @@
 #include "mainwindow.h"
-#include "./ui_mainwindow.h"
+#include "ui_mainwindow.h"
 
-#include <vtkActor.h>
-#include <vtkPSphereSource.h>
-#include <vtkPolyDataMapper.h>
+#include <QFile>
+#include <QFileDialog>
+#include <QMessageBox>
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow),
-      mRenderWindow(vtkSmartPointer<vtkCocoaRenderWindow>::New()),
-      mRenderer(vtkSmartPointer<vtkRenderer>::New()),
-      mInteractor(vtkSmartPointer<QVTKInteractor>::New()),
-      mInteractorStyle(vtkSmartPointer<vtkInteractorStyle>::New()) {
-  ui->setupUi(this);
+#include <vtkDataSetReader.h>
 
-  // Setup rendering
-  mRenderWindow->AddRenderer(mRenderer);
-  mRenderWindow->SetInteractor(mInteractor);
-  ui->openGLNativeWidget->SetRenderWindow(mRenderWindow);
-  mInteractor->SetInteractorStyle(mInteractorStyle);
-  mInteractor->Initialize();
-
-  // Set background color
-  mRenderer->SetBackground(1, 0, 0);
-
-  // Add the UI connections
-  QObject::connect(ui->pushButton, &QPushButton::clicked, this,
-                   &MainWindow::onDrawSphereClick);
+MainWindow::MainWindow(QWidget* parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
 }
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::onDrawSphereClick() {
-  // Create sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkPSphereSource>::New();
-  sphereSource->SetRadius(5);
-  sphereSource->Update();
+void MainWindow::showAboutDialog()
+{
+    QMessageBox::information(
+        this, "About",
+        "TODO");
+}
 
-  // Create actor where the sphere id rendered
-  vtkSmartPointer<vtkPolyDataMapper> sphereMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
-  sphereMapper->SetInputData(sphereSource->GetOutput());
+void MainWindow::showOpenFileDialog()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open file"), "",
+        "VTK Files (*.vtk)");
 
-  vtkSmartPointer<vtkActor> sphere = vtkSmartPointer<vtkActor>::New();
-  sphere->SetMapper(sphereMapper);
+    // Open file
+    QFile file(fileName);
+    file.open(QIODevice::ReadOnly);
 
-  // Add the sphere actor to the OpenGL
-  mRenderer->AddViewProp(sphere);
-  mRenderer->ResetCamera();
-  mRenderWindow->Render();
+    // Return on Cancel
+    if (!file.exists())
+        return;
+
+    openFile(fileName);
+}
+
+void MainWindow::openFile(const QString& fileName)
+{
+    ui->sceneWidget->removeDataSet();
+
+    // Create reader
+    vtkSmartPointer<vtkDataSetReader> reader = vtkSmartPointer<vtkDataSetReader>::New();
+    reader->SetFileName(fileName.toStdString().c_str());
+
+    // Read the file
+    reader->Update();
+
+    // Add data set to 3D view
+    vtkSmartPointer<vtkDataSet> dataSet = reader->GetOutput();
+    if (dataSet != nullptr) {
+        ui->sceneWidget->addDataSet(reader->GetOutput());
+    }
 }

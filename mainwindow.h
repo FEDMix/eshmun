@@ -3,35 +3,33 @@
 
 #include <QMainWindow>
 
-#include <vtkOpenGLRenderWindow.h>
-#include <vtkCocoaRenderWindow.h>
-#include <vtkRenderer.h>
-#include <QVTKInteractor.h>
-#include <vtkInteractorStyle.h>
+namespace Ui {
+class MainWindow;
+}
 
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget* parent = 0);
     ~MainWindow();
 
 public slots:
-    void onDrawSphereClick();
+    //! Show the 'About this application' dialog
+    void showAboutDialog();
+
+    //! Show the 'Open file...' dialog
+    void showOpenFileDialog();
+
+protected:
+    //! Open a file
+    /*!
+    \param[in] fileName The name of the file including the path
+  */
+    void openFile(const QString& fileName);
 
 private:
-    Ui::MainWindow *ui;
-
-    vtkSmartPointer<vtkOpenGLRenderWindow> mRenderWindow;
-    vtkSmartPointer<vtkRenderer> mRenderer;
-    vtkSmartPointer<QVTKInteractor> mInteractor;
-    vtkSmartPointer<vtkInteractorStyle> mInteractorStyle;
-
+    Ui::MainWindow* ui;
 };
+
 #endif // MAINWINDOW_H
