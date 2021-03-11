@@ -8,12 +8,18 @@ jobs:
         uses: actions/checkout@v2
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
-      # - name: install-cmake
-      #  uses: Symbitic/install-cmake@v0.1.0
-      #- name: Build Directory
-      #  run: mkdir build
+      - name: Install LLVM and Clang
+        uses: KyleMayes/install-llvm-action@v1
+        with:
+          version: "11.1.0"
+          ubuntu-version: "20.10"
+          force-version: true
+          directory: ${{ runner.temp }}/llvm
+      - name: llvm version check
+        run: clang --version
+      - name: Cmake version
+        run: cmake --version
       - name: CMake
         run: cmake .
-      #  working-directory: build
       - name: Make
         run: make
