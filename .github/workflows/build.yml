@@ -8,8 +8,8 @@ jobs:
         os:
           # - ubuntu-latest
           # - ubuntu-18.04
-          # - macos-latest
-          - windows-2019
+          - macos-latest
+          # - windows-2019
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
@@ -27,6 +27,8 @@ jobs:
           ubuntu-version: "16.04"
           force-version: true
           directory: ${{ runner.temp }}/llvm
+      - name: Install vtk
+        run: brew install vtk
       - name: llvm version check
         run: clang --version
       - name: Cmake version
