@@ -3,7 +3,8 @@
 
 #include <QMainWindow>
 
-#include <vtkGenericOpenGLRenderWindow.h>
+#include <vtkOpenGLRenderWindow.h>
+#include <vtkCocoaRenderWindow.h>
 #include <vtkRenderer.h>
 #include <QVTKInteractor.h>
 #include <vtkInteractorStyle.h>
@@ -27,7 +28,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
 
-    vtkSmartPointer<vtkGenericOpenGLRenderWindow> mRenderWindow;
+    vtkSmartPointer<vtkOpenGLRenderWindow> mRenderWindow;
     vtkSmartPointer<vtkRenderer> mRenderer;
     vtkSmartPointer<QVTKInteractor> mInteractor;
     vtkSmartPointer<vtkInteractorStyle> mInteractorStyle;

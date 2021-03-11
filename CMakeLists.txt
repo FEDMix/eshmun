@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(Eshmun LANGUAGES CXX)
+project(Eshmun LANGUAGES C CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -26,8 +26,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #========================= INCLUSION OF Qt ==========================#
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+find_package(QT NAMES Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 #========================= INCLUSION OF VTK ==========================#
 
@@ -64,7 +64,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(Eshmun PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(Eshmun PRIVATE Qt5::Widgets)
 
 target_link_libraries(Eshmun PRIVATE ${VTK_LIBRARIES})
 

@@ -7,7 +7,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow),
-      mRenderWindow(vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New()),
+      mRenderWindow(vtkSmartPointer<vtkCocoaRenderWindow>::New()),
       mRenderer(vtkSmartPointer<vtkRenderer>::New()),
       mInteractor(vtkSmartPointer<QVTKInteractor>::New()),
       mInteractorStyle(vtkSmartPointer<vtkInteractorStyle>::New()) {
