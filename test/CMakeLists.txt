@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(testEshmun LANGUAGES CXX)
 
-include_directories("../eshmun")
+include_directories("../src")
 
 # Widgets finds its own dependencies (QtGui and QtCore).
 find_package(QT NAMES Qt5 Qt6 COMPONENTS Gui Test REQUIRED)
