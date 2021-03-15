@@ -5,6 +5,7 @@ project(Eshmun LANGUAGES CXX)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOUIC ON)
+# Tell CMake to run moc when necessary:
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
@@ -32,6 +33,10 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        resources.qrc
+        annotation.cpp
+        annotation.h
+        annotation.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

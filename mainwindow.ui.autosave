@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="pageMain">
        <widget class="QWidget" name="verticalLayoutWidget">
@@ -233,7 +233,7 @@
           <x>-1</x>
           <y>9</y>
           <width>521</width>
-          <height>711</height>
+          <height>791</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
