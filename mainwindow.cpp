@@ -1,12 +1,14 @@
 #include "mainwindow.h"
-#include "./ui_mainwindow.h"
 
 #include <vtkActor.h>
 #include <vtkPSphereSource.h>
 #include <vtkPolyDataMapper.h>
 
+#include "./ui_mainwindow.h"
+
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow),
+    : QMainWindow(parent),
+      ui(new Ui::MainWindow),
       mRenderWindow(vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New()),
       mRenderer(vtkSmartPointer<vtkRenderer>::New()),
       mInteractor(vtkSmartPointer<QVTKInteractor>::New()),
