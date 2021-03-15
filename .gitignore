@@ -1,4 +1,9 @@
 # resource files
 
 # build and debug files
+build
 
+# CMake and editor files
+CMakeLists.txt.*.user
+*.autosave
+.vscode
