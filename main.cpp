@@ -5,42 +5,42 @@
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 
-//#include <QApplication>
+#include <QApplication>
 
-//#include "mainwindow.h"
+#include "mainwindow.h"
 
 int main(int argc, char *argv[]) {
-  // QApplication a(argc, argv);
-  // MainWindow w;
-  // w.show();
-  // a.exec();
+  QApplication a(argc, argv);
+  MainWindow w;
+  w.show();
+  return a.exec();
 
   // Verify input arguments
-  if (argc != 2) {
-    std::cout << "Usage: " << argv[0] << " Filename(.img)" << std::endl;
-    return EXIT_FAILURE;
-  }
+  // if (argc != 2) {
+  //  std::cout << "Usage: " << argv[0] << " Filename(.img)" << std::endl;
+  //  return EXIT_FAILURE;
+  //}
 
-  std::string inputFilename = argv[1];
+  // std::string inputFilename = argv[1];
 
   // Read all the DICOM files in the specified directory.
-  vtkSmartPointer<vtkDICOMImageReader> reader =
-      vtkSmartPointer<vtkDICOMImageReader>::New();
-  reader->SetFileName(inputFilename.c_str());
-  reader->Update();
+  // vtkSmartPointer<vtkDICOMImageReader> reader =
+  //    vtkSmartPointer<vtkDICOMImageReader>::New();
+  // reader->SetFileName(inputFilename.c_str());
+  // reader->Update();
 
   // Visualize
-  vtkSmartPointer<vtkImageViewer2> imageViewer =
-      vtkSmartPointer<vtkImageViewer2>::New();
-  imageViewer->SetInputConnection(reader->GetOutputPort());
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  imageViewer->SetupInteractor(renderWindowInteractor);
-  imageViewer->Render();
-  imageViewer->GetRenderer()->ResetCamera();
-  imageViewer->Render();
+  // vtkSmartPointer<vtkImageViewer2> imageViewer =
+  //    vtkSmartPointer<vtkImageViewer2>::New();
+  // imageViewer->SetInputConnection(reader->GetOutputPort());
+  // vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
+  vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  // imageViewer->SetupInteractor(renderWindowInteractor);
+  // imageViewer->Render();
+  // imageViewer->GetRenderer()->ResetCamera();
+  // imageViewer->Render();
 
-  renderWindowInteractor->Start();
+  // renderWindowInteractor->Start();
 
-  return EXIT_SUCCESS;
+  // return EXIT_SUCCESS;
 }

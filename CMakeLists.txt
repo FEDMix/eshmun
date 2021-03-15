@@ -45,6 +45,8 @@ set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
         mainwindow.h
+        medicalviewer.cpp
+        medicalviewer.h
         mainwindow.ui
 )
 
