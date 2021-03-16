@@ -2,10 +2,10 @@
 #define SCENEWIDGET_H
 
 #include <QVTKOpenGLNativeWidget.h>
-#include <vtkDataSet.h>
+#include <vtkSmartPointer.h>
+#include <vtkCamera.h>
 #include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
 #include <vtkImageData.h>
 #include <vtkImagePlaneWidget.h>
 
@@ -14,29 +14,23 @@ class SceneWidget : public QVTKOpenGLNativeWidget {
 public:
     explicit SceneWidget(QWidget* parent = nullptr);
 
-    //! Add a data set to the scene
-    /*!
-    \param[in] dataSet The data set to add
-  */
-    void addDataSet(vtkSmartPointer<vtkDataSet> dataSet);
+    void SetImageData(vtkSmartPointer<vtkImageData> imageData);
 
-    void setImageData(vtkSmartPointer<vtkImageData> imageData);
-
+public slots:
     void SetPlaneOrientationToXAxis();
     void SetPlaneOrientationToYAxis();
     void SetPlaneOrientationToZAxis();
+    void SetSliceIndex(int position);
 
-    //! Remove the data set from the scene
-    void removeDataSet();
-
-public slots:
-    //! Zoom to the extent of the data set in the scene
-    void zoomToExtent();
+    void ResetCamera();
+    void Refresh();
 
 private:
-    vtkSmartPointer<vtkRenderer> m_renderer;
+    vtkSmartPointer<vtkCamera> camera;
+    vtkSmartPointer<vtkRenderer> renderer;
     vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor;
     vtkSmartPointer<vtkImagePlaneWidget> ipw;
+    vtkSmartPointer<vtkImageData> imageData;
 };
 
 #endif // SCENEWIDGET_H

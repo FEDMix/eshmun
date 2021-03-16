@@ -43,12 +43,10 @@ void MainWindow::showOpenFileDialog()
 
 void MainWindow::openFile(const QString& fileName)
 {
-    ui->sceneWidget->removeDataSet();
 
     // // Create reader
     // vtkSmartPointer<vtkDataSetReader> reader = vtkSmartPointer<vtkDataSetReader>::New();
     // reader->SetFileName(fileName.toStdString().c_str());
-
 
     vtkSmartPointer<vtkVolume16Reader> reader = vtkSmartPointer<vtkVolume16Reader>::New();
     reader->SetDataDimensions(256, 256);
@@ -62,11 +60,7 @@ void MainWindow::openFile(const QString& fileName)
 
     vtkSmartPointer<vtkImageData> imageData = reader->GetOutput();
     if (imageData != nullptr) {
-        ui->sceneWidget->setImageData(imageData);
+        ui->sceneWidget->SetImageData(imageData);
+        ui->sceneWidget->SetPlaneOrientationToYAxis();
     }
-    // Add data set to 3D view
-    // vtkSmartPointer<vtkDataSet> dataSet = reader->GetOutput();
-    // if (dataSet != nullptr) {
-    //     ui->sceneWidget->addDataSet(reader->GetOutput());
-    // }
 }

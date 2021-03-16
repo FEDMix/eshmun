@@ -1,12 +1,9 @@
 #include "scenewidget.h"
 
-#include <vtkCamera.h>
 #include <vtkDataSetMapper.h>
 #include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkProperty.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleTrackballCamera.h>
-#include <vtkImagePlaneWidget.h>
+#include <vtkInteractorStyleImage.h>
 
 SceneWidget::SceneWidget(QWidget* parent)
     : QVTKOpenGLNativeWidget(parent)
@@ -15,25 +12,25 @@ SceneWidget::SceneWidget(QWidget* parent)
     setRenderWindow(window.Get());
 
     // Camera
-    vtkSmartPointer<vtkCamera> camera = vtkSmartPointer<vtkCamera>::New();
+    camera = vtkSmartPointer<vtkCamera>::New();
     camera->SetViewUp(0, 1, 0);
-    camera->SetPosition(0, 0, 10);
+    camera->SetPosition(0, 0, 1000);
     camera->SetFocalPoint(0, 0, 0);
     camera->SetParallelProjection(true);
 
     // Renderer
-    m_renderer = vtkSmartPointer<vtkRenderer>::New();
-    m_renderer->SetActiveCamera(camera);
-    m_renderer->SetBackground(0.5, 0.5, 0.5);
-    renderWindow()->AddRenderer(m_renderer);
+    renderer = vtkSmartPointer<vtkRenderer>::New();
+    renderer->SetActiveCamera(camera);
+    renderer->SetBackground(0.5, 0.5, 0.5);
+    renderWindow()->AddRenderer(renderer);
 
-    // An interactor
+    // Render window interactor
     renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
     renderWindowInteractor->SetRenderWindow(renderWindow());
 
     // Interactor style
-    vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = 
-        vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+    vtkSmartPointer<vtkInteractorStyleImage> style = 
+        vtkSmartPointer<vtkInteractorStyleImage>::New();
     renderWindowInteractor->SetInteractorStyle(style);
 
     ipw = vtkSmartPointer<vtkImagePlaneWidget>::New();
@@ -42,69 +39,55 @@ SceneWidget::SceneWidget(QWidget* parent)
     ipw->DisplayTextOn();
 }
 
-void SceneWidget::addDataSet(vtkSmartPointer<vtkDataSet> dataSet)
-{
-    // Actor
-    vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+void SceneWidget::SetImageData(vtkSmartPointer<vtkImageData> imageData) {
+    this->imageData = imageData;
 
-    // Mapper
-    vtkSmartPointer<vtkDataSetMapper> mapper = vtkSmartPointer<vtkDataSetMapper>::New();
-    mapper->SetInputData(dataSet);
-    actor->SetMapper(mapper);
-
-    m_renderer->AddActor(actor);
-    m_renderer->ResetCamera(dataSet->GetBounds());
-
-    renderWindow()->Render();
-}
-
-void SceneWidget::setImageData(vtkSmartPointer<vtkImageData> imageData) {
     ipw->SetInputData(imageData);
     ipw->SetWindowLevel(5500, 1000);
     ipw->SetPlaneOrientationToZAxes();
 
-    double origin[3] = {0, 1, 0};
-    ipw->SetOrigin(origin);
     ipw->UpdatePlacement();
-
-    // Render
-    renderWindow()->Render();
-
-    renderWindowInteractor->Initialize();
-    renderWindow()->Render();
     ipw->On();
-
-    renderWindowInteractor->Start();
+    Refresh();
 }
 
 void SceneWidget::SetPlaneOrientationToXAxis() {
     ipw->SetPlaneOrientationToXAxes();
+    camera->SetViewUp(0, 1, 0);
+    camera->SetPosition(1000, 0, 0);
+    int* extent = imageData->GetExtent();
+    ipw->SetSliceIndex((extent[0] + extent[1]) / 2);
+    ResetCamera();
 }
 
 void SceneWidget::SetPlaneOrientationToYAxis() {
     ipw->SetPlaneOrientationToYAxes();
+    camera->SetViewUp(1, 0, 0);
+    camera->SetPosition(0, 1000, 0);
+    ResetCamera();
 }
 
 void SceneWidget::SetPlaneOrientationToZAxis() {
     ipw->SetPlaneOrientationToZAxes();
+    camera->SetViewUp(0, 1, 0);
+    camera->SetPosition(0, 0, 1000);
+    ResetCamera();
 }
 
-void SceneWidget::removeDataSet()
-{
-    vtkActor* actor = m_renderer->GetActors()->GetLastActor();
-    if (actor != nullptr) {
-        m_renderer->RemoveActor(actor);
-    }
-
-    renderWindow()->Render();
+void SceneWidget::SetSliceIndex(int position) {
+    ipw->SetSliceIndex(position);
+    Refresh();
 }
 
-void SceneWidget::zoomToExtent()
+void SceneWidget::ResetCamera()
 {
-    // Zoom to extent of last added actor
-    vtkSmartPointer<vtkActor> actor = m_renderer->GetActors()->GetLastActor();
-    if (actor != nullptr) {
-        m_renderer->ResetCamera(actor->GetBounds());
-    }
+    renderer->ResetCamera();
+    Refresh();
+}
+
+void SceneWidget::Refresh()
+{
     renderWindow()->Render();
+    renderer->ResetCameraClippingRange();
+    update();
 }
