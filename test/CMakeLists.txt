@@ -6,8 +6,8 @@ add_executable(test_eshmun
 # Using C++17
 target_compile_features(test_eshmun PRIVATE cxx_std_17)
 
-
 target_link_libraries(test_eshmun PRIVATE
+    libEshmun
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Test
     Qt${QT_VERSION_MAJOR}::Widgets
