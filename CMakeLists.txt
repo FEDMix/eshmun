@@ -31,13 +31,19 @@ find_package(VTK
     REQUIRED
     COMPONENTS
         GUISupportQt
-        IOLegacy)
+        IOLegacy
+        CommonCore
+        FiltersSources
+        GUISupportQt
+        RenderingCore
+        IOImage
+        InteractionStyle)
 
 # Build executable
 add_executable(Eshmun ${Sources} ${Headers} ${Resources} ${UIs})
 
-target_link_libraries(Eshmun PRIVATE Qt5::Widgets Qt5::OpenGL VTK::GUISupportQt VTK::IOLegacy)
+target_link_libraries(Eshmun PRIVATE Qt5::Widgets Qt5::OpenGL ${VTK_LIBRARIES})
 
 vtk_module_autoinit(
     TARGETS Eshmun
-    MODULES VTK::GUISupportQt VTK::IOLegacy)
+    MODULES ${VTK_LIBRARIES})

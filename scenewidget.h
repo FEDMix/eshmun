@@ -4,7 +4,9 @@
 #include <QVTKOpenGLNativeWidget.h>
 #include <vtkDataSet.h>
 #include <vtkRenderer.h>
+#include <vtkRenderWindowInteractor.h>
 #include <vtkSmartPointer.h>
+#include <vtkImageData.h>
 
 class SceneWidget : public QVTKOpenGLNativeWidget {
     Q_OBJECT
@@ -17,6 +19,8 @@ public:
   */
     void addDataSet(vtkSmartPointer<vtkDataSet> dataSet);
 
+    void setImageData(vtkSmartPointer<vtkImageData> imageData);
+
     //! Remove the data set from the scene
     void removeDataSet();
 
@@ -26,6 +30,7 @@ public slots:
 
 private:
     vtkSmartPointer<vtkRenderer> m_renderer;
+    vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor;
 };
 
 #endif // SCENEWIDGET_H

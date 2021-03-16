@@ -5,6 +5,8 @@
 #include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkImagePlaneWidget.h>
 
 SceneWidget::SceneWidget(QWidget* parent)
     : QVTKOpenGLNativeWidget(parent)
@@ -39,6 +41,40 @@ void SceneWidget::addDataSet(vtkSmartPointer<vtkDataSet> dataSet)
     m_renderer->ResetCamera(dataSet->GetBounds());
 
     renderWindow()->Render();
+}
+
+void SceneWidget::setImageData(vtkSmartPointer<vtkImageData> imageData) {
+    // An interactor
+    vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
+        vtkSmartPointer<vtkRenderWindowInteractor>::New();
+    renderWindowInteractor->SetRenderWindow(renderWindow());
+
+    // Interactor style
+    vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = 
+        vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+    renderWindowInteractor->SetInteractorStyle(style);
+
+    vtkSmartPointer<vtkImagePlaneWidget> ipw = 
+        vtkSmartPointer<vtkImagePlaneWidget>::New();
+    ipw->SetInteractor(renderWindowInteractor);
+    //ipw->RestrictPlaneToVolumeOn();
+    ipw->SetInputData(imageData);
+    ipw->SetWindowLevel(5500, 1000);
+    ipw->SetPlaneOrientationToZAxes();
+    ipw->DisplayTextOn();
+
+    double origin[3] = {0, 1,0};
+    ipw->SetOrigin(origin);
+    ipw->UpdatePlacement();
+        
+    // Render
+    renderWindow()->Render();
+
+    renderWindowInteractor->Initialize();
+    renderWindow()->Render();
+    ipw->On();
+
+    renderWindowInteractor->Start();
 }
 
 void SceneWidget::removeDataSet()
