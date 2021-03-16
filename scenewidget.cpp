@@ -19,12 +19,27 @@ SceneWidget::SceneWidget(QWidget* parent)
     camera->SetViewUp(0, 1, 0);
     camera->SetPosition(0, 0, 10);
     camera->SetFocalPoint(0, 0, 0);
+    camera->SetParallelProjection(true);
 
     // Renderer
     m_renderer = vtkSmartPointer<vtkRenderer>::New();
     m_renderer->SetActiveCamera(camera);
     m_renderer->SetBackground(0.5, 0.5, 0.5);
     renderWindow()->AddRenderer(m_renderer);
+
+    // An interactor
+    renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+    renderWindowInteractor->SetRenderWindow(renderWindow());
+
+    // Interactor style
+    vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = 
+        vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+    renderWindowInteractor->SetInteractorStyle(style);
+
+    ipw = vtkSmartPointer<vtkImagePlaneWidget>::New();
+    ipw->SetInteractor(renderWindowInteractor);
+    ipw->RestrictPlaneToVolumeOn();
+    ipw->DisplayTextOn();
 }
 
 void SceneWidget::addDataSet(vtkSmartPointer<vtkDataSet> dataSet)
@@ -44,29 +59,14 @@ void SceneWidget::addDataSet(vtkSmartPointer<vtkDataSet> dataSet)
 }
 
 void SceneWidget::setImageData(vtkSmartPointer<vtkImageData> imageData) {
-    // An interactor
-    vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-        vtkSmartPointer<vtkRenderWindowInteractor>::New();
-    renderWindowInteractor->SetRenderWindow(renderWindow());
-
-    // Interactor style
-    vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = 
-        vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-    renderWindowInteractor->SetInteractorStyle(style);
-
-    vtkSmartPointer<vtkImagePlaneWidget> ipw = 
-        vtkSmartPointer<vtkImagePlaneWidget>::New();
-    ipw->SetInteractor(renderWindowInteractor);
-    //ipw->RestrictPlaneToVolumeOn();
     ipw->SetInputData(imageData);
     ipw->SetWindowLevel(5500, 1000);
     ipw->SetPlaneOrientationToZAxes();
-    ipw->DisplayTextOn();
 
-    double origin[3] = {0, 1,0};
+    double origin[3] = {0, 1, 0};
     ipw->SetOrigin(origin);
     ipw->UpdatePlacement();
-        
+
     // Render
     renderWindow()->Render();
 
@@ -75,6 +75,18 @@ void SceneWidget::setImageData(vtkSmartPointer<vtkImageData> imageData) {
     ipw->On();
 
     renderWindowInteractor->Start();
+}
+
+void SceneWidget::SetPlaneOrientationToXAxis() {
+    ipw->SetPlaneOrientationToXAxes();
+}
+
+void SceneWidget::SetPlaneOrientationToYAxis() {
+    ipw->SetPlaneOrientationToYAxes();
+}
+
+void SceneWidget::SetPlaneOrientationToZAxis() {
+    ipw->SetPlaneOrientationToZAxes();
 }
 
 void SceneWidget::removeDataSet()
@@ -94,6 +106,5 @@ void SceneWidget::zoomToExtent()
     if (actor != nullptr) {
         m_renderer->ResetCamera(actor->GetBounds());
     }
-
     renderWindow()->Render();
 }

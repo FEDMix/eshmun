@@ -7,6 +7,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkSmartPointer.h>
 #include <vtkImageData.h>
+#include <vtkImagePlaneWidget.h>
 
 class SceneWidget : public QVTKOpenGLNativeWidget {
     Q_OBJECT
@@ -21,6 +22,10 @@ public:
 
     void setImageData(vtkSmartPointer<vtkImageData> imageData);
 
+    void SetPlaneOrientationToXAxis();
+    void SetPlaneOrientationToYAxis();
+    void SetPlaneOrientationToZAxis();
+
     //! Remove the data set from the scene
     void removeDataSet();
 
@@ -31,6 +36,7 @@ public slots:
 private:
     vtkSmartPointer<vtkRenderer> m_renderer;
     vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor;
+    vtkSmartPointer<vtkImagePlaneWidget> ipw;
 };
 
 #endif // SCENEWIDGET_H
