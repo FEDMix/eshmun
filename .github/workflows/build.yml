@@ -89,10 +89,15 @@ jobs:
         run: cmake --version
 
       - name: CMake
-        run: cmake .
+        run: |
+          mkdir build
+          cd build
+          cmake ..
 
       - name: Make
+        working-directory: build
         run: make
 
       - name: Run Test
+        working-directory: build
         run: make test
