@@ -2,10 +2,6 @@ name: build
 on: [push]
 
 jobs:
-  env:
-    CMAKE_BUILD_DIR: "${{ github.workspace }}/build"
-    VCPKG_ROOT: ${{ github.workspace }}/vcpkg
-
   build-app:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -19,6 +15,10 @@ jobs:
             triplet: x64-linux
           - os: macos-latest
             triplet: x64-osx
+
+    env:
+      CMAKE_BUILD_DIR: "${{ github.workspace }}/build"
+      VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
     steps:
       - name: Checkout project
@@ -88,12 +88,11 @@ jobs:
       - name: Cmake version
         run: cmake --version
 
-      # - name: CMake
-      #   run: cmake .
+      - name: CMake
+        run: cmake .
 
-      # - name: Make
-      #   run: make
+      - name: Make
+        run: make
 
-      - name: Run
-        working-directory: build
-        run: ./Eshmun
+      - name: Run Test
+        run: make test
