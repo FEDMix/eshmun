@@ -61,6 +61,5 @@ void MainWindow::openFile(const QString& fileName)
     vtkSmartPointer<vtkImageData> imageData = reader->GetOutput();
     if (imageData != nullptr) {
         ui->sceneWidget->SetImageData(imageData);
-        ui->sceneWidget->SetPlaneOrientationToYAxis();
     }
 }

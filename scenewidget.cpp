@@ -44,34 +44,68 @@ void SceneWidget::SetImageData(vtkSmartPointer<vtkImageData> imageData) {
 
     ipw->SetInputData(imageData);
     ipw->SetWindowLevel(5500, 1000);
-    ipw->SetPlaneOrientationToZAxes();
-
+    SetPlaneOrientationToZAxis();
     ipw->UpdatePlacement();
     ipw->On();
+
     Refresh();
 }
 
 void SceneWidget::SetPlaneOrientationToXAxis() {
-    ipw->SetPlaneOrientationToXAxes();
-    camera->SetViewUp(0, 1, 0);
-    camera->SetPosition(1000, 0, 0);
+    float center[3], dim[3];
+    GetCenterAndDimensions(center, dim);
     int* extent = imageData->GetExtent();
-    ipw->SetSliceIndex((extent[0] + extent[1]) / 2);
-    ResetCamera();
+
+    ipw->SetPlaneOrientationToXAxes();
+    ipw->SetSliceIndex(0.5 * (extent[0] + extent[1]));
+
+    camera->SetParallelScale(0.5f * static_cast<float>(dim[1]));
+    camera->SetFocalPoint(center[0], center[1], center[2]);
+    camera->SetPosition(center[0] + dim[0], center[1], center[2]);
+    camera->SetViewUp(0, 1, 0);
+    renderer->ResetCameraClippingRange();
 }
 
 void SceneWidget::SetPlaneOrientationToYAxis() {
+    float center[3], dim[3];
+    GetCenterAndDimensions(center, dim);
+    int* extent = imageData->GetExtent();
+
     ipw->SetPlaneOrientationToYAxes();
-    camera->SetViewUp(1, 0, 0);
-    camera->SetPosition(0, 1000, 0);
-    ResetCamera();
+    ipw->SetSliceIndex(0.5 * (extent[2] + extent[3]));
+
+    camera->SetParallelScale(0.5f * static_cast<float>(dim[2]));
+    camera->SetFocalPoint(center[0], center[1], center[2]);
+    camera->SetPosition(center[0], center[1] + dim[1], center[2]);
+    camera->SetViewUp(0, 0, -1);
+    renderer->ResetCameraClippingRange();
 }
 
 void SceneWidget::SetPlaneOrientationToZAxis() {
+    float center[3], dim[3];
+    GetCenterAndDimensions(center, dim);
+    int* extent = imageData->GetExtent();
+
     ipw->SetPlaneOrientationToZAxes();
+    ipw->SetSliceIndex(0.5 * (extent[4] + extent[5]));
+
+    camera->SetParallelScale(0.5f * static_cast<float>(dim[1]));
+    camera->SetFocalPoint(center[0], center[1], center[2]);
+    camera->SetPosition(center[0], center[1], center[2] + dim[2]);
     camera->SetViewUp(0, 1, 0);
-    camera->SetPosition(0, 0, 1000);
-    ResetCamera();
+    renderer->ResetCameraClippingRange();
+}
+
+void SceneWidget::GetCenterAndDimensions(float* center, float* dim) {
+    int* extent = imageData->GetExtent();
+    double* origin = imageData->GetOrigin();
+    double* spacing = imageData->GetSpacing();
+    center[0] = origin[0] + 0.5 * (extent[0] + extent[1]) * spacing[0];
+    center[1] = origin[1] + 0.5 * (extent[2] + extent[3]) * spacing[1];
+    center[2] = origin[2] + 0.5 * (extent[4] + extent[5]) * spacing[2];
+    dim[0] = (extent[1] - extent[0] + 1) * spacing[0];
+    dim[1] = (extent[3] - extent[2] + 1) * spacing[1];
+    dim[2] = (extent[5] - extent[4] + 1) * spacing[2];
 }
 
 void SceneWidget::SetSliceIndex(int position) {

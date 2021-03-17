@@ -31,6 +31,8 @@ private:
     vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor;
     vtkSmartPointer<vtkImagePlaneWidget> ipw;
     vtkSmartPointer<vtkImageData> imageData;
+
+    void GetCenterAndDimensions(float*, float*);
 };
 
 #endif // SCENEWIDGET_H
