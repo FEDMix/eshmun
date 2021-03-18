@@ -19,7 +19,7 @@ jobs:
           - name: "Ubuntu Latest - Clang"
             os: ubuntu-latest
             cc: "clang"
-            cxx: "clang++"
+            cxx: "clang++-11"
 
           - name: "MacOS Latest - Clang"
             os: macos-latest
@@ -53,10 +53,6 @@ jobs:
                                   libswscale-dev libtheora-dev libtiff-dev libxml2-dev libxt-dev qtbase5-dev \
                                   qttools5-dev zlib1g-dev
 
-      - name: Windows - Install Qt
-        if: runner.os == 'Windows'
-        uses: jurplel/install-qt-action@v2
-
       - name: Windows and MacOS - Install LLVM and Clang
         if: runner.os == 'macOS' || runner.os == 'Windows'
         uses: KyleMayes/install-llvm-action@v1
@@ -78,9 +74,20 @@ jobs:
           sudo apt-get -y -qq install clang-format-11
           sudo apt-get -y -qq install clang-tidy-11
 
-          curl https://gist.githubusercontent.com/junkdog/70231d6953592cd6f27def59fe19e50d/raw/92f0e73d2558402b7316021c1ab408b30e534de6/update-alternatives-clang.sh > update-alternatives-clang.sh
-          chmod u+x update-alternatives-clang.sh
-          sudo ./update-alternatives-clang.sh 11 1
+          # curl https://gist.githubusercontent.com/junkdog/70231d6953592cd6f27def59fe19e50d/raw/92f0e73d2558402b7316021c1ab408b30e534de6/update-alternatives-clang.sh > update-alternatives-clang.sh
+          # chmod u+x update-alternatives-clang.sh
+          # sudo ./update-alternatives-clang.sh 11 1
+
+      - name: Windows - Install Qt
+        if: runner.os == 'Windows'
+        uses: jurplel/install-qt-action@v2
+
+      - name: MacOS - Install Qt
+        if: runner.os == 'macOS'
+          brew install qt@5.15.2
+          brew link --force qt@5
+          sudo ln -s /usr/local/Cellar/qt@5/5.15.2/mkspecs /usr/local/mkspecs
+          sudo ln -s /usr/local/Cellar/qt@5/5.15.2/plugins /usr/local/plugins
 
       - name: Linux - Cache VTK
         if: runner.os == 'Linux'
@@ -117,10 +124,7 @@ jobs:
               make -j$(($(nproc) - 1))
               make install
           elif [ "$RUNNER_OS" == "macOS" ]; then
-              brew install vtk 
-              brew link --force qt@5
-              sudo ln -s /usr/local/Cellar/qt@5/5.15.2/mkspecs /usr/local/mkspecs
-              sudo ln -s /usr/local/Cellar/qt@5/5.15.2/plugins /usr/local/plugins
+              brew install vtk               
           # elif [ "$RUNNER_OS" == "Windows" ]; then
           #     mkdir VTK-bin
           else
