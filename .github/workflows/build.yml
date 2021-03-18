@@ -2,10 +2,6 @@ name: build
 on: [push]
 
 jobs:
-  env:
-    CMAKE_BUILD_DIR: "${{ github.workspace }}/build"
-    VCPKG_ROOT: ${{ github.workspace }}/vcpkg
-
   build-app:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -19,6 +15,10 @@ jobs:
             triplet: x64-linux
           - os: macos-latest
             triplet: x64-osx
+
+    env:
+      CMAKE_BUILD_DIR: "${{ github.workspace }}/build"
+      VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
     steps:
       - name: Checkout project
@@ -78,7 +78,7 @@ jobs:
               brew install vtk
           else
               echo "$RUNNER_OS not supported"
-              exit 1
+              exit 0
           fi
         shell: bash
 
@@ -88,12 +88,16 @@ jobs:
       - name: Cmake version
         run: cmake --version
 
-      # - name: CMake
-      #   run: cmake .
+      - name: CMake
+        run: |
+          mkdir build
+          cd build
+          cmake ..
 
-      # - name: Make
-      #   run: make
-
-      - name: Run
+      - name: Make
         working-directory: build
-        run: ./Eshmun
+        run: make
+
+      - name: Run Test
+        working-directory: build
+        run: make test

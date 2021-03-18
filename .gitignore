@@ -2,8 +2,12 @@
 
 # build and debug files
 build
-
+build-src-Desktop_Qt_5_15_2_clang_64bit-Debug
 # CMake and editor files
 CMakeLists.txt.*.user
+CMakeLists_*_*.txt
 *.autosave
 .vscode
+
+.DS_Store
+
