@@ -1,0 +1,19 @@
+{
+	"BUILD_DIR" : "/Users/pushpanjali/eScience/FedMix/eshmun/build-src-Desktop_Qt_5_15_2_clang_64bit-Debug/Eshmun_autogen",
+	"CMAKE_BINARY_DIR" : "/Users/pushpanjali/eScience/FedMix/eshmun/build-src-Desktop_Qt_5_15_2_clang_64bit-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "/Users/pushpanjali/eScience/FedMix/eshmun/build-src-Desktop_Qt_5_15_2_clang_64bit-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/Users/pushpanjali/eScience/FedMix/eshmun/src",
+	"CMAKE_SOURCE_DIR" : "/Users/pushpanjali/eScience/FedMix/eshmun/src",
+	"INCLUDE_DIR" : "/Users/pushpanjali/eScience/FedMix/eshmun/build-src-Desktop_Qt_5_15_2_clang_64bit-Debug/Eshmun_autogen/include",
+	"INPUTS" : [ "/Users/pushpanjali/eScience/FedMix/eshmun/src/figs/cover.png" ],
+	"LOCK_FILE" : "/Users/pushpanjali/eScience/FedMix/eshmun/build-src-Desktop_Qt_5_15_2_clang_64bit-Debug/CMakeFiles/Eshmun_autogen.dir/AutoRcc_resources_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "resources" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_resources.cpp",
+	"RCC_EXECUTABLE" : "/Users/pushpanjali/Qt/5.15.2/clang_64/bin/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/Users/pushpanjali/eScience/FedMix/eshmun/build-src-Desktop_Qt_5_15_2_clang_64bit-Debug/CMakeFiles/Eshmun_autogen.dir/AutoRcc_resources_EWIEGA46WW_Used.txt",
+	"SOURCE" : "/Users/pushpanjali/eScience/FedMix/eshmun/src/resources.qrc",
+	"VERBOSITY" : 0
+}

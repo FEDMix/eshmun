@@ -1,0 +1,5 @@
+# ninja log v5
+3	404	1615810585970037000	testEshmun_autogen/timestamp	ad79e65f3452adbb
+404	435	1615810585998455493	CMakeFiles/testEshmun.dir/testEshmun_autogen/mocs_compilation.cpp.o	865147525f0f8a29
+404	2883	1615810588431736813	CMakeFiles/testEshmun.dir/tst_testeshmun.cpp.o	eaf4ee68b8fc1f17
+2886	2931	1615810588496413076	testEshmun	973f6c942c1fdaa6
