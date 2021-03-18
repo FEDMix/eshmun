@@ -3,6 +3,7 @@
 
 #include <QVTKInteractor.h>
 #include <QVTKOpenGLNativeWidget.h>
+#include <vtkDICOMImageReader.h>
 #include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkInteractorStyle.h>
 #include <vtkRenderer.h>
@@ -11,6 +12,12 @@ class MedicalViewer : public QVTKOpenGLNativeWidget {
   Q_OBJECT
  public:
   MedicalViewer(QWidget *parent = nullptr);
+
+  // Function for reading DICOM series
+  int readDICOMSeries(std::string inputFilename);
+
+  // Add a render to the window and show the window
+  void showWindow();
 
   void mouseMoveEvent(QMouseEvent *ev);
 
@@ -21,10 +28,12 @@ class MedicalViewer : public QVTKOpenGLNativeWidget {
   void onDrawSphereClick();
 
  private:
-  vtkSmartPointer<vtkGenericOpenGLRenderWindow> mRenderWindow;
-  vtkSmartPointer<vtkRenderer> mRenderer;
-  vtkSmartPointer<QVTKInteractor> mInteractor;
-  vtkSmartPointer<vtkInteractorStyle> mInteractorStyle;
+  // Initialize private variables for rendering
+  vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;
+  vtkSmartPointer<vtkDICOMImageReader> reader =
+      vtkSmartPointer<vtkDICOMImageReader>::New();
+  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
+      vtkSmartPointer<vtkRenderWindowInteractor>::New();
 };
 
 #endif  // MEDICALVIEWER_H

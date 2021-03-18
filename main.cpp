@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
   //    vtkSmartPointer<vtkImageViewer2>::New();
   // imageViewer->SetInputConnection(reader->GetOutputPort());
   // vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-  vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  //    vtkSmartPointer<vtkRenderWindowInteractor>::New();
   // imageViewer->SetupInteractor(renderWindowInteractor);
   // imageViewer->Render();
   // imageViewer->GetRenderer()->ResetCamera();
