@@ -26,6 +26,10 @@ jobs:
             cc: "clang-11"
             cxx: "clang++-11"
 
+    env:
+      CMAKE_BUILD_DIR: "${{ github.workspace }}/build"
+      VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+
     steps:
       - name: All - Checkout project
         uses: actions/checkout@v2
@@ -112,15 +116,16 @@ jobs:
       - name: CMake Configure
         run: cmake -Bbuild -GNinja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
 
-      - name: CMake Build
-        run: cmake --build build
-
-      # - name: CMake
-      #   run: cmake .
+      - name: CMake
+        run: |
+          mkdir build
+          cd build
+          cmake ..
 
       - name: Make
-        run: make test
+        working-directory: build
+        run: make
 
-      # - name: Run Test
-      #   working-directory: test
-      #   run: ./Eshmun
+      - name: Make
+        working-directory: build
+        run: make test

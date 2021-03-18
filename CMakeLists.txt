@@ -1,30 +1,27 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(Eshmun LANGUAGES CXX)
+project(eshmun LANGUAGES CXX)
 
+# Prepend current directory to the include path
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+# Generate a compile_commands.json file for use with vscode
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+
+# Tell CMake to run uic, moc and rcc when necessary
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+enable_testing(true)
 
-set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
-)
+# The executable code is here
+add_subdirectory(src)
 
-set(VTK_DIR "$HOME/vtk-inst")
-find_package(VTK REQUIRED)
-include(${VTK_USE_FILE})
-
-add_executable(Eshmun ${PROJECT_SOURCES})
-target_link_libraries(Eshmun PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
-target_link_libraries(Eshmun PRIVATE ${VTK_LIBRARIES})
+# Test code is here
+add_subdirectory(test)
