@@ -1,33 +1,45 @@
-name: build
-on: [push]
+name: Build Eshmun
+
+on: [push, pull_request]
 
 jobs:
-  env:
-    CMAKE_BUILD_DIR: "${{ github.workspace }}/build"
-    VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
 
-  build-app:
-    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        include:
-          - os: windows-latest
-            triplet: x64-windows
-          - os: ubuntu-latest
-            triplet: x64-linux
-          - os: macos-latest
-            triplet: x64-osx
+        config:
+          - name: "Windows Latest - MSVC"
+            os: windows-latest
+            cc: "cl"
+            cxx: "cl"
+
+          - name: "Ubuntu Latest - Clang"
+            os: ubuntu-latest
+            cc: "clang-11"
+            cxx: "clang++-11"
+
+          - name: "MacOS Latest - Clang"
+            os: macos-latest
+            cc: "clang-11"
+            cxx: "clang++-11"
 
     steps:
-      - name: Checkout project
+      - name: All - Checkout project
         uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
 
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v2
+      - name: All - Install ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
 
-      - name: Install Dependencies
+      - name: Windows - Set ENV
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Linux - Install Dependencies
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update -y -qq
@@ -41,7 +53,11 @@ jobs:
                                   libswscale-dev libtheora-dev libtiff-dev libxml2-dev libxt-dev qtbase5-dev \
                                   qttools5-dev zlib1g-dev
 
-      - name: Install LLVM and Clang
+      - name: Windows - Install Qt
+        if: runner.os == 'Windows'
+        uses: jurplel/install-qt-action@v2
+
+      - name: All - Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v1
         with:
           version: "11.1.0"
@@ -49,7 +65,7 @@ jobs:
           force-version: true
           directory: ${{ runner.temp }}/llvm
 
-      - name: Install vtk
+      - name: All - Install vtk
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
               git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
@@ -75,25 +91,36 @@ jobs:
               make -j$(($(nproc) - 1))
               make install
           elif [ "$RUNNER_OS" == "macOS" ]; then
-              brew install vtk
+              brew install vtk 
+              brew link --force qt@5
+              sudo ln -s /usr/local/Cellar/qt@5/5.15.2/mkspecs /usr/local/mkspecs
+              sudo ln -s /usr/local/Cellar/qt@5/5.15.2/plugins /usr/local/plugins
+          # elif [ "$RUNNER_OS" == "Windows" ]; then
+          #     mkdir VTK-bin
           else
               echo "$RUNNER_OS not supported"
-              exit 1
+              exit 0
           fi
         shell: bash
 
-      - name: llvm version check
-        run: clang --version
+      - name: Compiler version check
+        run: ${{ matrix.config.cxx }} --version
 
       - name: Cmake version
         run: cmake --version
 
+      - name: CMake Configure
+        run: cmake -Bbuild -GNinja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
+
+      - name: CMake Build
+        run: cmake --build build
+
       # - name: CMake
       #   run: cmake .
 
-      # - name: Make
-      #   run: make
+      - name: Make
+        run: make test
 
-      - name: Run
-        working-directory: build
-        run: ./Eshmun
+      # - name: Run Test
+      #   working-directory: test
+      #   run: ./Eshmun
