@@ -7,6 +7,9 @@ add_executable(eshmun
     annotation.cpp
     annotation.h
     annotation.ui
+    tabscreen.cpp
+    tabscreen.h
+    tabscreen.ui
 )
 
 target_compile_features(eshmun PRIVATE cxx_std_17)
