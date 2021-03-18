@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>tabscreen</class>
- <widget class="QWidget" name="tabscreen">
+ <class>TabWindow</class>
+ <widget class="QWidget" name="TabWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1302</width>
-    <height>671</height>
+    <width>852</width>
+    <height>587</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QTabWidget" name="tabWidget">
+    <widget class="QTabWidget" name="eshmun_tab_widget">
      <property name="tabPosition">
       <enum>QTabWidget::North</enum>
      </property>

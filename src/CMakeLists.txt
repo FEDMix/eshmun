@@ -6,6 +6,9 @@ set(PROJECT_SOURCES
         annotation.cpp
         annotation.h
         annotation.ui
+        tabwindow.cpp
+        tabwindow.h
+        tabwindow.ui
 )
 
 add_library(libEshmun
@@ -20,9 +23,9 @@ add_executable(eshmun
     annotation.cpp
     annotation.h
     annotation.ui
-    tabscreen.cpp
-    tabscreen.h
-    tabscreen.ui
+    tabwindow.cpp
+    tabwindow.h
+    tabwindow.ui
 )
 
 target_compile_features(eshmun PRIVATE cxx_std_17)
