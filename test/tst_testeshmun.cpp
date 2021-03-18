@@ -22,9 +22,14 @@ private slots:
   void lineEdit();
   void cleanupTestCase();
   void test_case1();
+
+  private:
+      MainWindow main_window;
 };
 
-testEshmun::testEshmun() {}
+testEshmun::testEshmun() {
+    main_window.show();
+}
 
 testEshmun::~testEshmun() {}
 
@@ -43,7 +48,14 @@ void testEshmun::lineEdit() {
 
 void testEshmun::cleanupTestCase() {}
 
-void testEshmun::test_case1() {}
+void testEshmun::test_case1() {
+    QPushButton *ui_selectButton = main_window.findChild<QPushButton*>("buttonSelectSubjects");
+    QPushButton *ui_backButton = main_window.findChild<QPushButton*>("buttonGoBack");
+
+    QCOMPARE(ui_backButton->isVisible(),false);
+    QTest::mouseClick(ui_selectButton, Qt::LeftButton);
+    QCOMPARE(ui_backButton->isVisible(),true);
+}
 
 QTEST_MAIN(testEshmun)
 
