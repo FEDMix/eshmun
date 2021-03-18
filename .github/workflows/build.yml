@@ -84,6 +84,7 @@ jobs:
 
       - name: MacOS - Install Qt
         if: runner.os == 'macOS'
+        run: |
           brew install qt@5.15.2
           brew link --force qt@5
           sudo ln -s /usr/local/Cellar/qt@5/5.15.2/mkspecs /usr/local/mkspecs
