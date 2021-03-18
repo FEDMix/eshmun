@@ -3,7 +3,6 @@
 #include <QtTest/QtTest>
 #include <QtWidgets>
 
-
 // add necessary includes here
 
 class testEshmun : public QObject {
@@ -23,13 +22,11 @@ private slots:
   void cleanupTestCase();
   void test_case1();
 
-  private:
-      MainWindow main_window;
+private:
+  MainWindow main_window;
 };
 
-testEshmun::testEshmun() {
-    main_window.show();
-}
+testEshmun::testEshmun() { main_window.show(); }
 
 testEshmun::~testEshmun() {}
 
@@ -49,14 +46,16 @@ void testEshmun::lineEdit() {
 void testEshmun::cleanupTestCase() {}
 
 void testEshmun::test_case1() {
-    QPushButton *ui_selectButton = main_window.findChild<QPushButton*>("buttonSelectSubjects");
-    QPushButton *ui_backButton = main_window.findChild<QPushButton*>("buttonGoBack");
+  QPushButton *ui_selectButton =
+      main_window.findChild<QPushButton *>("buttonSelectSubjects");
+  QPushButton *ui_backButton =
+      main_window.findChild<QPushButton *>("buttonGoBack");
 
-    QCOMPARE(ui_backButton->isVisible(),false);
-    QTest::mouseClick(ui_selectButton, Qt::LeftButton);
-    QCOMPARE(ui_backButton->isVisible(),true);
+  QCOMPARE(ui_backButton->isVisible(), false);
+  QTest::mouseClick(ui_selectButton, Qt::LeftButton);
+  QCOMPARE(ui_backButton->isVisible(), true);
 }
 
 QTEST_MAIN(testEshmun)
 
-#include "tst_testeshmun.moc"
+#include "tst_eshmun.moc"
