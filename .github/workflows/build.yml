@@ -52,6 +52,7 @@ jobs:
                                   libpng-dev libpython3-dev libqt5opengl5-dev libqt5x11extras5-dev libsqlite3-dev \
                                   libswscale-dev libtheora-dev libtiff-dev libxml2-dev libxt-dev qtbase5-dev \
                                   qttools5-dev zlib1g-dev
+        shell: bash
 
       - name: Windows - Install LLVM and Clang
         if: runner.os == 'Windows'
@@ -77,6 +78,7 @@ jobs:
           # curl https://gist.githubusercontent.com/junkdog/70231d6953592cd6f27def59fe19e50d/raw/92f0e73d2558402b7316021c1ab408b30e534de6/update-alternatives-clang.sh > update-alternatives-clang.sh
           # chmod u+x update-alternatives-clang.sh
           # sudo ./update-alternatives-clang.sh 11 1
+        shell: bash
 
       # - name: MacOS - Install LLVM, Clang, and CMake
       #   if: runner.os == 'macOS'
@@ -97,61 +99,64 @@ jobs:
       #     sudo ln -s /usr/local/Cellar/qt@5/5.15.2/mkspecs /usr/local/mkspecs
       #     sudo ln -s /usr/local/Cellar/qt@5/5.15.2/plugins /usr/local/plugins
 
-      - name: Linux - Cache VTK
-        if: runner.os == 'Linux'
+      - name: Linux and Windows - Cache VTK
+        if: runner.os == 'Windows' || runner.os == 'Linux'
         id: cache-vtk
         uses: actions/cache@v2
         with:
           path: $HOME/vtk-inst
           key: ${{ runner.os }}-vtk
 
-      - name: All - Install vtk
-        if: steps.cache-vtk.outputs.cache-hit != 'true' && runner.os == 'Linux'
+      - name: Linux and Windows - Install vtk
+        if: (runner.os == 'Windows' || runner.os == 'Linux') && steps.cache-vtk.outputs.cache-hit != 'true'
         run: |
-          if [ "$RUNNER_OS" == "Linux" || "$RUNNER_OS" == "Windows" ]; then
-              git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
-              cd vtk
-              git checkout v9.0.1
-              mkdir build
-              cd build
-              cmake -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
-                    -DCMAKE_INSTALL_RPATH=$HOME/vtk-inst \
-                    -DVTK_Group_Qt=ON \
-                    -DVTK_QT_VERSION=5 \
-                    -DVTK_Group_Imaging=ON \
-                    -DVTK_Group_Views=ON \
-                    -DModule_vtkRenderingFreeTypeFontConfig=ON \
-                    -DBUILD_TESTING=OFF \
-                    -DVTK_USE_SYSTEM_LIBRARIES=ON \
-                    -DVTK_USE_SYSTEM_LIBPROJ4=OFF \
-                    -DVTK_USE_SYSTEM_GL2PS=OFF \
-                    -DVTK_USE_SYSTEM_LIBHARU=OFF \
-                    -DVTK_USE_SYSTEM_PUGIXML=OFF \
-                    -DCMAKE_BUILD_TYPE=Release \
-                    ..
-              make -j$(($(nproc) - 1))
-              make install
-          elif [ "$RUNNER_OS" == "macOS" ]; then
-              brew install vtk
-          else
-              echo "$RUNNER_OS not supported"
-              exit 0
-          fi
+          git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
+          cd vtk
+          git checkout v9.0.1
+          mkdir build
+          cd build
+          cmake -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
+                -DCMAKE_INSTALL_RPATH=$HOME/vtk-inst \
+                -DVTK_Group_Qt=ON \
+                -DVTK_QT_VERSION=5 \
+                -DVTK_Group_Imaging=ON \
+                -DVTK_Group_Views=ON \
+                -DModule_vtkRenderingFreeTypeFontConfig=ON \
+                -DBUILD_TESTING=OFF \
+                -DVTK_USE_SYSTEM_LIBRARIES=ON \
+                -DVTK_USE_SYSTEM_LIBPROJ4=OFF \
+                -DVTK_USE_SYSTEM_GL2PS=OFF \
+                -DVTK_USE_SYSTEM_LIBHARU=OFF \
+                -DVTK_USE_SYSTEM_PUGIXML=OFF \
+                -DCMAKE_BUILD_TYPE=Release \
+                ..
+          make -j$(($(nproc) - 1))
+          make install
+        shell: bash
+
+      - name: MacOS - Install vtk
+        if: runner.os == 'macOS'
+        run: brew install vtk
         shell: bash
 
       - name: All - Compiler version check
         run: ${{ matrix.config.cxx }} --version
+        shell: bash
 
       - name: All - Cmake version check
         run: cmake --version
+        shell: bash
 
       - name: All - CMake Configure
         run: cmake -Bbuild -GNinja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
+        shell: bash
 
       - name: All - Make
         working-directory: build
         run: make
+        shell: bash
 
       - name: All - Test
         working-directory: build
         run: make test
+        shell: bash
