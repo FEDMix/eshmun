@@ -24,11 +24,11 @@ Eshmun is part of the FEDMix project: Fusible evolutionary deep neural network m
 
 # Development
 You can edit the code with your preferent IDE: 
-- [QTCreator](https://www.notion.so/Developer-documentation-fe20b6a0c58c4e0cb518fc26d23d71f9#669ac289d7fd4e2fae37d0abaffdcf6b) Open Source edition
+- [QTCreator](https://www.qt.io/download-thank-you). Used for [Open Source](https://www.qt.io/download-open-source)
 - [VSCode](https://code.visualstudio.com/download)
 
 ## Installation on MacOS
- Install with homebrew:
+Install with homebrew:
 ```
 brew install llvm@11 cmake vtk@9 qt@5
 ```
@@ -52,8 +52,6 @@ sudo apt-get install clang-tidy-11
 curl https://gist.githubusercontent.com/junkdog/70231d6953592cd6f27def59fe19e50d/raw/92f0e73d2558402b7316021c1ab408b30e534de6/update-alternatives-clang.sh > update-alternatives-clang.sh
 chmod u+x update-alternatives-clang.sh
 sudo ./update-alternatives-clang.sh 11 1
-
-
 ```
 
 ## Buid the application
