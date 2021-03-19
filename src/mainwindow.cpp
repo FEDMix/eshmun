@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "annotation.h"
+
 
 QString text_welcome = "Welcome to the FEDMix Viewer";
 QString text_description = "This viewer can be used to browse various\n"
@@ -51,9 +51,18 @@ MainWindow::MainWindow(QWidget *parent)
     connect(button_goBack, SIGNAL(released()), this,
             SLOT(pushButton_goBack())); // assign signals and slots
     // push button for selection
+    // patient 1
     QPushButton *button_subject1 = MainWindow::findChild<QPushButton *>("buttonSubject1");
     connect(button_subject1, SIGNAL(released()), this,
             SLOT(pushButton_subject1()));
+    // patient 2
+    QPushButton *button_subject2 = MainWindow::findChild<QPushButton *>("buttonSubject2");
+    connect(button_subject2, SIGNAL(released()), this,
+            SLOT(pushButton_subject2()));
+    // patient 3
+    QPushButton *button_subject3 = MainWindow::findChild<QPushButton *>("buttonSubject3");
+    connect(button_subject3, SIGNAL(released()), this,
+            SLOT(pushButton_subject3()));
 }
 
 MainWindow::~MainWindow()
@@ -70,8 +79,23 @@ void MainWindow::pushButton_goBack(){
 }
 
 void MainWindow::pushButton_subject1(){
-    Annotation annotation;
-    annotation.setModal(true);
-    annotation.exec();
+    // open a new window and deactivate the old window
+    // Annotation annotation;
+    // annotation.setModal(true);
+    // annotation.exec();
+
+    // open a new window with the old window active
+    annotation1 = new Annotation(this);
+    annotation1->show();
+}
+
+void MainWindow::pushButton_subject2(){
+    annotation2 = new Annotation(this);
+    annotation2->show();
+}
+
+void MainWindow::pushButton_subject3(){
+    annotation3 = new Annotation(this);
+    annotation3->show();
 }
 
