@@ -91,8 +91,8 @@ You have to uncheck the Add build library search path to DYLD_LIBRARY_PATH and D
 
 ## Run the tests
 If using Qt creator: 
-![image](https://user-images.githubusercontent.com/4195550/111753678-7045e480-8897-11eb-8da1-aa24eaca9267.png)
 
+![image](https://user-images.githubusercontent.com/4195550/111753678-7045e480-8897-11eb-8da1-aa24eaca9267.png)
 
 
 # License
