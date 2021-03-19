@@ -78,12 +78,12 @@ jobs:
           # chmod u+x update-alternatives-clang.sh
           # sudo ./update-alternatives-clang.sh 11 1
 
-      - name: MacOS - Install LLVM, Clang, and CMake
-        if: runner.os == 'macOS'
-        run: |
-          brew install llvm@11 
-          brew install cmake
-          xcode-select --install
+      # - name: MacOS - Install LLVM, Clang, and CMake
+      #   if: runner.os == 'macOS'
+      #   run: |
+      #     brew install llvm@11
+      #     brew install cmake
+      #     xcode-select --install
 
       - name: Windows and MacOS - Install Qt
         if: runner.os == 'Windows' || runner.os == 'macOS'
@@ -108,7 +108,7 @@ jobs:
       - name: All - Install vtk
         if: steps.cache-vtk.outputs.cache-hit != 'true' && runner.os == 'Linux'
         run: |
-          if [ "$RUNNER_OS" == "Linux" ]; then
+          if [ "$RUNNER_OS" == "Linux" || "$RUNNER_OS" == "Windows" ]; then
               git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
               cd vtk
               git checkout v9.0.1
@@ -132,9 +132,7 @@ jobs:
               make -j$(($(nproc) - 1))
               make install
           elif [ "$RUNNER_OS" == "macOS" ]; then
-              brew install vtk               
-          # elif [ "$RUNNER_OS" == "Windows" ]; then
-          #     mkdir VTK-bin
+              brew install vtk
           else
               echo "$RUNNER_OS not supported"
               exit 0
