@@ -75,7 +75,6 @@ $./src/eshmun
 ```
 
 ### With QT Creator
-Documentation in progress
 Open the txt file `CMakeLists.txt`
 and run with 
 ![image](https://user-images.githubusercontent.com/4195550/111753398-1c3b0000-8897-11eb-9bc7-359fd6a62a14.png)
