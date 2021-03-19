@@ -1,3 +1,0 @@
-/Users/pushpanjali/eScience/FedMix/eshmun/build-src-Desktop_Qt_5_15_2_clang_64bit-Debug/CMakeFiles/rebuild_cache.dir
-/Users/pushpanjali/eScience/FedMix/eshmun/build-src-Desktop_Qt_5_15_2_clang_64bit-Debug/CMakeFiles/edit_cache.dir
-/Users/pushpanjali/eScience/FedMix/eshmun/build-src-Desktop_Qt_5_15_2_clang_64bit-Debug/CMakeFiles/eshmun.dir

@@ -1,9 +1,0 @@
-# ninja log v5
-0	400	1615810661471013404	Eshmun_autogen/timestamp	5c1baab0130bd8ec
-400	481	1615810661549721151	Eshmun_autogen/EWIEGA46WW/qrc_resources.cpp	c610e99f3b934930
-483	1808	1615810662866755946	CMakeFiles/Eshmun.dir/Eshmun_autogen/EWIEGA46WW/qrc_resources.cpp.o	940da40e007a79c3
-481	1965	1615810663026377900	CMakeFiles/Eshmun.dir/Eshmun_autogen/mocs_compilation.cpp.o	7c89694c82c5714b
-481	1990	1615810663047161243	CMakeFiles/Eshmun.dir/main.cpp.o	e0d82d16c57c3107
-482	2041	1615810663101296850	CMakeFiles/Eshmun.dir/annotation.cpp.o	db71f025c34cbc7f
-482	2062	1615810663122645516	CMakeFiles/Eshmun.dir/mainwindow.cpp.o	c015544955c281cc
-2062	2112	1615810663182574792	Eshmun	11e970c681a6a1ef
