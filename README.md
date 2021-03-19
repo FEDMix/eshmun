@@ -1,6 +1,6 @@
 # FEDMIX - eshmun
 
-![ci](https://github.com/emrecdem/FEDMix/eshmun/workflows/build.yml/badge.svg)
+![ci](https://github.com/FEDMix/eshmun/actions/workflows/build.yml/badge.svg)
 
 Eshmun is part of the FEDMix project: Fusible evolutionary deep neural network mixture learning. See project's page information: https://www.esciencecenter.nl/projects/fedmix/
 
@@ -8,6 +8,9 @@ Eshmun is part of the FEDMix project: Fusible evolutionary deep neural network m
 
 
 'Eshmun' is stand alone, installable and robust medical image analysis developed in C++, Qt and VTK created. 
+
+
+
 
 
 
