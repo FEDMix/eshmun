@@ -53,8 +53,8 @@ jobs:
                                   libswscale-dev libtheora-dev libtiff-dev libxml2-dev libxt-dev qtbase5-dev \
                                   qttools5-dev zlib1g-dev
 
-      - name: Windows and MacOS - Install LLVM and Clang
-        if: runner.os == 'macOS' || runner.os == 'Windows'
+      - name: Windows - Install LLVM and Clang
+        if: runner.os == 'Windows'
         uses: KyleMayes/install-llvm-action@v1
         with:
           version: "11.1.0"
@@ -64,8 +64,8 @@ jobs:
       - name: Linux - Install LLVM and Clang
         if: runner.os == 'Linux'
         run: |
-          sudo update-alternatives --remove-all llvm
-          sudo update-alternatives --remove-all clang
+          # sudo update-alternatives --remove-all llvm
+          # sudo update-alternatives --remove-all clang
 
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
@@ -78,17 +78,24 @@ jobs:
           # chmod u+x update-alternatives-clang.sh
           # sudo ./update-alternatives-clang.sh 11 1
 
-      - name: Windows - Install Qt
-        if: runner.os == 'Windows'
-        uses: jurplel/install-qt-action@v2
-
-      - name: MacOS - Install Qt
+      - name: MacOS - Install LLVM, Clang, and CMake
         if: runner.os == 'macOS'
         run: |
-          brew install qt@5.15.2
-          brew link --force qt@5
-          sudo ln -s /usr/local/Cellar/qt@5/5.15.2/mkspecs /usr/local/mkspecs
-          sudo ln -s /usr/local/Cellar/qt@5/5.15.2/plugins /usr/local/plugins
+          brew install llvm@11 
+          brew install cmake
+          xcode-select --install
+
+      - name: Windows and MacOS - Install Qt
+        if: runner.os == 'Windows' || runner.os == 'macOS'
+        uses: jurplel/install-qt-action@v2
+
+      # - name: MacOS - Install Qt
+      #   if: runner.os == 'macOS'
+      #   run: |
+      #     brew install qt@5.15.2
+      #     brew link --force qt@5
+      #     sudo ln -s /usr/local/Cellar/qt@5/5.15.2/mkspecs /usr/local/mkspecs
+      #     sudo ln -s /usr/local/Cellar/qt@5/5.15.2/plugins /usr/local/plugins
 
       - name: Linux - Cache VTK
         if: runner.os == 'Linux'
@@ -134,19 +141,19 @@ jobs:
           fi
         shell: bash
 
-      - name: Compiler version check
+      - name: All - Compiler version check
         run: ${{ matrix.config.cxx }} --version
 
-      - name: Cmake version
+      - name: All - Cmake version check
         run: cmake --version
 
-      - name: CMake Configure
+      - name: All - CMake Configure
         run: cmake -Bbuild -GNinja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
 
-      - name: Make
+      - name: All - Make
         working-directory: build
         run: make
 
-      - name: Make
+      - name: All - Test
         working-directory: build
         run: make test
