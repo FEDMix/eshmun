@@ -8,3 +8,6 @@ CMakeLists.txt.user
 CMakeLists.txt.user*
 *.autosave
 .vscode
+.idea
+/cmake-build-debug/CMakeCache.txt
+/cmake-build-debug/CMakeFiles/

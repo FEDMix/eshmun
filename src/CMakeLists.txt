@@ -1,13 +1,13 @@
 set(PROJECT_SOURCES
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
+        pages/selectPatient/mainwindow.cpp
+        pages/selectPatient/mainwindow.h
+        pages/selectPatient/mainwindow.ui
         resources.qrc
-        annotation.cpp
-        annotation.h
-        annotation.ui
-        scenewidget.cpp
-        scenewidget.h
+        pages/patientView/annotation.cpp
+        pages/patientView/annotation.h
+        pages/patientView/annotation.ui
+        components/VTKWidget/scenewidget.cpp
+        components/VTKWidget/scenewidget.h
 )
 
 # Find package Qt
