@@ -99,7 +99,7 @@ jobs:
       #     sudo ln -s /usr/local/Cellar/qt@5/5.15.2/mkspecs /usr/local/mkspecs
       #     sudo ln -s /usr/local/Cellar/qt@5/5.15.2/plugins /usr/local/plugins
 
-      - name: Linux and Windows - Cache VTK
+      - name: Linux and Windows - Cache vtk
         if: runner.os == 'Windows' || runner.os == 'Linux'
         id: cache-vtk
         uses: actions/cache@v2
@@ -129,6 +129,8 @@ jobs:
                 -DVTK_USE_SYSTEM_LIBHARU=OFF \
                 -DVTK_USE_SYSTEM_PUGIXML=OFF \
                 -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
+                -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
                 ..
           make -j$(($(nproc) - 1))
           make install
@@ -148,15 +150,17 @@ jobs:
         shell: bash
 
       - name: All - CMake Configure
-        run: cmake -Bbuild -GNinja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
+        run: cmake -Bbuild -GNinja -DCMAKE_PREFIX_PATH=$HOME/vtk-inst -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
         shell: bash
 
       - name: All - Make
-        working-directory: build
-        run: make
+        run: |
+          cd build
+          make
         shell: bash
 
       - name: All - Test
-        working-directory: build
-        run: make test
+        run: |
+          cd build
+          make test
         shell: bash
