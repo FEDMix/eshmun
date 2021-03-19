@@ -23,7 +23,9 @@ Eshmun is part of the FEDMix project: Fusible evolutionary deep neural network m
 - VTK v9
 
 # Development
-You can edit the code with your preferent IDE: 
+You can clone this repository
+```git clone https://github.com/FEDMix/eshmun.git```
+and edit the code with your preferent IDE
 - [QTCreator](https://www.qt.io/download-thank-you). Used for [Open Source](https://www.qt.io/download-open-source)
 - [VSCode](https://code.visualstudio.com/download)
 
@@ -63,7 +65,7 @@ $ cd build #And follow the sequential steps inside the build folder
 # Create the 'make' file inside the build folder for your operative system.
 $ cmake .. 
 # if you have different version on you computer you can specify the installation path of qt5 with
-$ cmake -DCMAKE_PREFIX_PATH="/usr/local/opt/qt5" ..`
+$ cmake -DCMAKE_PREFIX_PATH="/usr/local/opt/qt5" ..
 
 # Create the binary compiled
 $ make
@@ -74,10 +76,23 @@ $./src/eshmun
 
 ### With QT Creator
 Documentation in progress
+Open the txt file `CMakeLists.txt`
+and run with 
+![image](https://user-images.githubusercontent.com/4195550/111753398-1c3b0000-8897-11eb-9bc7-359fd6a62a14.png)
+
+
+Configure your project. Be sure that all versions are linked correctly. 
+![image](https://user-images.githubusercontent.com/4195550/111751176-725a7400-8894-11eb-8051-f3cc4f86f91b.png)
+
+You have to uncheck the Add build library search path to DYLD_LIBRARY_PATH and DYLD_FRAMEWORK_PATH option from the Run section in the Projects tab:
+![image](https://user-images.githubusercontent.com/4195550/111753292-fd3c6e00-8896-11eb-8916-025056b95e84.png)
+
 
 
 ## Run the tests
-Documentation in progress
+If using Qt creator: 
+![image](https://user-images.githubusercontent.com/4195550/111753678-7045e480-8897-11eb-8da1-aa24eaca9267.png)
+
 
 
 # License
