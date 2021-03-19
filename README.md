@@ -94,6 +94,8 @@ If using Qt creator:
 
 ![image](https://user-images.githubusercontent.com/4195550/111753678-7045e480-8897-11eb-8da1-aa24eaca9267.png)
 
+# Contributor Covenant Code of Conduct
+https://github.com/FEDMix/eshmun/blob/feature/readme/CODE_OF_CONDUCT.rst
 
 # License
 [Apache 2](https://www.apache.org/licenses/LICENSE-2.0)
