@@ -135,6 +135,9 @@ jobs:
                 -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
                 -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
                 ..
+          pwd
+          ls -al
+          cat Makefile
           make -j$(($(nproc) - 1))
           make install
         shell: bash
