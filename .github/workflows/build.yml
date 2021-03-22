@@ -32,8 +32,8 @@ jobs:
         with:
           submodules: "recursive"
 
-      - name: All - Install ninja
-        uses: seanmiddleditch/gha-setup-ninja@master
+      # - name: All - Install ninja
+      #   uses: seanmiddleditch/gha-setup-ninja@master
 
       - name: Windows - Set ENV
         if: runner.os == 'Windows'
@@ -44,14 +44,15 @@ jobs:
         run: |
           sudo apt-get update -y -qq
           sudo apt-get install -y -qq cmake build-essential gcc-multilib
-          sudo apt-get install -y -qq mesa-common-dev mesa-utils freeglut3-dev ninja-build \
+          sudo apt-get install -y -qq mesa-common-dev mesa-utils freeglut3-dev \
                                   libavcodec-dev libavformat-dev libavutil-dev libboost-dev \
                                   libdouble-conversion-dev libeigen3-dev libexpat1-dev libfontconfig-dev \
                                   libfreetype6-dev libgdal-dev libglew-dev libhdf5-dev libjpeg-dev libjsoncpp-dev \
                                   liblz4-dev liblzma-dev libnetcdf-dev libnetcdf-cxx-legacy-dev libogg-dev \
                                   libpng-dev libpython3-dev libqt5opengl5-dev libqt5x11extras5-dev libsqlite3-dev \
                                   libswscale-dev libtheora-dev libtiff-dev libxml2-dev libxt-dev qtbase5-dev \
-                                  qttools5-dev zlib1g-dev
+                                  qttools5-dev zlib1g-dev                                  
+          # ninja-build
         shell: bash
 
       - name: Windows - Install LLVM and Clang
@@ -107,8 +108,8 @@ jobs:
       #     path: $HOME/vtk-inst
       #     key: ${{ runner.os }}-vtk
 
-      - name: Linux and Windows - Install vtk
-        if: (runner.os == 'Windows' || runner.os == 'Linux')
+      - name: Linux - Install vtk
+        if: (runner.os == 'Linux')
         # if: (runner.os == 'Windows' || runner.os == 'Linux') && steps.cache-vtk.outputs.cache-hit != 'true'
         run: |
           git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
@@ -116,7 +117,38 @@ jobs:
           git checkout v9.0.1
           mkdir build
           cd build
-          cmake -GNinja \
+          cmake -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
+                -DCMAKE_INSTALL_RPATH=$HOME/vtk-inst \
+                -DVTK_Group_Qt=ON \
+                -DVTK_QT_VERSION=5 \
+                -DVTK_Group_Imaging=ON \
+                -DVTK_Group_Views=ON \
+                -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
+                -DModule_vtkRenderingFreeTypeFontConfig=ON \
+                -DBUILD_TESTING=OFF \
+                -DVTK_USE_SYSTEM_LIBRARIES=ON \
+                -DVTK_USE_SYSTEM_LIBPROJ4=OFF \
+                -DVTK_USE_SYSTEM_GL2PS=OFF \
+                -DVTK_USE_SYSTEM_LIBHARU=OFF \
+                -DVTK_USE_SYSTEM_PUGIXML=OFF \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
+                -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
+                ..
+          make -j$(($(nproc) - 1))
+          make install
+        shell: bash
+
+      - name: Windows - Install vtk
+        if: (runner.os == 'Windows')
+        # if: (runner.os == 'Windows' || runner.os == 'Linux') && steps.cache-vtk.outputs.cache-hit != 'true'
+        run: |
+          git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
+          cd vtk
+          git checkout v9.0.1
+          mkdir build
+          cd build
+          cmake -G"MinGW Makefiles" \
                 -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
                 -DCMAKE_INSTALL_RPATH=$HOME/vtk-inst \
                 -DVTK_Group_Qt=ON \
@@ -135,8 +167,8 @@ jobs:
                 -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
                 -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
                 ..
-          ninja -j$(($(nproc) - 1))
-          ninja install
+          make -j$(($(nproc) - 1))
+          make install
         shell: bash
 
       - name: MacOS - Install vtk
@@ -160,7 +192,7 @@ jobs:
           cd build
           pwd
           ls -al
-          cmake -GNinja \
+          cmake \
             -DCMAKE_PREFIX_PATH=$HOME/vtk-inst \
             -DCMAKE_BUILD_TYPE=Debug \
             -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
@@ -171,11 +203,11 @@ jobs:
       - name: All - Make
         run: |
           cd build
-          ninja
+          make
         shell: bash
 
       - name: All - Test
         run: |
           cd build
-          ninja test
+          make test
         shell: bash
