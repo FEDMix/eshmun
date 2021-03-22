@@ -37,7 +37,8 @@ find_package(VTK
         GUISupportQt
         RenderingCore
         IOImage
-        InteractionStyle)
+        InteractionStyle
+        ImagingSources)
 
 # Build executable
 add_executable(Eshmun ${Sources} ${Headers} ${Resources} ${UIs})
