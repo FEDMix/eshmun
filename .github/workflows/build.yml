@@ -87,8 +87,8 @@ jobs:
       #     brew install cmake
       #     xcode-select --install
 
-      - name: Windows and MacOS - Install Qt
-        if: runner.os == 'Windows' || runner.os == 'macOS'
+      - name: Windows - Install Qt
+        if: runner.os == 'Windows'
         uses: jurplel/install-qt-action@v2
 
       # - name: MacOS - Install Qt
@@ -99,16 +99,17 @@ jobs:
       #     sudo ln -s /usr/local/Cellar/qt@5/5.15.2/mkspecs /usr/local/mkspecs
       #     sudo ln -s /usr/local/Cellar/qt@5/5.15.2/plugins /usr/local/plugins
 
-      - name: Linux and Windows - Cache vtk
-        if: runner.os == 'Windows' || runner.os == 'Linux'
-        id: cache-vtk
-        uses: actions/cache@v2
-        with:
-          path: $HOME/vtk-inst
-          key: ${{ runner.os }}-vtk
+      # - name: Linux and Windows - Cache vtk
+      #   if: runner.os == 'Windows' || runner.os == 'Linux'
+      #   id: cache-vtk
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: $HOME/vtk-inst
+      #     key: ${{ runner.os }}-vtk
 
       - name: Linux and Windows - Install vtk
-        if: (runner.os == 'Windows' || runner.os == 'Linux') && steps.cache-vtk.outputs.cache-hit != 'true'
+        if: (runner.os == 'Windows' || runner.os == 'Linux')
+        # if: (runner.os == 'Windows' || runner.os == 'Linux') && steps.cache-vtk.outputs.cache-hit != 'true'
         run: |
           git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
           cd vtk
@@ -151,7 +152,13 @@ jobs:
         shell: bash
 
       - name: All - CMake Configure
-        run: cmake -Bbuild -GNinja -DCMAKE_PREFIX_PATH=$HOME/vtk-inst -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
+        run: |
+          mkdir build
+          cd build
+          cmake -GNinja \
+            -DCMAKE_PREFIX_PATH=$HOME/vtk-inst \
+            -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
+            -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
         shell: bash
 
       - name: All - Make
