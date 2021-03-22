@@ -116,7 +116,8 @@ jobs:
           git checkout v9.0.1
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
+          cmake -GNinja \
+                -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
                 -DCMAKE_INSTALL_RPATH=$HOME/vtk-inst \
                 -DVTK_Group_Qt=ON \
                 -DVTK_QT_VERSION=5 \
