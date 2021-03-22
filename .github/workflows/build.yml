@@ -13,16 +13,19 @@ jobs:
         config:
           - name: "Windows Latest - MSVC"
             os: windows-latest
+            makefiles: "MinGW Makefiles"
             cc: "cl"
             cxx: "cl"
 
           - name: "Ubuntu Latest - Clang"
             os: ubuntu-latest
+            makefiles: "Unix Makefiles"
             cc: "clang"
             cxx: "clang++-11"
 
           - name: "MacOS Latest - Clang"
             os: macos-latest
+            makefiles: "Unix Makefiles"
             cc: "clang"
             cxx: "clang++"
 
@@ -31,9 +34,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: "recursive"
-
-      # - name: All - Install ninja
-      #   uses: seanmiddleditch/gha-setup-ninja@master
 
       - name: Windows - Set ENV
         if: runner.os == 'Windows'
@@ -51,8 +51,7 @@ jobs:
                                   liblz4-dev liblzma-dev libnetcdf-dev libnetcdf-cxx-legacy-dev libogg-dev \
                                   libpng-dev libpython3-dev libqt5opengl5-dev libqt5x11extras5-dev libsqlite3-dev \
                                   libswscale-dev libtheora-dev libtiff-dev libxml2-dev libxt-dev qtbase5-dev \
-                                  qttools5-dev zlib1g-dev                                  
-          # ninja-build
+                                  qttools5-dev zlib1g-dev
         shell: bash
 
       - name: Windows - Install LLVM and Clang
@@ -81,74 +80,19 @@ jobs:
           # sudo ./update-alternatives-clang.sh 11 1
         shell: bash
 
-      # - name: MacOS - Install LLVM, Clang, and CMake
-      #   if: runner.os == 'macOS'
-      #   run: |
-      #     brew install llvm@11
-      #     brew install cmake
-      #     xcode-select --install
-
       - name: Windows - Install Qt
         if: runner.os == 'Windows'
         uses: jurplel/install-qt-action@v2
 
-      # - name: MacOS - Install Qt
-      #   if: runner.os == 'macOS'
-      #   run: |
-      #     brew install qt@5.15.2
-      #     brew link --force qt@5
-      #     sudo ln -s /usr/local/Cellar/qt@5/5.15.2/mkspecs /usr/local/mkspecs
-      #     sudo ln -s /usr/local/Cellar/qt@5/5.15.2/plugins /usr/local/plugins
-
-      # - name: Linux and Windows - Cache vtk
-      #   if: runner.os == 'Windows' || runner.os == 'Linux'
-      #   id: cache-vtk
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: $HOME/vtk-inst
-      #     key: ${{ runner.os }}-vtk
-
-      - name: Linux - Install vtk
-        if: (runner.os == 'Linux')
-        # if: (runner.os == 'Windows' || runner.os == 'Linux') && steps.cache-vtk.outputs.cache-hit != 'true'
+      - name: Linux and Windows - Install vtk
+        if: (runner.os == 'Linux' || runner.os == 'Windows')
         run: |
           git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
           cd vtk
           git checkout v9.0.1
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
-                -DCMAKE_INSTALL_RPATH=$HOME/vtk-inst \
-                -DVTK_Group_Qt=ON \
-                -DVTK_QT_VERSION=5 \
-                -DVTK_Group_Imaging=ON \
-                -DVTK_Group_Views=ON \
-                -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
-                -DModule_vtkRenderingFreeTypeFontConfig=ON \
-                -DBUILD_TESTING=OFF \
-                -DVTK_USE_SYSTEM_LIBRARIES=ON \
-                -DVTK_USE_SYSTEM_LIBPROJ4=OFF \
-                -DVTK_USE_SYSTEM_GL2PS=OFF \
-                -DVTK_USE_SYSTEM_LIBHARU=OFF \
-                -DVTK_USE_SYSTEM_PUGIXML=OFF \
-                -DCMAKE_BUILD_TYPE=Release \
-                -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
-                -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
-                ..
-          make -j$(($(nproc) - 1))
-          make install
-        shell: bash
-
-      - name: Windows - Install vtk
-        if: (runner.os == 'Windows')
-        # if: (runner.os == 'Windows' || runner.os == 'Linux') && steps.cache-vtk.outputs.cache-hit != 'true'
-        run: |
-          git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
-          cd vtk
-          git checkout v9.0.1
-          mkdir build
-          cd build
-          cmake -G"MinGW Makefiles" \
+          cmake -G${{ matrix.config.makefiles }} \
                 -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
                 -DCMAKE_INSTALL_RPATH=$HOME/vtk-inst \
                 -DVTK_Group_Qt=ON \
@@ -186,13 +130,9 @@ jobs:
 
       - name: All - CMake Configure
         run: |
-          pwd
-          ls -al
           mkdir build
           cd build
-          pwd
-          ls -al
-          cmake \
+          cmake -G${{ matrix.config.makefiles }} \
             -DCMAKE_PREFIX_PATH=$HOME/vtk-inst \
             -DCMAKE_BUILD_TYPE=Debug \
             -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
