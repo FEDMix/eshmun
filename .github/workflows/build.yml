@@ -138,8 +138,8 @@ jobs:
           pwd
           ls -al
           cat Makefile
-          make -j$(($(nproc) - 1))
-          make install
+          ninja -j$(($(nproc) - 1))
+          ninja install
         shell: bash
 
       - name: MacOS - Install vtk
@@ -169,11 +169,11 @@ jobs:
       - name: All - Make
         run: |
           cd build
-          make
+          ninja
         shell: bash
 
       - name: All - Test
         run: |
           cd build
-          make test
+          ninja test
         shell: bash
