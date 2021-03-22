@@ -14,7 +14,7 @@ jobs:
           - name: "Windows Latest - MSVC"
             os: windows-latest
             makefiles: '"MinGW Makefiles"'
-            qt_path: "D:\a\eshmun\Qt\5.15.2\msvc2019_64\"
+            qt_path: "D:\a\eshmun\Qt\5.15.2\msvc2019_64\\"
             cc: "cl"
             cxx: "cl"
 
