@@ -121,6 +121,7 @@ jobs:
                 -DVTK_QT_VERSION=5 \
                 -DVTK_Group_Imaging=ON \
                 -DVTK_Group_Views=ON \
+                -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
                 -DModule_vtkRenderingFreeTypeFontConfig=ON \
                 -DBUILD_TESTING=OFF \
                 -DVTK_USE_SYSTEM_LIBRARIES=ON \
