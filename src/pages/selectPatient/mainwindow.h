@@ -5,7 +5,7 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QPushButton>
-#include "annotation.h"
+#include "../patientView/annotation.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

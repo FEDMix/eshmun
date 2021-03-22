@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "pages/selectPatient/mainwindow.h"
 
 #include <QApplication>
 #include <QSurfaceFormat>

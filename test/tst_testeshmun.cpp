@@ -1,4 +1,4 @@
-#include "../src/mainwindow.h"
+#include "../src/pages/selectPatient/mainwindow.h"
 #include <QCoreApplication>
 #include <QtTest/QtTest>
 #include <QtWidgets>
