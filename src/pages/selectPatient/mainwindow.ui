@@ -294,6 +294,9 @@
            </property>
           </widget>
          </item>
+         <item row="9" column="0">
+           <widget class="SceneWidget" name="sceneWidget" />
+         </item>
          <item row="2" column="0" colspan="2">
           <widget class="QPushButton" name="buttonSubject1">
            <property name="sizePolicy">
@@ -369,6 +372,18 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+  <customwidgets>
+   <customwidget>
+   <class>QVTKOpenGLWidget</class>
+   <class>SceneWidget</class>
+    <extends>QOpenGLWidget</extends>
+       <header>qvtkopenglwidget.h</header>
+   <header>components/VTKWidget/scenewidget.h</header>
+   <slots>
+    <slot>zoomToExtent()</slot>
+   </slots>
+   </customwidget>
+  </customwidgets>
  <resources/>
  <connections/>
 </ui>

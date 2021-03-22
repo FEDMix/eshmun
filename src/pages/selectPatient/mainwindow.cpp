@@ -75,7 +75,8 @@ void MainWindow::pushButton_selectSubject(){
 }
 
 void MainWindow::pushButton_goBack(){
-    ui->stackedWidget->setCurrentIndex(0);
+    //ui->stackedWidget->setCurrentIndex(0);
+    ui->sceneWidget->SetImageData(0);
 }
 
 void MainWindow::pushButton_subject1(){
