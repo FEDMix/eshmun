@@ -14,18 +14,21 @@ jobs:
           - name: "Windows Latest - MSVC"
             os: windows-latest
             makefiles: '"MinGW Makefiles"'
+            qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64\'
             cc: "cl"
             cxx: "cl"
 
           - name: "Ubuntu Latest - Clang"
             os: ubuntu-latest
             makefiles: '"Unix Makefiles"'
+            qt_path: "/usr/lib/qt5"
             cc: "clang"
             cxx: "clang++-11"
 
           - name: "MacOS Latest - Clang"
             os: macos-latest
             makefiles: '"Unix Makefiles"'
+            qt_path: '"/usr/local/opt/qt@5/"'
             cc: "clang"
             cxx: "clang++"
 
@@ -133,7 +136,7 @@ jobs:
           mkdir build
           cd build
           cmake -G${{ matrix.config.makefiles }} \
-            -DCMAKE_PREFIX_PATH=$HOME/vtk-inst \
+            -DCMAKE_PREFIX_PATH=$HOME/vtk-inst; ${{ matrix.config.qt_path }} \
             -DCMAKE_BUILD_TYPE=Debug \
             -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
             -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
