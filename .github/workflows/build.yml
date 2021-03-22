@@ -13,19 +13,19 @@ jobs:
         config:
           - name: "Windows Latest - MSVC"
             os: windows-latest
-            makefiles: "MinGW Makefiles"
+            makefiles: '"MinGW Makefiles"'
             cc: "cl"
             cxx: "cl"
 
           - name: "Ubuntu Latest - Clang"
             os: ubuntu-latest
-            makefiles: "Unix Makefiles"
+            makefiles: '"Unix Makefiles"'
             cc: "clang"
             cxx: "clang++-11"
 
           - name: "MacOS Latest - Clang"
             os: macos-latest
-            makefiles: "Unix Makefiles"
+            makefiles: '"Unix Makefiles"'
             cc: "clang"
             cxx: "clang++"
 
