@@ -24,7 +24,6 @@ public:
 
 private slots:
     void pushButton_selectSubject();
-    void pushButton_initVTK();
     void pushButton_goBack();
     void pushButton_subject1();
     void pushButton_subject2();

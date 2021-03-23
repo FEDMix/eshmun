@@ -81,13 +81,6 @@ void MainWindow::pushButton_goBack()
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-void MainWindow::pushButton_initVTK()
-{
-    ui->sceneWidget->SetImageData(0);
-    ui->sceneWidget2->SetImageData(0);
-    ui->sceneWidget3->SetImageData(0);
-}
-
 void MainWindow::pushButton_subject1()
 {
     // open a new window and deactivate the old window
