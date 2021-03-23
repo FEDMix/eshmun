@@ -24,7 +24,8 @@ find_package(VTK
         InteractionStyle
         IOImage
         IOLegacy
-        RenderingCore)
+        RenderingCore
+        ImagingSources)
 
 add_library(libEshmun
     ${PROJECT_SOURCES}

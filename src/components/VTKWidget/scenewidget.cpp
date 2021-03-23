@@ -4,6 +4,7 @@
 #include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkProperty.h>
 #include <vtkInteractorStyleImage.h>
+#include <vtkImageNoiseSource.h>
 
 SceneWidget::SceneWidget(QWidget* parent)
     : QVTKOpenGLNativeWidget(parent)
@@ -40,6 +41,15 @@ SceneWidget::SceneWidget(QWidget* parent)
 }
 
 void SceneWidget::SetImageData(vtkSmartPointer<vtkImageData> imageData) {
+    // Create an image of noise
+    vtkSmartPointer<vtkImageNoiseSource> noiseSource = 
+        vtkSmartPointer<vtkImageNoiseSource>::New();
+    noiseSource->SetWholeExtent(0, 100, 0, 100, 0, 100);
+    noiseSource->SetMinimum(0.0);
+    noiseSource->SetMaximum(255.0);
+    noiseSource->Update();
+    imageData = noiseSource->GetOutput();
+
     this->imageData = imageData;
 
     ipw->SetInputData(imageData);
