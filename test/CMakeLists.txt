@@ -17,5 +17,6 @@ target_link_libraries(test_eshmun PRIVATE
 )
 
 # If you register a test, then ctest and make test will run it.
-# You can also run examples and check the output, as well.
-add_test(NAME test_eshmun COMMAND test_eshmun)
+# Adding test parameters so the tests can run without a screen on ci
+set (test_parameters -platform offscreen)
+add_test(NAME test_eshmun COMMAND test_eshmun ${test_parameters})
