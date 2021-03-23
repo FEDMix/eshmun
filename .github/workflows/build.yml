@@ -148,7 +148,7 @@ jobs:
       - name: All - Make
         run: |
           cd build
-          make -j$(($(nproc) - 1))
+          make -j $(($(nproc) - 1))
         shell: bash
 
       - name: All - Test
