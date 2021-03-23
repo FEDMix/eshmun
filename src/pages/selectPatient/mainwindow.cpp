@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     //int width = ui->figCover->width();
     //int height = ui->figCover->height();
     //ui->figCover->setPixmap(cover.scaled(width, height, Qt::KeepAspectRatio));
-    ui->figCover->setPixmap(cover);
+    // ui->figCover->setPixmap(cover);
 
     // push button on welcome page
     QPushButton *button_selectSubject = MainWindow::findChild<QPushButton *>("buttonSelectSubjects"); // search for a widget by providing a name
@@ -84,8 +84,8 @@ void MainWindow::pushButton_goBack()
 void MainWindow::pushButton_initVTK()
 {
     ui->sceneWidget->SetImageData(0);
-    // ui->sceneWidget_2->SetImageData(0);
-    // ui->sceneWidget_3->SetImageData(0);
+    ui->sceneWidget2->SetImageData(0);
+    ui->sceneWidget3->SetImageData(0);
 }
 
 void MainWindow::pushButton_subject1()
