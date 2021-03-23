@@ -109,6 +109,8 @@ jobs:
           mkdir build
           cd build
           cmake -G${{ matrix.config.makefiles }} \
+                -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
+                -DCMAKE_INSTALL_RPATH=$HOME/vtk-inst \
                 -DVTK_GROUP_ENABLE_Qt=YES \
                 -DVTK_GROUP_ENABLE_Imaging=YES \
                 -DVTK_GROUP_ENABLE_Views=YES \
@@ -151,5 +153,8 @@ jobs:
       - name: All - Test
         run: |
           cd build
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            export LD_LIBRARY_PATH=$HOME/vtk-inst
+          fi
           make test ARGS="-V"
         shell: bash
