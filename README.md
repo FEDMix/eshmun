@@ -59,7 +59,7 @@ sudo ./update-alternatives-clang.sh 11 1
 ## Buid the application
 ### From the command line
 ```shell
-$ mkdir build #Create build folder if (add it to git if possible)
+$ mkdir build #Create build folder if doesn't exist
 $ cd build #And follow the sequential steps inside the build folder
 
 # Create the 'make' file inside the build folder for your operative system.
