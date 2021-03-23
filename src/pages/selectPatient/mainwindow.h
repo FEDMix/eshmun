@@ -8,7 +8,10 @@
 #include "../patientView/annotation.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui
+{
+    class MainWindow;
+}
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -21,6 +24,7 @@ public:
 
 private slots:
     void pushButton_selectSubject();
+    void pushButton_initVTK();
     void pushButton_goBack();
     void pushButton_subject1();
     void pushButton_subject2();

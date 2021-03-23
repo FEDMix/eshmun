@@ -6,16 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1518</width>
-    <height>795</height>
+    <width>1541</width>
+    <height>1135</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>FEDMix Viewer</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
        <number>1</number>
@@ -107,56 +107,14 @@
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="2" column="1">
-          <widget class="QPushButton" name="buttonSelectSubjects">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Select Subjects</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="1" column="0" colspan="2">
+         <item row="1" column="1" colspan="2">
           <widget class="QLabel" name="figCover">
            <property name="text">
             <string/>
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
-          <spacer name="verticalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>120</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="0" colspan="2">
+         <item row="0" column="1" colspan="2">
           <spacer name="verticalSpacer_4">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -172,6 +130,48 @@
            </property>
           </spacer>
          </item>
+         <item row="3" column="1" colspan="2">
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>120</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="1">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="0">
+          <widget class="QPushButton" name="buttonSelectSubjects">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Select Subjects</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </widget>
@@ -182,32 +182,19 @@
           <x>530</x>
           <y>10</y>
           <width>1061</width>
-          <height>711</height>
+          <height>986</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <spacer name="verticalSpacer_5">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>80</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QLabel" name="figRealTime">
+          <widget class="QPushButton" name="initVTK">
            <property name="text">
-            <string/>
+            <string>Init VTK</string>
            </property>
           </widget>
+         </item>
+         <item>
+          <widget class="SceneWidget" name="sceneWidget_2"/>
          </item>
          <item>
           <spacer name="verticalSpacer_6">
@@ -295,7 +282,7 @@
           </widget>
          </item>
          <item row="9" column="0">
-           <widget class="SceneWidget" name="sceneWidget" />
+          <widget class="SceneWidget" name="sceneWidget"/>
          </item>
          <item row="2" column="0" colspan="2">
           <widget class="QPushButton" name="buttonSubject1">
@@ -317,22 +304,6 @@
            </property>
           </widget>
          </item>
-         <item row="9" column="0" colspan="2">
-          <spacer name="verticalSpacer_7">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>280</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
          <item row="6" column="0" colspan="2">
           <widget class="QPushButton" name="buttonSubject5">
            <property name="text">
@@ -353,6 +324,9 @@
            </property>
           </widget>
          </item>
+         <item row="9" column="1">
+          <widget class="SceneWidget" name="sceneWidget_3"/>
+         </item>
         </layout>
        </widget>
       </widget>
@@ -365,25 +339,23 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1518</width>
-     <height>21</height>
+     <width>1541</width>
+     <height>24</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
-  <customwidgets>
-   <customwidget>
-   <class>QVTKOpenGLWidget</class>
+ <customwidgets>
+  <customwidget>
    <class>SceneWidget</class>
-    <extends>QOpenGLWidget</extends>
-       <header>qvtkopenglwidget.h</header>
+   <extends>QOpenGLWidget</extends>
    <header>components/VTKWidget/scenewidget.h</header>
    <slots>
     <slot>zoomToExtent()</slot>
    </slots>
-   </customwidget>
-  </customwidgets>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
