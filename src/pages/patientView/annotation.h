@@ -6,8 +6,9 @@
 #include <QPixmap>
 #include <QPushButton>
 
-namespace Ui {
-class Annotation;
+namespace Ui
+{
+    class Annotation;
 }
 
 class Annotation : public QDialog
@@ -17,6 +18,9 @@ class Annotation : public QDialog
 public:
     explicit Annotation(QWidget *parent = nullptr);
     ~Annotation();
+
+private slots:
+    void pushButton_initVTK();
 
 private:
     Ui::Annotation *ui;
