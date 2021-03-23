@@ -22,7 +22,7 @@ jobs:
             os: ubuntu-latest
             makefiles: '"Unix Makefiles"'
             qt_path: "/usr/lib/qt5"
-            cc: "clang"
+            cc: "clang-11"
             cxx: "clang++-11"
 
           - name: "MacOS Latest - Clang"
@@ -83,6 +83,19 @@ jobs:
           # sudo ./update-alternatives-clang.sh 11 1
         shell: bash
 
+      - name: All - Compiler version check
+        run: |
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            ${{ matrix.config.cxx }}
+          else
+            ${{ matrix.config.cxx }} --version
+          fi
+        shell: bash
+
+      - name: All - Cmake version check
+        run: cmake --version
+        shell: bash
+
       - name: Windows - Install Qt
         if: runner.os == 'Windows'
         uses: jurplel/install-qt-action@v2
@@ -117,19 +130,6 @@ jobs:
         run: brew install vtk
         shell: bash
 
-      - name: All - Compiler version check
-        run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            ${{ matrix.config.cxx }}
-          else
-            ${{ matrix.config.cxx }} --version
-          fi
-        shell: bash
-
-      - name: All - Cmake version check
-        run: cmake --version
-        shell: bash
-
       - name: All - CMake Configure
         run: |
           mkdir build
@@ -151,5 +151,5 @@ jobs:
       - name: All - Test
         run: |
           cd build
-          make test
+          make test ARGS="-V"
         shell: bash

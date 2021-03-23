@@ -17,18 +17,21 @@ find_package(VTK
         RenderingCore)
 
 add_library(EshmunCore
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
+    pages/selectPatient/mainwindow.cpp
+    pages/selectPatient/mainwindow.h
+    pages/selectPatient/mainwindow.ui
     resources.qrc
-    annotation.cpp
-    annotation.h
-    annotation.ui
-    scenewidget.cpp
-    scenewidget.h
+    pages/patientView/annotation.cpp
+    pages/patientView/annotation.h
+    pages/patientView/annotation.ui
+    components/VTKWidget/scenewidget.cpp
+    components/VTKWidget/scenewidget.h
 )
 
 target_compile_features(EshmunCore PRIVATE cxx_std_17)
+# use sanitizers
+target_compile_options(EshmunCore PRIVATE -fsanitize=address -fno-omit-frame-pointer)
+target_link_options(EshmunCore PRIVATE -fsanitize=address -fno-omit-frame-pointer)
 
 target_link_libraries(EshmunCore PRIVATE
     Qt5::Widgets Qt5::OpenGL ${VTK_LIBRARIES}
