@@ -98,19 +98,15 @@ jobs:
           cmake -G${{ matrix.config.makefiles }} \
                 -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
                 -DCMAKE_INSTALL_RPATH=$HOME/vtk-inst \
-                -DVTK_Group_Qt=ON \
-                -DVTK_QT_VERSION=5 \
-                -DVTK_Group_Imaging=ON \
-                -DVTK_Group_Views=ON \
+                -DVTK_GROUP_ENABLE_Qt=YES \
+                -DVTK_GROUP_ENABLE_Imaging=YES \
+                -DVTK_GROUP_ENABLE_Views=YES \
+                -DVTK_GROUP_ENABLE_Rendering=YES \
+                -DVTK_MODULE_ENABLE_VTK_GUISupportQt=YES \
                 -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
-                -DModule_vtkRenderingFreeTypeFontConfig=ON \
-                -DVTK_RENDERING_BACKEND=OpenGL2 \
+                -DVTK_MODULE_ENABLE_VTK_RenderingFreeTypeFontConfig=YES \
+                -DVTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
                 -DBUILD_TESTING=OFF \
-                -DVTK_USE_SYSTEM_LIBRARIES=ON \
-                -DVTK_USE_SYSTEM_LIBPROJ4=OFF \
-                -DVTK_USE_SYSTEM_GL2PS=OFF \
-                -DVTK_USE_SYSTEM_LIBHARU=OFF \
-                -DVTK_USE_SYSTEM_PUGIXML=OFF \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
                 -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
@@ -152,7 +148,7 @@ jobs:
       - name: All - Make
         run: |
           cd build
-          make
+          make -j$(($(nproc) - 1))
         shell: bash
 
       - name: All - Test
