@@ -29,9 +29,6 @@ add_library(EshmunCore
 )
 
 target_compile_features(EshmunCore PRIVATE cxx_std_17)
-# use sanitizers
-target_compile_options(EshmunCore PRIVATE -fsanitize=address -fno-omit-frame-pointer)
-target_link_options(EshmunCore PRIVATE -fsanitize=address -fno-omit-frame-pointer)
 
 target_link_libraries(EshmunCore PRIVATE
     Qt5::Widgets Qt5::OpenGL ${VTK_LIBRARIES}
