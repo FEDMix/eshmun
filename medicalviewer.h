@@ -3,8 +3,10 @@
 
 #include <QVTKInteractor.h>
 #include <QVTKOpenGLNativeWidget.h>
+#include <qsurfaceformat.h>
 #include <vtkDICOMImageReader.h>
 #include <vtkGenericOpenGLRenderWindow.h>
+#include <vtkImageViewer2.h>
 #include <vtkInteractorStyle.h>
 #include <vtkRenderer.h>
 
@@ -34,6 +36,8 @@ class MedicalViewer : public QVTKOpenGLNativeWidget {
       vtkSmartPointer<vtkDICOMImageReader>::New();
   vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
       vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkSmartPointer<vtkImageViewer2> imageViewer =
+      vtkSmartPointer<vtkImageViewer2>::New();
 };
 
 #endif  // MEDICALVIEWER_H

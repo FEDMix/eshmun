@@ -1,9 +1,5 @@
 #include "mainwindow.h"
 
-//#include <vtkActor.h>
-//#include <vtkPSphereSource.h>
-//#include <vtkPolyDataMapper.h>
-
 #include "./ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)

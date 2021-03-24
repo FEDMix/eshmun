@@ -1,24 +1,28 @@
 #include "medicalviewer.h"
 
-#include <vtkImageActor.h>
-//#include <vtkPSphereSource.h>
-#include <vtkDataSetMapper.h>
-#include <vtkImageMapper.h>
-//#include <vtkPolyDataMapper.h>
-
 MedicalViewer::MedicalViewer(QWidget *parent)
     : QVTKOpenGLNativeWidget(parent),
       renderWindow(vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New()),
-      // renderer(vtkSmartPointer<vtkRenderer>::New()),
-      // mInteractor(vtkSmartPointer<QVTKInteractor>::New()),
-      // mInteractorStyle(vtkSmartPointer<vtkInteractorStyle>::New()),
       reader(vtkSmartPointer<vtkDICOMImageReader>::New()),
-      // imageViewer(vtkSmartPointer<vtkImageViewer2>::New()),
-      renderWindowInteractor(
-          vtkSmartPointer<vtkRenderWindowInteractor>::New()) {
+      renderWindowInteractor(vtkSmartPointer<vtkRenderWindowInteractor>::New()),
+      imageViewer(vtkSmartPointer<vtkImageViewer2>::New()) {
   // Setup rendering
   readDICOMSeries("1-14.dcm");
-  SetRenderWindow(renderWindow);
+  // QSurfaceFormat format = QVTKOpenGLNativeWidget::defaultFormat();
+  // format.setSamples(0);
+  // QSurfaceFormat::setDefaultFormat(format);
+
+  // this->setFormat(format);
+  // this->setEnableHiDPI(true);
+  // this->resize(256, 256);
+
+  imageViewer->SetInputConnection(reader->GetOutputPort());
+  imageViewer->SetupInteractor(GetInteractor());
+  // imageViewer->SetupInteractor(this->GetRenderWindow()->GetInteractor());
+  imageViewer->Render();
+  // renderWindow.set
+  this->setRenderWindow(imageViewer->GetRenderWindow());
+  this->show();
   showWindow();
 }
 
@@ -31,24 +35,7 @@ int MedicalViewer::readDICOMSeries(std::string inputFilename) {
 }
 
 void MedicalViewer::showWindow() {
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-
-  // Create actor where the sphere id rendered
-  vtkSmartPointer<vtkDataSetMapper> mapper =
-      vtkSmartPointer<vtkDataSetMapper>::New();
-  mapper->SetInputConnection(reader->GetOutputPort());
-
-  // Create an actor
-  vtkSmartPointer<vtkActor> slice = vtkSmartPointer<vtkActor>::New();
-  slice->SetMapper(mapper);
-
-  // Addig actor to renderer
-  renderer->AddActor(slice);
-  renderer->ResetCamera();
-
-  // Adding renderer to the rednering window
-  renderWindow->AddRenderer(renderer);
-  renderWindow->Render();
+  // Inicializa
   std::cout << "Window rendered" << std::endl;
 }
 
