@@ -1,5 +1,7 @@
 #include "annotation.h"
 #include "ui_annotation.h"
+#include <vtkSmartPointer.h>
+#include <vtkImageData.h>
 
 Annotation::Annotation(QWidget *parent) : QDialog(parent),
                                           ui(new Ui::Annotation)
@@ -13,9 +15,10 @@ Annotation::Annotation(QWidget *parent) : QDialog(parent),
 
 void Annotation::pushButton_initVTK()
 {
-    ui->sceneWidget->SetImageData(0);
-    ui->sceneWidget2->SetImageData(0);
-    ui->sceneWidget3->SetImageData(0);
+    vtkSmartPointer<vtkImageData> dummyData = ui->sceneWidget->GetDummyData();
+    ui->sceneWidget->SetImageData(dummyData);
+    ui->sceneWidget2->SetImageData(dummyData);
+    ui->sceneWidget3->SetImageData(dummyData);
 }
 
 Annotation::~Annotation()
