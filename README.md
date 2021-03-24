@@ -56,7 +56,7 @@ chmod u+x update-alternatives-clang.sh
 sudo ./update-alternatives-clang.sh 11 1
 ```
 
-## Buid the application
+## Build the application
 ### From the command line
 ```shell
 $ mkdir build #Create build folder if doesn't exist
