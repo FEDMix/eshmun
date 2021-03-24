@@ -18,6 +18,7 @@ class Annotation : public QDialog
 public:
     explicit Annotation(QWidget *parent = nullptr);
     ~Annotation();
+    void LoadData(std::string);
 
 private slots:
     void pushButton_initVTK();

@@ -151,7 +151,7 @@
            </spacer>
           </item>
           <item row="9" column="0">
-           <widget class="QPushButton" name="pushButton_8">
+           <widget class="QPushButton" name="buttonAddSubject">
             <property name="text">
              <string>Add Subjects</string>
             </property>

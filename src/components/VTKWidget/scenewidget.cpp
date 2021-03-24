@@ -44,9 +44,8 @@ SceneWidget::SceneWidget(QWidget* parent)
 
 void SceneWidget::SetImageData(vtkSmartPointer<vtkImageData> imageData) {
     this->imageData = imageData;
-
     ipw->SetInputData(imageData);
-    ipw->SetWindowLevel(5500, 1000);
+    //ipw->SetWindowLevel(5500, 1000);
     SetPlaneOrientationToZAxis();
     ipw->UpdatePlacement();
     ipw->On();

@@ -2,6 +2,7 @@
 #include "ui_annotation.h"
 #include <vtkSmartPointer.h>
 #include <vtkImageData.h>
+#include <vtkDICOMImageReader.h>
 
 Annotation::Annotation(QWidget *parent) : QDialog(parent),
                                           ui(new Ui::Annotation)
@@ -24,4 +25,16 @@ void Annotation::pushButton_initVTK()
 Annotation::~Annotation()
 {
     delete ui;
+}
+
+void Annotation::LoadData(std::string path) {
+    vtkSmartPointer<vtkDICOMImageReader> dicomReader =
+        vtkSmartPointer<vtkDICOMImageReader>::New();
+    dicomReader->SetDirectoryName(path.c_str());
+    dicomReader->Update();
+
+    vtkSmartPointer<vtkImageData> imageData = dicomReader->GetOutput();
+    ui->sceneWidget->SetImageData(imageData);
+    ui->sceneWidget2->SetImageData(imageData);
+    ui->sceneWidget3->SetImageData(imageData);
 }
