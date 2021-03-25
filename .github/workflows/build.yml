@@ -126,11 +126,12 @@ jobs:
                 -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
                 ..
           ls -l
-          make -j $(($(nproc) - 1))
-          if [ "$RUNNER_OS" == "Linux" ]; then
-            sudo make install
+          if [ "$RUNNE_OS" == "Windows"]; then
+            msbuild ALL_BUILD.vcxproj /p:configuration=release /p:platform=x64
+            msbuild INSTALL.vcxproj
           else
-            make install
+            make -j $(($(nproc) - 1))
+            sudo make install
           fi
         shell: bash
 
