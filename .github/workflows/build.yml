@@ -113,8 +113,6 @@ jobs:
           cd build
           cmake -G${{ matrix.config.makefiles }} \
                 ${{ matrix.config.cmake_flags }} \
-                # -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
-                # -DCMAKE_INSTALL_RPATH=$HOME/vtk-inst \
                 -DVTK_GROUP_ENABLE_Qt=YES \
                 -DVTK_GROUP_ENABLE_Imaging=YES \
                 -DVTK_GROUP_ENABLE_Views=YES \
