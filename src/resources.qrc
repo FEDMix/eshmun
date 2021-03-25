@@ -1,5 +1,6 @@
 <RCC>
-    <qresource prefix="/Resources">
+    <qresource prefix="/img">
         <file>assets/cover.png</file>
+        <file>assets/icons/open_file.png</file>
     </qresource>
 </RCC>
