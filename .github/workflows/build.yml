@@ -113,8 +113,8 @@ jobs:
           cd build
           cmake -G${{ matrix.config.makefiles }} \
                 ${{ matrix.config.cmake_flags }} \
-                -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
-                -DCMAKE_INSTALL_RPATH=$HOME/vtk-inst \
+                # -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
+                # -DCMAKE_INSTALL_RPATH=$HOME/vtk-inst \
                 -DVTK_GROUP_ENABLE_Qt=YES \
                 -DVTK_GROUP_ENABLE_Imaging=YES \
                 -DVTK_GROUP_ENABLE_Views=YES \
@@ -128,7 +128,11 @@ jobs:
                 -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
                 ..
           make -j $(($(nproc) - 1))
-          make install
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo make install
+          else
+            make install
+          fi
         shell: bash
 
       - name: Linux - ldconfig
@@ -164,5 +168,5 @@ jobs:
       - name: All - Test
         run: |
           cd build
-          make test ARGS="-V"
+          make test ARGS="-VV"
         shell: bash
