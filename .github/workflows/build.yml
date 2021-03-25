@@ -131,7 +131,7 @@ jobs:
       - name: Linux - Install vtk
         if: runner.os == 'Linux'
         run: |
-          cd build
+          cd vtk/build
           make -j $(($(nproc) - 1))
           sudo make install
         shell: bash
@@ -139,7 +139,7 @@ jobs:
       - name: Windows - Install vtk
         if: runner.os == 'Windows'
         run: |
-          cd build
+          cd vtk/build
           msbuild ALL_BUILD.vcxproj /p:configuration=release /p:platform=x64
           msbuild INSTALL.vcxproj
         shell: bash
