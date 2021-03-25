@@ -100,4 +100,4 @@ jobs:
 
       - name: Run Test
         working-directory: build
-        run: make test
+        run: make test ARGS="-V"
