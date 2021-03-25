@@ -126,7 +126,7 @@ jobs:
                 -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
                 ..
           ls -l
-          if [ "$RUNNE_OS" == "Windows"]; then
+          if [ "$RUNNER_OS" == "Windows"]; then
             msbuild ALL_BUILD.vcxproj /p:configuration=release /p:platform=x64
             msbuild INSTALL.vcxproj
           else
@@ -153,7 +153,7 @@ jobs:
           cmake -G${{ matrix.config.makefiles }} \
             ${{ matrix.config.cmake_flags }} \
             -DCMAKE_PREFIX_PATH="$HOME/vtk-inst;${{ matrix.config.qt_path }}" \
-            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
             -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
             ..
