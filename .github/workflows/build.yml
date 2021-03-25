@@ -15,6 +15,7 @@ jobs:
             os: windows-latest
             makefiles: '"MinGW Makefiles"'
             qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
+            cmake_flags: '-A "x64"'
             cc: "cl"
             cxx: "cl"
 
@@ -22,6 +23,7 @@ jobs:
             os: ubuntu-latest
             makefiles: '"Unix Makefiles"'
             qt_path: "/usr/lib/qt5"
+            cmake_flags: ""
             cc: "clang-11"
             cxx: "clang++-11"
 
@@ -29,6 +31,7 @@ jobs:
             os: macos-latest
             makefiles: '"Unix Makefiles"'
             qt_path: "/usr/local/opt/qt@5/"
+            cmake_flags: ""
             cc: "clang"
             cxx: "clang++"
 
@@ -109,6 +112,7 @@ jobs:
           mkdir build
           cd build
           cmake -G${{ matrix.config.makefiles }} \
+                ${{ cmake-flags }} \
                 -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
                 -DCMAKE_INSTALL_RPATH=$HOME/vtk-inst \
                 -DVTK_GROUP_ENABLE_Qt=YES \
@@ -127,6 +131,12 @@ jobs:
           make install
         shell: bash
 
+      - name: Linux - ldconfig
+        if: runner.os == 'Linux'
+        run: |
+          sudo ldconfig -v
+        shell: bash
+
       - name: MacOS - Install vtk
         if: runner.os == 'macOS'
         run: brew install vtk
@@ -137,6 +147,7 @@ jobs:
           mkdir build
           cd build
           cmake -G${{ matrix.config.makefiles }} \
+            ${{ cmake-flags }} \
             -DCMAKE_PREFIX_PATH="$HOME/vtk-inst;${{ matrix.config.qt_path }}" \
             -DCMAKE_BUILD_TYPE=Debug \
             -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
@@ -153,8 +164,5 @@ jobs:
       - name: All - Test
         run: |
           cd build
-          if [ "$RUNNER_OS" == "Linux" ]; then
-            export LD_LIBRARY_PATH=$HOME/vtk-inst
-          fi
           make test ARGS="-V"
         shell: bash
