@@ -13,7 +13,7 @@ jobs:
         config:
           - name: "Windows Latest - MSVC"
             os: windows-latest
-            makefiles: '"MinGW Makefiles"'
+            makefiles: '"Visual Studio 16 2019"'
             qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
             cmake_flags: '-A "x64"'
             cc: "cl"
