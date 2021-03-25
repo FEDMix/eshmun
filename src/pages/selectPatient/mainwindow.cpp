@@ -64,6 +64,11 @@ MainWindow::MainWindow(QWidget *parent)
     QPushButton *button_subject3 = MainWindow::findChild<QPushButton *>("buttonSubject3");
     connect(button_subject3, SIGNAL(released()), this,
             SLOT(pushButton_subject3()));
+
+    // add subject
+    QPushButton *button_addSubject = MainWindow::findChild<QPushButton *>("buttonAddSubject");
+    connect(button_addSubject, SIGNAL(released()), this,
+            SLOT(pushButton_addSubject()));
 }
 
 MainWindow::~MainWindow()
@@ -79,13 +84,6 @@ void MainWindow::pushButton_selectSubject()
 void MainWindow::pushButton_goBack()
 {
     ui->stackedWidget->setCurrentIndex(0);
-}
-
-void MainWindow::pushButton_initVTK()
-{
-    ui->sceneWidget->SetImageData(0);
-    ui->sceneWidget2->SetImageData(0);
-    ui->sceneWidget3->SetImageData(0);
 }
 
 void MainWindow::pushButton_subject1()
@@ -110,4 +108,16 @@ void MainWindow::pushButton_subject3()
 {
     annotation3 = new Annotation(this);
     annotation3->show();
+}
+
+void MainWindow::pushButton_addSubject(){
+    // Select path
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Select directory with DICOM data"), "",
+                                             QFileDialog::ShowDirsOnly
+                                             | QFileDialog::DontResolveSymlinks);
+
+    // Load the data viewer for this path
+    Annotation* annotation1 = new Annotation(this);
+    annotation1->show();
+    annotation1->LoadData(dir.toStdString());
 }

@@ -5,6 +5,11 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QPushButton>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QDir>
+#include <QFile>
+#include <QIODevice>
 #include "../patientView/annotation.h"
 
 QT_BEGIN_NAMESPACE
@@ -24,11 +29,11 @@ public:
 
 private slots:
     void pushButton_selectSubject();
-    void pushButton_initVTK();
     void pushButton_goBack();
     void pushButton_subject1();
     void pushButton_subject2();
     void pushButton_subject3();
+    void pushButton_addSubject();
 
 private:
     Ui::MainWindow *ui;

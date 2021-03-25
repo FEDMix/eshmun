@@ -15,6 +15,8 @@ public:
     explicit SceneWidget(QWidget* parent = nullptr);
 
     void SetImageData(vtkSmartPointer<vtkImageData> imageData);
+    vtkSmartPointer<vtkImageData> GetDummyData();
+    void SaveScreenshot(std::string path);
 
 public slots:
     void SetPlaneOrientationToXAxis();
