@@ -103,7 +103,7 @@ jobs:
         if: runner.os == 'Windows'
         uses: jurplel/install-qt-action@v2
 
-      - name: Linux and Windows - build vtk
+      - name: Linux and Windows - Configure vtk
         if: (runner.os == 'Linux' || runner.os == 'Windows')
         run: |
           git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
