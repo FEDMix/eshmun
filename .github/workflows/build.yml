@@ -13,9 +13,8 @@ jobs:
         config:
           - name: "Windows Latest - MSVC"
             os: windows-latest
-            makefiles: '"Visual Studio 16 2019"'
+            makefiles: '"MinGW Makefiles"'
             qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
-            cmake_flags: '-A "x64"'
             cc: "cl"
             cxx: "cl"
 
@@ -23,7 +22,6 @@ jobs:
             os: ubuntu-latest
             makefiles: '"Unix Makefiles"'
             qt_path: "/usr/lib/qt5"
-            cmake_flags: ""
             cc: "clang-11"
             cxx: "clang++-11"
 
@@ -31,7 +29,6 @@ jobs:
             os: macos-latest
             makefiles: '"Unix Makefiles"'
             qt_path: "/usr/local/opt/qt@5/"
-            cmake_flags: ""
             cc: "clang"
             cxx: "clang++"
 
@@ -140,8 +137,8 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           cd vtk/build
-          msbuild ALL_BUILD.vcxproj /p:configuration=release /p:platform=x64
-          msbuild INSTALL.vcxproj
+          make -j $(($(nproc) - 1))
+          make install
         shell: bash
 
       - name: Linux - ldconfig
