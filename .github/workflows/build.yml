@@ -103,7 +103,7 @@ jobs:
         if: runner.os == 'Windows'
         uses: jurplel/install-qt-action@v2
 
-      - name: Linux and Windows - Install vtk
+      - name: Linux and Windows - build vtk
         if: (runner.os == 'Linux' || runner.os == 'Windows')
         run: |
           git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
@@ -126,13 +126,22 @@ jobs:
                 -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
                 ..
           ls -l
-          if [ "$RUNNER_OS" == "Windows"]; then
-            msbuild ALL_BUILD.vcxproj /p:configuration=release /p:platform=x64
-            msbuild INSTALL.vcxproj
-          else
-            make -j $(($(nproc) - 1))
-            sudo make install
-          fi
+        shell: bash
+
+      - name: Linux - Install vtk
+        if: runner.os == 'Linux'
+        run: |
+          cd build
+          make -j $(($(nproc) - 1))
+          sudo make install
+        shell: bash
+
+      - name: Windows - Install vtk
+        if: runner.os == 'Windows'
+        run: |
+          cd build
+          msbuild ALL_BUILD.vcxproj /p:configuration=release /p:platform=x64
+          msbuild INSTALL.vcxproj
         shell: bash
 
       - name: Linux - ldconfig
