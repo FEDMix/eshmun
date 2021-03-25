@@ -112,7 +112,7 @@ jobs:
           mkdir build
           cd build
           cmake -G${{ matrix.config.makefiles }} \
-                ${{ cmake-flags }} \
+                ${{ cmake_flags }} \
                 -DCMAKE_INSTALL_PREFIX=$HOME/vtk-inst \
                 -DCMAKE_INSTALL_RPATH=$HOME/vtk-inst \
                 -DVTK_GROUP_ENABLE_Qt=YES \
@@ -147,7 +147,7 @@ jobs:
           mkdir build
           cd build
           cmake -G${{ matrix.config.makefiles }} \
-            ${{ cmake-flags }} \
+            ${{ cmake_flags }} \
             -DCMAKE_PREFIX_PATH="$HOME/vtk-inst;${{ matrix.config.qt_path }}" \
             -DCMAKE_BUILD_TYPE=Debug \
             -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
