@@ -139,6 +139,7 @@ jobs:
           cd vtk/build
           make -j $(($(nproc) - 1))
           make install
+          echo "C:/Program Files (x86)/VTK/lib/" >> $GITHUB_PATH
         shell: bash
 
       - name: Linux - ldconfig
