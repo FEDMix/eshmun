@@ -99,6 +99,8 @@ jobs:
       - name: Windows - Install Qt
         if: runner.os == 'Windows'
         uses: jurplel/install-qt-action@v2
+        with:
+          set-env: false
 
       - name: Linux and Windows - Configure vtk
         if: (runner.os == 'Linux' || runner.os == 'Windows')
