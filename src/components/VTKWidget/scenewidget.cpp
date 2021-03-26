@@ -4,6 +4,9 @@
 #include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkProperty.h>
 #include <vtkInteractorStyleImage.h>
+#include <vtkImageNoiseSource.h>
+#include <vtkWindowToImageFilter.h>
+#include <vtkPNGWriter.h>
 
 SceneWidget::SceneWidget(QWidget* parent)
     : QVTKOpenGLNativeWidget(parent)
@@ -41,9 +44,8 @@ SceneWidget::SceneWidget(QWidget* parent)
 
 void SceneWidget::SetImageData(vtkSmartPointer<vtkImageData> imageData) {
     this->imageData = imageData;
-
     ipw->SetInputData(imageData);
-    ipw->SetWindowLevel(5500, 1000);
+    //ipw->SetWindowLevel(5500, 1000);
     SetPlaneOrientationToZAxis();
     ipw->UpdatePlacement();
     ipw->On();
@@ -124,4 +126,30 @@ void SceneWidget::Refresh()
     renderWindow()->Render();
     renderer->ResetCameraClippingRange();
     update();
+}
+
+vtkSmartPointer<vtkImageData> SceneWidget::GetDummyData()
+{
+    // Create an image of noise
+    vtkSmartPointer<vtkImageNoiseSource> noiseSource = 
+        vtkSmartPointer<vtkImageNoiseSource>::New();
+    noiseSource->SetWholeExtent(0, 100, 0, 100, 0, 100);
+    noiseSource->SetMinimum(0.0);
+    noiseSource->SetMaximum(255.0);
+    noiseSource->Update();
+    return noiseSource->GetOutput();
+}
+
+void SceneWidget::SaveScreenshot(std::string path)
+{
+    vtkSmartPointer<vtkWindowToImageFilter> windowToImageFilter = 
+        vtkSmartPointer<vtkWindowToImageFilter>::New();
+    windowToImageFilter->SetInput(renderWindow());
+    windowToImageFilter->Update();
+
+    vtkSmartPointer<vtkPNGWriter> writer = 
+        vtkSmartPointer<vtkPNGWriter>::New();
+    writer->SetFileName(path.c_str());
+    writer->SetInputConnection(windowToImageFilter->GetOutputPort());
+    writer->Write();
 }

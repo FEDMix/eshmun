@@ -18,19 +18,19 @@ jobs:
             cc: "cl"
             cxx: "cl"
 
-          # - name: "Ubuntu Latest - Clang"
-          #   os: ubuntu-latest
-          #   makefiles: '"Unix Makefiles"'
-          #   qt_path: "/usr/lib/qt5"
-          #   cc: "clang-11"
-          #   cxx: "clang++-11"
+          - name: "Ubuntu Latest - Clang"
+            os: ubuntu-latest
+            makefiles: '"Unix Makefiles"'
+            qt_path: "/usr/lib/qt5"
+            cc: "clang-11"
+            cxx: "clang++-11"
 
-          # - name: "MacOS Latest - Clang"
-          #   os: macos-latest
-          #   makefiles: '"Unix Makefiles"'
-          #   qt_path: "/usr/local/opt/qt@5/"
-          #   cc: "clang"
-          #   cxx: "clang++"
+          - name: "MacOS Latest - Clang"
+            os: macos-latest
+            makefiles: '"Unix Makefiles"'
+            qt_path: "/usr/local/opt/qt@5/"
+            cc: "clang"
+            cxx: "clang++"
 
     steps:
       - name: All - Checkout project
@@ -99,8 +99,6 @@ jobs:
       - name: Windows - Install Qt
         if: runner.os == 'Windows'
         uses: jurplel/install-qt-action@v2
-        with:
-          set-env: false
 
       - name: Linux and Windows - Configure vtk
         if: (runner.os == 'Linux' || runner.os == 'Windows')

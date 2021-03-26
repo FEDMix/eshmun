@@ -6,98 +6,600 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1083</width>
-    <height>699</height>
+    <width>1021</width>
+    <height>676</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Form</string>
   </property>
-  <widget class="QTabWidget" name="tabWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>1051</width>
-     <height>671</height>
-    </rect>
-   </property>
-   <property name="currentIndex">
-    <number>0</number>
-   </property>
-   <widget class="QWidget" name="SingleView">
-    <attribute name="title">
-     <string>SingleView</string>
-    </attribute>
-    <widget class="QWidget" name="gridLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>791</width>
-       <height>451</height>
-      </rect>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="eshmun_tab_widget">
+     <property name="tabPosition">
+      <enum>QTabWidget::North</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="1">
-       <widget class="QLabel" name="label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="label_2">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" rowspan="2">
-       <widget class="QScrollArea" name="scrollArea">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="widgetResizable">
-         <bool>true</bool>
-        </property>
-        <widget class="QWidget" name="scrollAreaWidgetContents">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>390</width>
-           <height>447</height>
-          </rect>
+     <property name="tabShape">
+      <enum>QTabWidget::Triangular</enum>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <property name="movable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="single_view_tab">
+      <attribute name="title">
+       <string>Single View</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0" rowspan="2">
+        <widget class="QFrame" name="frame">
+         <property name="minimumSize">
+          <size>
+           <width>400</width>
+           <height>300</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="SceneWidget" name="sceneWidget"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="2" rowspan="3">
+        <widget class="QWidget" name="widget_2" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>500</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>300</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <widget class="QWidget" name="layoutWidget_3">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>50</y>
+            <width>231</width>
+            <height>91</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QLabel" name="label_13">
+               <property name="text">
+                <string>Patient ID: </string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_14">
+               <property name="text">
+                <string>1</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <item>
+              <widget class="QLabel" name="label_15">
+               <property name="text">
+                <string>Patient Name: </string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_16">
+               <property name="text">
+                <string>John Doe</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>180</y>
+            <width>241</width>
+            <height>181</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Times New Roman</family>
+            <pointsize>20</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: transparent</string>
+          </property>
+          <property name="title">
+           <string>Select Annotations</string>
+          </property>
+          <widget class="QWidget" name="layoutWidget_4">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>30</y>
+             <width>241</width>
+             <height>151</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>10</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QCheckBox" name="checkBox_7">
+              <property name="font">
+               <font>
+                <family>Times New Roman</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: transparent</string>
+              </property>
+              <property name="text">
+               <string>Prostate</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox_8">
+              <property name="font">
+               <font>
+                <family>Times New Roman</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>Organ 1</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox_9">
+              <property name="font">
+               <font>
+                <family>Times New Roman</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>Organ 2</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+         <widget class="QLabel" name="label_17">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>20</y>
+            <width>156</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Times New Roman</family>
+            <pointsize>20</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Patient Information</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="initVTK">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>390</y>
+            <width>281</width>
+            <height>32</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>init VTK</string>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QFrame" name="frame_3">
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>150</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>250</width>
+           <height>250</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="SceneWidget" name="sceneWidget2"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QFrame" name="frame_4">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
          </property>
         </widget>
-       </widget>
-      </item>
-     </layout>
+       </item>
+       <item row="0" column="1">
+        <widget class="QFrame" name="frame_2">
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>250</width>
+           <height>250</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="SceneWidget" name="sceneWidget3"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="diff_view_tab">
+      <attribute name="title">
+       <string>Difference View</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="0">
+        <widget class="QDockWidget" name="dock_orthoView">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>62</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:#aaa</string>
+         </property>
+         <property name="floating">
+          <bool>false</bool>
+         </property>
+         <property name="windowTitle">
+          <string>Orthogonal View</string>
+         </property>
+         <widget class="QWidget" name="dockWidgetContents_5"/>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QDockWidget" name="dockWidget_2">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>38</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:#bbb</string>
+         </property>
+         <property name="windowTitle">
+          <string>Slices</string>
+         </property>
+         <widget class="QWidget" name="dockWidgetContents_6"/>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QDockWidget" name="dockWidget_3">
+         <property name="windowTitle">
+          <string>Scans Carousel</string>
+         </property>
+         <widget class="QWidget" name="dockWidgetContents_7"/>
+        </widget>
+       </item>
+       <item row="0" column="2" rowspan="2">
+        <widget class="QWidget" name="widget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>500</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>300</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <widget class="QLabel" name="label_3">
+          <property name="geometry">
+           <rect>
+            <x>12</x>
+            <y>12</y>
+            <width>156</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Times New Roman</family>
+            <pointsize>20</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Patient Information</string>
+          </property>
+         </widget>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>190</y>
+            <width>241</width>
+            <height>181</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Times New Roman</family>
+            <pointsize>20</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: transparent</string>
+          </property>
+          <property name="title">
+           <string>Select Annotations</string>
+          </property>
+          <widget class="QWidget" name="layoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>30</y>
+             <width>241</width>
+             <height>151</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>10</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QCheckBox" name="checkBox">
+              <property name="font">
+               <font>
+                <family>Times New Roman</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: transparent</string>
+              </property>
+              <property name="text">
+               <string>Prostate</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox_2">
+              <property name="font">
+               <font>
+                <family>Times New Roman</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>Organ 1</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox_3">
+              <property name="font">
+               <font>
+                <family>Times New Roman</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>Organ 2</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="layoutWidget_2">
+          <property name="geometry">
+           <rect>
+            <x>12</x>
+            <y>43</y>
+            <width>231</width>
+            <height>91</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>Patient ID: </string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_6">
+               <property name="text">
+                <string>1</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string>Patient Name: </string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_7">
+               <property name="text">
+                <string>John Doe</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="patient_info_tab">
+      <attribute name="title">
+       <string>Patient Information</string>
+      </attribute>
+     </widget>
     </widget>
-   </widget>
-   <widget class="QWidget" name="Difference">
-    <attribute name="title">
-     <string>Difference</string>
-    </attribute>
-   </widget>
-  </widget>
+   </item>
+  </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SceneWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header>components/VTKWidget/scenewidget.h</header>
+   <slots>
+    <slot>zoomToExtent()</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -5,10 +5,18 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QPushButton>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QDir>
+#include <QFile>
+#include <QIODevice>
 #include "../patientView/annotation.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui
+{
+    class MainWindow;
+}
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -25,6 +33,7 @@ private slots:
     void pushButton_subject1();
     void pushButton_subject2();
     void pushButton_subject3();
+    void pushButton_addSubject();
 
 private:
     Ui::MainWindow *ui;

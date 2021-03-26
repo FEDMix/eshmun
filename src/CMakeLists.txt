@@ -14,7 +14,8 @@ find_package(VTK
         InteractionStyle
         IOImage
         IOLegacy
-        RenderingCore)
+        RenderingCore
+        ImagingSources)
 
 add_library(EshmunCore
     pages/selectPatient/mainwindow.cpp
