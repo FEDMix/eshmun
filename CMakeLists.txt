@@ -1,53 +1,35 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(Eshmun LANGUAGES CXX)
+project(eshmun LANGUAGES CXX)
 
+# Prepend current directory to the include path
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+# Generate a compile_commands.json file for use with vscode
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+
+# Tell CMake to run uic, moc and rcc when necessary
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-# QtCreator supports the following variables for Android, which are identical to qmake Android variables.
-# Check https://doc.qt.io/qt/deployment-android.html for more information.
-# They need to be set before the find_package( ...) calls below.
-
-#if(ANDROID)
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-#    if (ANDROID_ABI STREQUAL "armeabi-v7a")
-#        set(ANDROID_EXTRA_LIBS
-#            ${CMAKE_CURRENT_SOURCE_DIR}/path/to/libcrypto.so
-#            ${CMAKE_CURRENT_SOURCE_DIR}/path/to/libssl.so)
-#    endif()
-#endif()
-
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
+# Packages for main program
+find_package(QT NAMES Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 
-set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
-)
+# Packages for test code
+find_package(QT NAMES Qt5 COMPONENTS Gui Test REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Gui Test REQUIRED)
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(Eshmun
-        ${PROJECT_SOURCES}
-    )
-else()
-    if(ANDROID)
-        add_library(Eshmun SHARED
-            ${PROJECT_SOURCES}
-        )
-    else()
-        add_executable(Eshmun
-            ${PROJECT_SOURCES}
-        )
-    endif()
-endif()
+enable_testing(true)
 
-target_link_libraries(Eshmun PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+# The executable code is here
+add_subdirectory(src)
+
+# Test code is here
+add_subdirectory(test)
