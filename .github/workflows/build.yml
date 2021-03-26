@@ -139,9 +139,9 @@ jobs:
           cd vtk/build
           make -j $(($(nproc) - 1))
           make install
-          echo "C:/Program Files (x86)/VTK/lib/" >> $GITHUB_ENV
+          echo "C:/Program Files (x86)/VTK/lib/" >> $GITHUB_PATH
           echo "C:/Program Files (x86)/VTK/bin/" >> $GITHUB_PATH
-          echo "D:\a\eshmun\Qt\5.15.2\mingw81_64\lib" >> $GITHUB_ENV
+          echo "D:\a\eshmun\Qt\5.15.2\mingw81_64\lib" >> $GITHUB_PATH
           echo "D:\a\eshmun\Qt\5.15.2\mingw81_64\bin" >> $GITHUB_PATH
 
         shell: bash
