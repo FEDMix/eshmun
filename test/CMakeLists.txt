@@ -23,7 +23,7 @@ find_package(VTK
         ImagingSources)
 
 target_link_libraries(test_eshmun PRIVATE
-    libEshmun
+    EshmunCore
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Test
     Qt${QT_VERSION_MAJOR}::Widgets
