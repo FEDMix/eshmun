@@ -72,7 +72,7 @@ void testEshmun::test_vtk_viewer() {
     QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
     Annotation* annotation = new Annotation(&main_window);
     annotation->show();
-    SceneWidget* sceneWidget = annotation->findChild<SceneWidget*>("sceneWidget");
+    SceneWidget* sceneWidget = annotation->findChild<SceneWidget*>("mainSceneAxial");
     vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
     sceneWidget->SetImageData(imageData);
     std::string referenceImagePath = "../test/reference_images/test_dummy.png";
