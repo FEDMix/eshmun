@@ -48,6 +48,7 @@ void SceneWidget::SetImageData(vtkSmartPointer<vtkImageData> imageData) {
     SetPlaneOrientationToAxial();
     ipw->UpdatePlacement();
     ipw->On();
+    ipw->InteractionOff();
     Refresh();
 }
 
