@@ -21,14 +21,21 @@ MainWindow::MainWindow(QWidget *parent)
     //=========================================================================
     // setup for welcome page
     //=========================================================================
+    // texts, images and icons
+    // texts
     ui->labelWelcome->setText(text_welcome);
     ui->labelDescription->setText(text_description);
-
-    QPixmap cover(":/Resources/figs/cover.png");
-    //int width = ui->figCover->width();
-    //int height = ui->figCover->height();
-    //ui->figCover->setPixmap(cover.scaled(width, height, Qt::KeepAspectRatio));
-    // ui->figCover->setPixmap(cover);
+    // images
+    QPixmap cover(":/img/assets/cover.png");
+    //int width = ui->labelCover->width();
+    //int height = ui->labelCover->height();
+    //ui->labelCover->setPixmap(cover.scaled(width, height, Qt::KeepAspectRatio));
+    ui->labelCover->setPixmap(cover);
+    // icons
+    QPixmap folder(":/img/assets/icons/open_file.png");
+    QIcon buttonFolder(folder);
+    ui->buttonSelectSubjects->setIcon(buttonFolder);
+    //ui->buttonSelectSubjects->setIconSize();
 
     // push button on welcome page
     QPushButton *button_selectSubject = MainWindow::findChild<QPushButton *>("buttonSelectSubjects"); // search for a widget by providing a name
@@ -38,18 +45,16 @@ MainWindow::MainWindow(QWidget *parent)
     //=========================================================================
     // setup for select page
     //=========================================================================
+    // texts, images and icons
+    // texts
     ui->labelOverview->setText(text_overview);
-    // ui->figRealTime->setPixmap(cover);
+    // images
+    ui->labelExample->setPixmap(cover);
 
     // push button on select page
     QPushButton *button_goBack = MainWindow::findChild<QPushButton *>("buttonGoBack"); // search for a widget by providing a name
     connect(button_goBack, SIGNAL(released()), this,
             SLOT(pushButton_goBack())); // assign signals and slots
-
-    // push button on select page
-    QPushButton *button_initVTK = MainWindow::findChild<QPushButton *>("initVTK"); // search for a widget by providing a name
-    connect(button_initVTK, SIGNAL(released()), this,
-            SLOT(pushButton_initVTK())); // assign signals and slots
 
     // push button for selection
     // patient 1
