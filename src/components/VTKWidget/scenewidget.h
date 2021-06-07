@@ -19,9 +19,9 @@ public:
     void SaveScreenshot(std::string path);
 
 public slots:
-    void SetPlaneOrientationToXAxis();
-    void SetPlaneOrientationToYAxis();
-    void SetPlaneOrientationToZAxis();
+    void SetPlaneOrientationToAxial();
+    void SetPlaneOrientationToCoronal();
+    void SetPlaneOrientationToSagittal();
     void SetSliceIndex(int position);
 
     void ResetCamera();

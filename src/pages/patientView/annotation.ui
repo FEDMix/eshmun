@@ -61,7 +61,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="SceneWidget" name="sceneWidget"/>
+           <widget class="SceneWidget" name="mainSceneAxial"/>
           </item>
          </layout>
         </widget>
@@ -290,7 +290,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="SceneWidget" name="sceneWidget2"/>
+           <widget class="SceneWidget" name="mainSceneSagittal"/>
           </item>
          </layout>
         </widget>
@@ -339,7 +339,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="SceneWidget" name="sceneWidget3"/>
+           <widget class="SceneWidget" name="mainSceneCoronal"/>
           </item>
          </layout>
         </widget>

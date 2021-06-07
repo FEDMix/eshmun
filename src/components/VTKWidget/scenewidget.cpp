@@ -45,15 +45,13 @@ SceneWidget::SceneWidget(QWidget* parent)
 void SceneWidget::SetImageData(vtkSmartPointer<vtkImageData> imageData) {
     this->imageData = imageData;
     ipw->SetInputData(imageData);
-    //ipw->SetWindowLevel(5500, 1000);
-    SetPlaneOrientationToZAxis();
+    SetPlaneOrientationToAxial();
     ipw->UpdatePlacement();
     ipw->On();
-
     Refresh();
 }
 
-void SceneWidget::SetPlaneOrientationToXAxis() {
+void SceneWidget::SetPlaneOrientationToSagittal() {
     float center[3], dim[3];
     GetCenterAndDimensions(center, dim);
     int* extent = imageData->GetExtent();
@@ -64,11 +62,12 @@ void SceneWidget::SetPlaneOrientationToXAxis() {
     camera->SetParallelScale(0.5f * static_cast<float>(dim[1]));
     camera->SetFocalPoint(center[0], center[1], center[2]);
     camera->SetPosition(center[0] + dim[0], center[1], center[2]);
-    camera->SetViewUp(0, 1, 0);
+    camera->SetViewUp(0, 0, 1);
     renderer->ResetCameraClippingRange();
+    Refresh();
 }
 
-void SceneWidget::SetPlaneOrientationToYAxis() {
+void SceneWidget::SetPlaneOrientationToCoronal() {
     float center[3], dim[3];
     GetCenterAndDimensions(center, dim);
     int* extent = imageData->GetExtent();
@@ -81,9 +80,10 @@ void SceneWidget::SetPlaneOrientationToYAxis() {
     camera->SetPosition(center[0], center[1] + dim[1], center[2]);
     camera->SetViewUp(0, 0, -1);
     renderer->ResetCameraClippingRange();
+    Refresh();
 }
 
-void SceneWidget::SetPlaneOrientationToZAxis() {
+void SceneWidget::SetPlaneOrientationToAxial() {
     float center[3], dim[3];
     GetCenterAndDimensions(center, dim);
     int* extent = imageData->GetExtent();
@@ -96,6 +96,7 @@ void SceneWidget::SetPlaneOrientationToZAxis() {
     camera->SetPosition(center[0], center[1], center[2] + dim[2]);
     camera->SetViewUp(0, 1, 0);
     renderer->ResetCameraClippingRange();
+    Refresh();
 }
 
 void SceneWidget::GetCenterAndDimensions(float* center, float* dim) {
