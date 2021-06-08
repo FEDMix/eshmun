@@ -21,34 +21,38 @@ jobs:
               name: "Windows Latest MSVC", artifact: "Windows-MSVC.7z",
               os: windows-latest,
               cc: "cl", cxx: "cl",
-              makefiles: '"MinGW Makefiles"',             
+              # makefiles: '"MinGW Makefiles"'
+              makefiles: '"Ninja"'
               environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
               qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
           }
 
           - {
               name: "Windows Latest MinGW", artifact: "Windows-MinGW.7z",
-              os: windows-latest,
+              os: windows-latest
               cc: "cl", cxx: "cl",
-              makefiles: '"MinGW Makefiles"',
+              # makefiles: '"MinGW Makefiles"'
+              makefiles: '"Ninja"'
               qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
           }
 
           - {
               name: "Ubuntu Latest - Clang", artifact: "Linux.7z",
               os: ubuntu-latest
-              makefiles: '"Unix Makefiles"',
-              qt_path: "/usr/lib/qt5",
-              cc: "clang-11",
+              # makefiles: '"Unix Makefiles"'
+              makefiles: '"Ninja"'
+              qt_path: "/usr/lib/qt5"
+              cc: "clang-11"
               cxx: "clang++-11"
           }
 
           - {
               name: "MacOS Latest - Clang", artifact: "macOS.7z",
-              os: macos-latest,
-              makefiles: '"Unix Makefiles"',              
-              qt_path: "/usr/local/opt/qt@5/",
-              cc: "clang",
+              os: macos-latest
+              # makefiles: '"Unix Makefiles"'
+              makefiles: '"Ninja"'
+              qt_path: "/usr/local/opt/qt@5/"
+              cc: "clang"
               cxx: "clang++"
           }
 
