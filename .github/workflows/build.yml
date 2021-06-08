@@ -234,9 +234,9 @@ jobs:
         uses: GabrielBB/xvfb-action@v1
         with:
           run: |
-            cd build
             make test ARGS="-VV"
-          shell: bash
+          working-directory: build
+        shell: bash
 
 
       # - name: All - Test
