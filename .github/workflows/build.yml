@@ -6,7 +6,7 @@ env:
   CMAKE_VERSION: 3.20.3
   NINJA_VERSION: 1.10.2
   BUILD_TYPE: Release
-  CCACHE_VERSION: 4.2.1
+  CCACHE_VERSION: 4.3
 
 jobs:
   build:
@@ -176,7 +176,7 @@ jobs:
           set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v$ENV{CCACHE_VERSION}/${{ runner.os }}.tar.xz")
           file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
           execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
-          set(ENV{PATH} ".:ccache:$ENV{PATH}")
+          set(ENV{PATH} ".:$ENV{PATH}")
 
       - name: Prepare ccache timestamp
         if: runner.os == 'Linux' || runner.os == 'Windows'
