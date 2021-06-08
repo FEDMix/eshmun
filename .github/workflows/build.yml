@@ -118,6 +118,10 @@ jobs:
 
       - name: Install ninja-build tool
         uses: seanmiddleditch/gha-setup-ninja@v3
+        
+      - name: Windows - Install Qt
+        if: runner.os == 'Windows'
+        uses: jurplel/install-qt-action@v2
 
       # - name: Download Ninja and CMake
       #   shell: cmake -P {0}
@@ -188,6 +192,7 @@ jobs:
             ${{ matrix.config.name }}-ccache-
 
       - name: Linux and Windows - Configure vtk
+        if: runner.os == 'Linux' || runner.os == 'Windows'
         shell: cmake -P {0}
         run: |
           set(ENV{CC} ${{ matrix.config.cc }})
@@ -269,8 +274,8 @@ jobs:
             set(ENV{CCACHE_MAXSIZE} "600M")
           endif()
 
-          execute_process(COMMAND ccache -p)
-          execute_process(COMMAND ccache -z)
+          execute_process(COMMAND ccache -p WORKING_DIRECTORY vtk)
+          execute_process(COMMAND ccache -z WORKING_DIRECTORY vtk)
 
           execute_process(
             COMMAND cmake --build build
@@ -278,6 +283,7 @@ jobs:
             OUTPUT_VARIABLE output
             ERROR_VARIABLE output
             ECHO_OUTPUT_VARIABLE ECHO_ERROR_VARIABLE
+            WORKING_DIRECTORY vtk
           )
           if (NOT result EQUAL 0)
             string(REGEX MATCH "FAILED:.*$" error_message "${output}")
@@ -286,7 +292,7 @@ jobs:
             message(FATAL_ERROR "Build failed")
           endif()
 
-          execute_process(COMMAND ccache -s)
+          execute_process(COMMAND ccache -s WORKING_DIRECTORY vtk)
 
       - name: Install Strip
         run: cmake --install build --prefix instdir --strip
@@ -330,11 +336,6 @@ jobs:
       #           ..
       #     ls -l
       #   shell: bash
-        
-
-      - name: Windows - Install Qt
-        if: runner.os == 'Windows'
-        uses: jurplel/install-qt-action@v2
 
 
       # - name: Linux - Cache vtk 
