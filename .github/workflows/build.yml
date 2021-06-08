@@ -125,6 +125,17 @@ jobs:
           ls -l
         shell: bash
 
+
+
+      - name: Linux - Cache vtk 
+        if: runner.os == 'Linux'
+        id: cache-vtk
+        uses: actions/cache@v2
+        with:
+          path: vtk/build
+          key: ${{ runner.os }}-vtk-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: ${{ runner.os }}-vtk-
+
       - name: Linux - Install vtk
         if: runner.os == 'Linux'
         run: |
@@ -132,6 +143,17 @@ jobs:
           make -j $(($(nproc) - 1))
           sudo make install
         shell: bash
+
+        
+
+      - name: Windows - Cache vtk     
+        if: runner.os == 'Windows' 
+        id: cache-vtk
+        uses: actions/cache@v2
+        with:
+          path: vtk/build
+          key: ${{ runner.os }}-vtk-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: ${{ runner.os }}-vtk-
 
       - name: Windows - Install vtk
         if: runner.os == 'Windows'
@@ -182,7 +204,7 @@ jobs:
           run: |
             cd build
             make test ARGS="-VV"
-          shell: bash
+        shell: bash
 
 
       # - name: All - Test
