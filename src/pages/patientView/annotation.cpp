@@ -28,13 +28,24 @@ Annotation::~Annotation()
 }
 
 void Annotation::LoadData(std::string path) {
-    vtkSmartPointer<vtkDICOMImageReader> dicomReader =
+    // create vtk pointer for patient scan
+    // Use OS dependent separator
+    QString path_scan = QDir::cleanPath(QString::fromStdString(path) + QDir::separator()
+                                        + "scans" + QDir::separator()+ "scan_to_annotate");
+    std::cout << "path to the scan " + path_scan.toStdString() << endl;
+    std::cout << typeid(path_scan).name() << endl;
+    vtkSmartPointer<vtkDICOMImageReader> dicomReader_scan =
         vtkSmartPointer<vtkDICOMImageReader>::New();
-    dicomReader->SetDirectoryName(path.c_str());
-    dicomReader->Update();
+    dicomReader_scan->SetDirectoryName(path_scan.toStdString().c_str());
+    dicomReader_scan->Update();
 
-    vtkSmartPointer<vtkImageData> imageData = dicomReader->GetOutput();
+    vtkSmartPointer<vtkImageData> imageData = dicomReader_scan->GetOutput();
+    std::cout << typeid(imageData).name() << endl;
     ui->sceneWidget->SetImageData(imageData);
     ui->sceneWidget2->SetImageData(imageData);
     ui->sceneWidget3->SetImageData(imageData);
+
+    // create vtk pointer for all annotations
+//    QString path_annotation = QDir::cleanPath(QString::fromStdString(path) + QDir::separator()
+//                                              + "annotations" + QDir::separator()+ "annotation1");
 }

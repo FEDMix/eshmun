@@ -3,8 +3,11 @@
 
 #include <QDialog>
 #include <QLabel>
+#include <QDir>
+#include <QString>
 #include <QPixmap>
 #include <QPushButton>
+#include <QDebug>
 
 namespace Ui
 {
