@@ -204,7 +204,6 @@ jobs:
           run: |
             cd build
             make test ARGS="-VV"
-          working-directory: ./
         shell: bash
 
 
