@@ -236,8 +236,6 @@ jobs:
           run: |
             make test ARGS="-VV"
           working-directory: build
-        shell: bash
-
 
       # - name: All - Test
       #   run: |
