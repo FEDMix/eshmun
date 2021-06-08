@@ -2,12 +2,6 @@ name: Build Eshmun
 
 on: [push, pull_request]
 
-env:
-  CMAKE_VERSION: 3.20.3
-  NINJA_VERSION: 1.10.2
-  BUILD_TYPE: Release
-  CCACHE_VERSION: 4.3
-
 jobs:
   build:
     name: ${{ matrix.config.name }}
@@ -17,40 +11,26 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {
-              name: "Windows Latest MSVC", artifact: "Windows-MSVC.7z",
-              os: windows-latest,
-              cc: "cl", cxx: "cl",
-              makefiles: '"MinGW Makefiles"',             
-              environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
-              qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
-          }
+          - name: "Windows Latest - MSVC"
+            os: windows-latest
+            makefiles: '"MinGW Makefiles"'
+            qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
+            cc: "cl"
+            cxx: "cl"
 
-          - {
-              name: "Windows Latest MinGW", artifact: "Windows-MinGW.7z",
-              os: windows-latest,
-              cc: "cl", cxx: "cl",
-              makefiles: '"MinGW Makefiles"',
-              qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
-          }
+          - name: "Ubuntu Latest - Clang"
+            os: ubuntu-latest
+            makefiles: '"Unix Makefiles"'
+            qt_path: "/usr/lib/qt5"
+            cc: "clang-11"
+            cxx: "clang++-11"
 
-          - {
-              name: "Ubuntu Latest - Clang", artifact: "Linux.7z",
-              os: ubuntu-latest,
-              makefiles: '"Unix Makefiles"',
-              qt_path: "/usr/lib/qt5",
-              cc: "clang-11",
-              cxx: "clang++-11"
-          }
-
-          - {
-              name: "MacOS Latest - Clang", artifact: "macOS.7z",
-              os: macos-latest,
-              makefiles: '"Unix Makefiles"',              
-              qt_path: "/usr/local/opt/qt@5/",
-              cc: "clang",
-              cxx: "clang++"
-          }
+          - name: "MacOS Latest - Clang"
+            os: macos-latest
+            makefiles: '"Unix Makefiles"'
+            qt_path: "/usr/local/opt/qt@5/"
+            cc: "clang"
+            cxx: "clang++"
 
     steps:
       - name: All - Checkout project
@@ -116,198 +96,9 @@ jobs:
         run: cmake --version
         shell: bash
 
-      - name: Install ninja-build tool
-        uses: seanmiddleditch/gha-setup-ninja@v3
-        
       - name: Windows - Install Qt
         if: runner.os == 'Windows'
         uses: jurplel/install-qt-action@v2
-
-      # - name: Download Ninja and CMake
-      #   shell: cmake -P {0}
-      #   run: |
-      #     set(cmake_version $ENV{CMAKE_VERSION})
-      #     set(ninja_version $ENV{NINJA_VERSION})
-
-      #     message(STATUS "Using host CMake version: ${CMAKE_VERSION}")
-
-      #     if ("${{ runner.os }}" STREQUAL "Windows")
-      #       set(ninja_suffix "win.zip")
-      #       set(cmake_suffix "win64-x64.zip")
-      #       set(cmake_dir "cmake-${cmake_version}-win64-x64/bin")
-      #     elseif ("${{ runner.os }}" STREQUAL "Linux")
-      #       set(ninja_suffix "linux.zip")
-      #       set(cmake_suffix "Linux-x86_64.tar.gz")
-      #       set(cmake_dir "cmake-${cmake_version}-Linux-x86_64/bin")
-      #     elseif ("${{ runner.os }}" STREQUAL "macOS")
-      #       set(ninja_suffix "mac.zip")
-      #       set(cmake_suffix "Darwin-x86_64.tar.gz")
-      #       set(cmake_dir "cmake-${cmake_version}-Darwin-x86_64/CMake.app/Contents/bin")
-      #     endif()
-
-      #     set(ninja_url "https://github.com/ninja-build/ninja/releases/download/v${ninja_version}/ninja-${ninja_suffix}")
-      #     file(DOWNLOAD "${ninja_url}" ./ninja.zip SHOW_PROGRESS)
-      #     execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ninja.zip)
-
-      #     set(cmake_url "https://github.com/Kitware/CMake/releases/download/v${cmake_version}/cmake-${cmake_version}-${cmake_suffix}")
-      #     file(DOWNLOAD "${cmake_url}" ./cmake.zip SHOW_PROGRESS)
-      #     execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./cmake.zip)
-
-      #     # Add to PATH environment variable
-      #     file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/${cmake_dir}" cmake_dir)
-      #     set(path_separator ":")
-      #     if ("${{ runner.os }}" STREQUAL "Windows")
-      #       set(path_separator ";")
-      #     endif()
-      #     file(APPEND "$ENV{GITHUB_PATH}" "$ENV{GITHUB_WORKSPACE}${path_separator}${cmake_dir}")
-
-      #     if (NOT "${{ runner.os }}" STREQUAL "Windows")
-      #       execute_process(
-      #         COMMAND chmod +x ninja
-      #         COMMAND chmod +x ${cmake_dir}/cmake
-      #       )
-      #     endif()
-      
-      - name: Download ccache
-        id: ccache
-        shell: cmake -P {0}
-        run: |
-          set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v$ENV{CCACHE_VERSION}/${{ runner.os }}.tar.xz")
-          file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
-          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
-
-      - name: Prepare ccache timestamp
-        id: ccache_cache_timestamp
-        shell: cmake -P {0}
-        run: |
-          string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
-          message("::set-output name=timestamp::${current_date}")
-          
-      - name: ccache cache files
-        uses: actions/cache@v2
-        with:
-          path: .ccache
-          key: ${{ matrix.config.name }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
-          restore-keys: |
-            ${{ matrix.config.name }}-ccache-
-
-      - name: Linux and Windows - Configure vtk
-        if: runner.os == 'Linux' || runner.os == 'Windows'
-        shell: cmake -P {0}
-        run: |
-          set(ENV{CC} ${{ matrix.config.cc }})
-          set(ENV{CXX} ${{ matrix.config.cxx }})
-
-          if ("${{ runner.os }}" STREQUAL "Windows" AND NOT "x${{ matrix.config.environment_script }}" STREQUAL "x")
-            execute_process(
-              COMMAND "${{ matrix.config.environment_script }}" && set
-              OUTPUT_FILE environment_script_output.txt
-            )
-            file(STRINGS environment_script_output.txt output_lines)
-            foreach(line IN LISTS output_lines)
-              if (line MATCHES "^([a-zA-Z0-9_-]+)=(.*)$")
-                set(ENV{${CMAKE_MATCH_1}} "${CMAKE_MATCH_2}")
-              endif()
-            endforeach()
-          endif()
-
-          set(path_separator ":")
-          if ("${{ runner.os }}" STREQUAL "Windows")
-            set(path_separator ";")
-          endif()
-          set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}${path_separator}$ENV{PATH}")
-
-          execute_process(
-            COMMAND git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
-          )
-
-          execute_process(
-            COMMAND git checkout v9.0.1
-            WORKING_DIRECTORY vtk
-          )
-
-          execute_process(
-            COMMAND cmake
-              -S .
-              -B build
-              -D CMAKE_BUILD_TYPE=$ENV{BUILD_TYPE}
-              -G Ninja
-              -D CMAKE_MAKE_PROGRAM=ninja
-              -D CMAKE_C_COMPILER_LAUNCHER=ccache
-              -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-              -D VTK_GROUP_ENABLE_Qt=YES
-              -D VTK_GROUP_ENABLE_Imaging=YES
-              -D VTK_GROUP_ENABLE_Views=YES
-              -D VTK_GROUP_ENABLE_Rendering=YES
-              -D VTK_MODULE_ENABLE_VTK_GUISupportQt=YES
-              -D VTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES
-              -D VTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES
-              -D BUILD_TESTING=OFF
-            WORKING_DIRECTORY vtk
-            RESULT_VARIABLE result
-          )
-          if (NOT result EQUAL 0)
-            message(FATAL_ERROR "Bad exit status")
-          endif()
-
-      - name: Build
-        shell: cmake -P {0}
-        run: |
-          set(ENV{NINJA_STATUS} "[%f/%t %o/sec] ")
-
-          if ("${{ runner.os }}" STREQUAL "Windows" AND NOT "x${{ matrix.config.environment_script }}" STREQUAL "x")
-            file(STRINGS environment_script_output.txt output_lines)
-            foreach(line IN LISTS output_lines)
-              if (line MATCHES "^([a-zA-Z0-9_-]+)=(.*)$")
-                set(ENV{${CMAKE_MATCH_1}} "${CMAKE_MATCH_2}")
-              endif()
-            endforeach()
-          endif()
-
-          file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" ccache_basedir)
-          set(ENV{CCACHE_BASEDIR} "${ccache_basedir}")
-          set(ENV{CCACHE_DIR} "${ccache_basedir}/.ccache")
-          set(ENV{CCACHE_COMPRESS} "true")
-          set(ENV{CCACHE_COMPRESSLEVEL} "6")
-          set(ENV{CCACHE_MAXSIZE} "400M")
-          if ("${{ matrix.config.cxx }}" STREQUAL "cl")
-            set(ENV{CCACHE_MAXSIZE} "600M")
-          endif()
-
-          execute_process(COMMAND ccache -p WORKING_DIRECTORY vtk)
-          execute_process(COMMAND ccache -z WORKING_DIRECTORY vtk)
-
-          execute_process(
-            COMMAND cmake --build build
-            RESULT_VARIABLE result
-            OUTPUT_VARIABLE output
-            ERROR_VARIABLE output
-            ECHO_OUTPUT_VARIABLE ECHO_ERROR_VARIABLE
-            WORKING_DIRECTORY vtk
-          )
-          if (NOT result EQUAL 0)
-            string(REGEX MATCH "FAILED:.*$" error_message "${output}")
-            string(REPLACE "\n" "%0A" error_message "${error_message}")
-            message("::error::${error_message}")
-            message(FATAL_ERROR "Build failed")
-          endif()
-
-          execute_process(COMMAND ccache -s WORKING_DIRECTORY vtk)
-
-      - name: Install Strip
-        run: cmake --install build --prefix instdir --strip
-
-
-      - name: Pack
-        working-directory: instdir
-        run: cmake -E tar cfv ../${{ matrix.config.artifact }} --format=7zip .
-
-
-      - name: Upload
-        uses: actions/upload-artifact@v2
-        with:
-          path: ./${{ matrix.config.artifact }}
-          name: ${{ matrix.config.artifact }}
 
       # - name: Linux and Windows - Configure vtk
       #   if: (runner.os == 'Linux' || runner.os == 'Windows')
@@ -319,12 +110,6 @@ jobs:
       #     cd build
       #     cmake -G${{ matrix.config.makefiles }} \
       #           ${{ matrix.config.cmake_flags }} \
-      #           -D CMAKE_BUILD_TYPE=$ENV{BUILD_TYPE}
-      #           # -D CMAKE_C_COMPILER=${{ matrix.config.cc }} \
-      #           # -D CMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
-      #           -D CMAKE_MAKE_PROGRAM=ninja \
-      #           -D CMAKE_C_COMPILER_LAUNCHER=ccache \
-      #           -D CMAKE_CXX_COMPILER_LAUNCHER=ccache \ 
       #           -DVTK_GROUP_ENABLE_Qt=YES \
       #           -DVTK_GROUP_ENABLE_Imaging=YES \
       #           -DVTK_GROUP_ENABLE_Views=YES \
@@ -333,18 +118,12 @@ jobs:
       #           -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
       #           -DVTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
       #           -DBUILD_TESTING=OFF \
+      #           -DCMAKE_BUILD_TYPE=Release \
+      #           -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
+      #           -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
       #           ..
       #     ls -l
       #   shell: bash
-
-
-      # - name: Linux - Cache vtk 
-      #   if: runner.os == 'Linux'
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: vtk/build
-      #     key: ${{ runner.os }}-vtk-${{ hashFiles('**/CMakeLists.txt') }}
-      #     restore-keys: ${{ runner.os }}-vtk-
 
       # - name: Linux - Install vtk
       #   if: runner.os == 'Linux'
@@ -353,16 +132,6 @@ jobs:
       #     make -j $(($(nproc) - 1))
       #     sudo make install
       #   shell: bash
-
-        
-
-      # - name: Windows - Cache vtk     
-      #   if: runner.os == 'Windows' 
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: vtk/build
-      #     key: ${{ runner.os }}-vtk-${{ hashFiles('**/CMakeLists.txt') }}
-      #     restore-keys: ${{ runner.os }}-vtk-
 
       # - name: Windows - Install vtk
       #   if: runner.os == 'Windows'
@@ -376,6 +145,39 @@ jobs:
       #     echo "D:\a\eshmun\Qt\5.15.2\mingw81_64\bin" >> $GITHUB_PATH
 
       #   shell: bash
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: ${{ matrix.config.name }}
+
+      - name: Linux and Windows - Download vtk
+        if: (runner.os == 'Linux' || runner.os == 'Windows')
+        run: |
+          git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
+          cd vtk
+          git checkout v9.0.1
+
+      - name: build with cmake
+        uses: lukka/run-cmake@v3
+        with:
+          cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
+          cmakeListsTxtPath: 'vtk/CMakeLists.txt'
+          cmakeAppendedArgs: | 
+            -G ${{ matrix.config.makefiles }} \
+            -D CMAKE_BUILD_TYPE=Release \
+            -D CMAKE_C_COMPILER_LAUNCHER=ccache \
+            -D CMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -D VTK_GROUP_ENABLE_Qt=YES \
+            -D VTK_GROUP_ENABLE_Imaging=YES \
+            -D VTK_GROUP_ENABLE_Views=YES \
+            -D VTK_GROUP_ENABLE_Rendering=YES \
+            -D VTK_MODULE_ENABLE_VTK_GUISupportQt=YES \
+            -D VTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
+            -D VTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
+            -D BUILD_TESTING=OFF
+          buildWithCMake: true
+          buildDirectory: 'vtk/build'
 
       - name: Linux - ldconfig
         if: runner.os == 'Linux'
@@ -413,7 +215,7 @@ jobs:
           run: |
             cd build
             make test ARGS="-VV"
-          working-directory: ./
+          shell: bash
 
 
       # - name: All - Test
