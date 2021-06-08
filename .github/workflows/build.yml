@@ -205,7 +205,6 @@ jobs:
             cd build
             make test ARGS="-VV"
           working-directory: ./
-        shell: bash
 
 
       # - name: All - Test
