@@ -169,17 +169,14 @@ jobs:
       #     endif()
       
       - name: Download ccache
-        if: runner.os == 'Linux' || runner.os == 'Windows'
         id: ccache
         shell: cmake -P {0}
         run: |
           set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v$ENV{CCACHE_VERSION}/${{ runner.os }}.tar.xz")
           file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
           execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
-          set(ENV{PATH} ".:$ENV{PATH}")
 
       - name: Prepare ccache timestamp
-        if: runner.os == 'Linux' || runner.os == 'Windows'
         id: ccache_cache_timestamp
         shell: cmake -P {0}
         run: |
@@ -187,7 +184,6 @@ jobs:
           message("::set-output name=timestamp::${current_date}")
           
       - name: ccache cache files
-        if: runner.os == 'Linux' || runner.os == 'Windows'
         uses: actions/cache@v2
         with:
           path: .ccache
@@ -255,7 +251,6 @@ jobs:
           endif()
 
       - name: Build
-        if: runner.os == 'Linux' || runner.os == 'Windows'
         shell: cmake -P {0}
         run: |
           set(ENV{NINJA_STATUS} "[%f/%t %o/sec] ")
@@ -300,12 +295,13 @@ jobs:
           execute_process(COMMAND ccache -s WORKING_DIRECTORY vtk)
 
       - name: Install Strip
-        if: runner.os == 'Linux' || runner.os == 'Windows'
         run: cmake --install build --prefix instdir --strip
+
 
       - name: Pack
         working-directory: instdir
         run: cmake -E tar cfv ../${{ matrix.config.artifact }} --format=7zip .
+
 
       - name: Upload
         uses: actions/upload-artifact@v2
