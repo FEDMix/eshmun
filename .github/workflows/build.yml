@@ -129,7 +129,6 @@ jobs:
 
       - name: Linux - Cache vtk 
         if: runner.os == 'Linux'
-        id: cache-vtk
         uses: actions/cache@v2
         with:
           path: vtk/build
@@ -148,7 +147,6 @@ jobs:
 
       - name: Windows - Cache vtk     
         if: runner.os == 'Windows' 
-        id: cache-vtk
         uses: actions/cache@v2
         with:
           path: vtk/build
