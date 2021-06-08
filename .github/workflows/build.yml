@@ -36,7 +36,7 @@ jobs:
 
           - {
               name: "Ubuntu Latest - Clang", artifact: "Linux.7z",
-              os: ubuntu-latest,
+              os: ubuntu-latest
               makefiles: '"Unix Makefiles"',
               qt_path: "/usr/lib/qt5",
               cc: "clang-11",
