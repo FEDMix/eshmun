@@ -147,6 +147,7 @@ jobs:
       #   shell: bash
 
       - name: ccache
+        if: (runner.os == 'Linux' || runner.os == 'Windows')
         uses: hendrikmuhs/ccache-action@v1
         with:
           key: ${{ matrix.config.name }}
@@ -159,6 +160,7 @@ jobs:
           git checkout v9.0.1
 
       - name: build with cmake
+        if: (runner.os == 'Linux' || runner.os == 'Windows')
         uses: lukka/run-cmake@v3
         with:
           cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
@@ -178,6 +180,25 @@ jobs:
             -D BUILD_TESTING=OFF
           buildWithCMake: true
           buildDirectory: 'vtk/build'
+
+          
+      - name: Linux - Install vtk
+        if: runner.os == 'Linux'
+        run: |
+          cd vtk/build
+          sudo make install
+        shell: bash
+
+      - name: Windows - Install and Set PATH
+        if: runner.os == 'Windows'
+        run: |
+          cd vtk/build
+          make install
+          echo "C:/Program Files (x86)/VTK/lib/" >> $GITHUB_PATH
+          echo "C:/Program Files (x86)/VTK/bin/" >> $GITHUB_PATH
+          echo "D:\a\eshmun\Qt\5.15.2\mingw81_64\lib" >> $GITHUB_PATH
+          echo "D:\a\eshmun\Qt\5.15.2\mingw81_64\bin" >> $GITHUB_PATH
+        shell: bash
 
       - name: Linux - ldconfig
         if: runner.os == 'Linux'
