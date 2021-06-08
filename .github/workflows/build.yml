@@ -58,111 +58,111 @@ jobs:
         with:
           submodules: "recursive"
 
-      - name: Windows - Set ENV
-        if: runner.os == 'Windows'
-        uses: ilammy/msvc-dev-cmd@v1
+      # - name: Windows - Set ENV
+      #   if: runner.os == 'Windows'
+      #   uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Linux - Install Dependencies
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update -y -qq
-          sudo apt-get install -y -qq cmake build-essential gcc-multilib
-          sudo apt-get install -y -qq mesa-common-dev mesa-utils freeglut3-dev \
-                                  libavcodec-dev libavformat-dev libavutil-dev libboost-dev \
-                                  libdouble-conversion-dev libeigen3-dev libexpat1-dev libfontconfig-dev \
-                                  libfreetype6-dev libgdal-dev libglew-dev libhdf5-dev libjpeg-dev libjsoncpp-dev \
-                                  liblz4-dev liblzma-dev libnetcdf-dev libnetcdf-cxx-legacy-dev libogg-dev \
-                                  libpng-dev libpython3-dev libqt5opengl5-dev libqt5x11extras5-dev libsqlite3-dev \
-                                  libswscale-dev libtheora-dev libtiff-dev libxml2-dev libxt-dev qtbase5-dev \
-                                  qttools5-dev zlib1g-dev
-        shell: bash
-
-      - name: Windows - Install LLVM and Clang
-        if: runner.os == 'Windows'
-        uses: KyleMayes/install-llvm-action@v1
-        with:
-          version: "11.1.0"
-          force-version: true
-          directory: ${{ runner.temp }}/llvm
-
-      - name: Linux - Install LLVM and Clang
-        if: runner.os == 'Linux'
-        run: |
-          # sudo update-alternatives --remove-all llvm
-          # sudo update-alternatives --remove-all clang
-
-          wget https://apt.llvm.org/llvm.sh
-          chmod +x llvm.sh
-          sudo ./llvm.sh 11
-
-          sudo apt-get -y -qq install clang-format-11
-          sudo apt-get -y -qq install clang-tidy-11
-
-          # curl https://gist.githubusercontent.com/junkdog/70231d6953592cd6f27def59fe19e50d/raw/92f0e73d2558402b7316021c1ab408b30e534de6/update-alternatives-clang.sh > update-alternatives-clang.sh
-          # chmod u+x update-alternatives-clang.sh
-          # sudo ./update-alternatives-clang.sh 11 1
-        shell: bash
-
-      - name: All - Compiler version check
-        run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            ${{ matrix.config.cxx }}
-          else
-            ${{ matrix.config.cxx }} --version
-          fi
-        shell: bash
-
-      - name: All - Cmake version check
-        run: cmake --version
-        shell: bash
-
-      - name: Install ninja-build tool
-        uses: seanmiddleditch/gha-setup-ninja@v3
-
-      # - name: Download Ninja and CMake
-      #   shell: cmake -P {0}
+      # - name: Linux - Install Dependencies
+      #   if: runner.os == 'Linux'
       #   run: |
-      #     set(cmake_version $ENV{CMAKE_VERSION})
-      #     set(ninja_version $ENV{NINJA_VERSION})
+      #     sudo apt-get update -y -qq
+      #     sudo apt-get install -y -qq cmake build-essential gcc-multilib
+      #     sudo apt-get install -y -qq mesa-common-dev mesa-utils freeglut3-dev \
+      #                             libavcodec-dev libavformat-dev libavutil-dev libboost-dev \
+      #                             libdouble-conversion-dev libeigen3-dev libexpat1-dev libfontconfig-dev \
+      #                             libfreetype6-dev libgdal-dev libglew-dev libhdf5-dev libjpeg-dev libjsoncpp-dev \
+      #                             liblz4-dev liblzma-dev libnetcdf-dev libnetcdf-cxx-legacy-dev libogg-dev \
+      #                             libpng-dev libpython3-dev libqt5opengl5-dev libqt5x11extras5-dev libsqlite3-dev \
+      #                             libswscale-dev libtheora-dev libtiff-dev libxml2-dev libxt-dev qtbase5-dev \
+      #                             qttools5-dev zlib1g-dev
+      #   shell: bash
 
-      #     message(STATUS "Using host CMake version: ${CMAKE_VERSION}")
+      # - name: Windows - Install LLVM and Clang
+      #   if: runner.os == 'Windows'
+      #   uses: KyleMayes/install-llvm-action@v1
+      #   with:
+      #     version: "11.1.0"
+      #     force-version: true
+      #     directory: ${{ runner.temp }}/llvm
 
-      #     if ("${{ runner.os }}" STREQUAL "Windows")
-      #       set(ninja_suffix "win.zip")
-      #       set(cmake_suffix "win64-x64.zip")
-      #       set(cmake_dir "cmake-${cmake_version}-win64-x64/bin")
-      #     elseif ("${{ runner.os }}" STREQUAL "Linux")
-      #       set(ninja_suffix "linux.zip")
-      #       set(cmake_suffix "Linux-x86_64.tar.gz")
-      #       set(cmake_dir "cmake-${cmake_version}-Linux-x86_64/bin")
-      #     elseif ("${{ runner.os }}" STREQUAL "macOS")
-      #       set(ninja_suffix "mac.zip")
-      #       set(cmake_suffix "Darwin-x86_64.tar.gz")
-      #       set(cmake_dir "cmake-${cmake_version}-Darwin-x86_64/CMake.app/Contents/bin")
-      #     endif()
+      # - name: Linux - Install LLVM and Clang
+      #   if: runner.os == 'Linux'
+      #   run: |
+      #     # sudo update-alternatives --remove-all llvm
+      #     # sudo update-alternatives --remove-all clang
 
-      #     set(ninja_url "https://github.com/ninja-build/ninja/releases/download/v${ninja_version}/ninja-${ninja_suffix}")
-      #     file(DOWNLOAD "${ninja_url}" ./ninja.zip SHOW_PROGRESS)
-      #     execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ninja.zip)
+      #     wget https://apt.llvm.org/llvm.sh
+      #     chmod +x llvm.sh
+      #     sudo ./llvm.sh 11
 
-      #     set(cmake_url "https://github.com/Kitware/CMake/releases/download/v${cmake_version}/cmake-${cmake_version}-${cmake_suffix}")
-      #     file(DOWNLOAD "${cmake_url}" ./cmake.zip SHOW_PROGRESS)
-      #     execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./cmake.zip)
+      #     sudo apt-get -y -qq install clang-format-11
+      #     sudo apt-get -y -qq install clang-tidy-11
 
-      #     # Add to PATH environment variable
-      #     file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/${cmake_dir}" cmake_dir)
-      #     set(path_separator ":")
-      #     if ("${{ runner.os }}" STREQUAL "Windows")
-      #       set(path_separator ";")
-      #     endif()
-      #     file(APPEND "$ENV{GITHUB_PATH}" "$ENV{GITHUB_WORKSPACE}${path_separator}${cmake_dir}")
+      #     # curl https://gist.githubusercontent.com/junkdog/70231d6953592cd6f27def59fe19e50d/raw/92f0e73d2558402b7316021c1ab408b30e534de6/update-alternatives-clang.sh > update-alternatives-clang.sh
+      #     # chmod u+x update-alternatives-clang.sh
+      #     # sudo ./update-alternatives-clang.sh 11 1
+      #   shell: bash
 
-      #     if (NOT "${{ runner.os }}" STREQUAL "Windows")
-      #       execute_process(
-      #         COMMAND chmod +x ninja
-      #         COMMAND chmod +x ${cmake_dir}/cmake
-      #       )
-      #     endif()
+      # - name: All - Compiler version check
+      #   run: |
+      #     if [ "$RUNNER_OS" == "Windows" ]; then
+      #       ${{ matrix.config.cxx }}
+      #     else
+      #       ${{ matrix.config.cxx }} --version
+      #     fi
+      #   shell: bash
+
+      # - name: All - Cmake version check
+      #   run: cmake --version
+      #   shell: bash
+
+      # - name: Install ninja-build tool
+      #   uses: seanmiddleditch/gha-setup-ninja@v3
+
+      - name: Download Ninja and CMake
+        shell: cmake -P {0}
+        run: |
+          set(cmake_version $ENV{CMAKE_VERSION})
+          set(ninja_version $ENV{NINJA_VERSION})
+
+          message(STATUS "Using host CMake version: ${CMAKE_VERSION}")
+
+          if ("${{ runner.os }}" STREQUAL "Windows")
+            set(ninja_suffix "win.zip")
+            set(cmake_suffix "win64-x64.zip")
+            set(cmake_dir "cmake-${cmake_version}-win64-x64/bin")
+          elseif ("${{ runner.os }}" STREQUAL "Linux")
+            set(ninja_suffix "linux.zip")
+            set(cmake_suffix "Linux-x86_64.tar.gz")
+            set(cmake_dir "cmake-${cmake_version}-Linux-x86_64/bin")
+          elseif ("${{ runner.os }}" STREQUAL "macOS")
+            set(ninja_suffix "mac.zip")
+            set(cmake_suffix "Darwin-x86_64.tar.gz")
+            set(cmake_dir "cmake-${cmake_version}-Darwin-x86_64/CMake.app/Contents/bin")
+          endif()
+
+          set(ninja_url "https://github.com/ninja-build/ninja/releases/download/v${ninja_version}/ninja-${ninja_suffix}")
+          file(DOWNLOAD "${ninja_url}" ./ninja.zip SHOW_PROGRESS)
+          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ninja.zip)
+
+          set(cmake_url "https://github.com/Kitware/CMake/releases/download/v${cmake_version}/cmake-${cmake_version}-${cmake_suffix}")
+          file(DOWNLOAD "${cmake_url}" ./cmake.zip SHOW_PROGRESS)
+          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./cmake.zip)
+
+          # Add to PATH environment variable
+          file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/${cmake_dir}" cmake_dir)
+          set(path_separator ":")
+          if ("${{ runner.os }}" STREQUAL "Windows")
+            set(path_separator ";")
+          endif()
+          file(APPEND "$ENV{GITHUB_PATH}" "$ENV{GITHUB_WORKSPACE}${path_separator}${cmake_dir}")
+
+          if (NOT "${{ runner.os }}" STREQUAL "Windows")
+            execute_process(
+              COMMAND chmod +x ninja
+              COMMAND chmod +x ${cmake_dir}/cmake
+            )
+          endif()
       
       - name: Download ccache
         id: ccache
