@@ -175,9 +175,18 @@ jobs:
           cd build
           make
         shell: bash
+      
+      - name: All - Headless Test
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: |
+            cd build
+            make test ARGS="-VV"
+          shell: bash
 
-      - name: All - Test
-        run: |
-          cd build
-          make test ARGS="-VV"
-        shell: bash
+
+      # - name: All - Test
+      #   run: |
+      #     cd build
+      #     make test ARGS="-VV"
+      #   shell: bash
