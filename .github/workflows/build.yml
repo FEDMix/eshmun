@@ -212,11 +212,14 @@ jobs:
           endif()
           set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}${path_separator}$ENV{PATH}")
 
-          git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
-          cd vtk
-          git checkout v9.0.1
-          mkdir build
-          cd build
+          execute_process(
+            COMMAND git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
+          )
+
+          execute_process(
+            COMMAND git checkout v9.0.1
+            WORKING_DIRECTORY vtk
+          )
 
           execute_process(
             COMMAND cmake
@@ -235,6 +238,7 @@ jobs:
               -D VTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES
               -D VTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES
               -D BUILD_TESTING=OFF
+            WORKING_DIRECTORY vtk
             RESULT_VARIABLE result
           )
           if (NOT result EQUAL 0)
