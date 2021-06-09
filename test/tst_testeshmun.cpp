@@ -75,6 +75,7 @@ void testEshmun::test_vtk_viewer() {
     SceneWidget* sceneWidget = annotation->findChild<SceneWidget*>("mainSceneAxial");
     vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
     sceneWidget->SetImageData(imageData);
+    sceneWidget->SetPlaneOrientationToAxial();
     std::string referenceImagePath = "../test/reference_images/test_dummy.png";
     std::string currentImagePath = "test/test_dummy.png";
     sceneWidget->SaveScreenshot(currentImagePath);
