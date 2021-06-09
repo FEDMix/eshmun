@@ -14,6 +14,7 @@ jobs:
           - name: "Windows Latest - MSVC"
             os: windows-latest
             makefiles: '"MinGW Makefiles"'
+            vtk_path: \vtk\
             qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
             cc: "cl"
             cxx: "cl"
@@ -21,6 +22,7 @@ jobs:
           - name: "Ubuntu Latest - Clang"
             os: ubuntu-latest
             makefiles: '"Unix Makefiles"'
+            vtk_path: /vtk/
             qt_path: "/usr/lib/qt5"
             cc: "clang-11"
             cxx: "clang++-11"
@@ -190,7 +192,7 @@ jobs:
         uses: lukka/run-cmake@v3.4
         with:
           cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
-          cmakeListsTxtPath: '${{ github.workspace }}/vtk/CMakeLists.txt'
+          cmakeListsTxtPath: '${{ github.workspace }}${{ matrix.config.vtk_path }}CMakeLists.txt'
           cmakeAppendedArgs: | 
             -G ${{ matrix.config.makefiles }} \
             -D CMAKE_BUILD_TYPE=Release \
@@ -205,7 +207,7 @@ jobs:
             -D VTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
             -D BUILD_TESTING=OFF
           buildWithCMake: true
-          buildDirectory: '${{ github.workspace }}/vtk/build'
+          buildDirectory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
 
           
       - name: Linux - Install vtk
