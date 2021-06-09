@@ -10,24 +10,6 @@ set(PROJECT_SOURCES
         components/VTKWidget/scenewidget.h
 )
 
-# Find package Qt
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5OpenGL REQUIRED)
-
-# Find package VTK
-find_package(VTK
-    9.0
-    REQUIRED
-    COMPONENTS
-        CommonCore
-        GUISupportQt
-        InteractionStyle
-        IOImage
-        IOLegacy
-        RenderingCore
-        RenderingImage
-        ImagingSources)
-
 add_library(libEshmun
     ${PROJECT_SOURCES}
 )
