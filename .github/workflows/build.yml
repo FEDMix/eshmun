@@ -187,10 +187,10 @@ jobs:
 
       - name: build with cmake
         if: (runner.os == 'Linux' || runner.os == 'Windows')
-        uses: lukka/run-cmake@v3
+        uses: lukka/run-cmake@v3.4
         with:
           cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
-          cmakeListsTxtPath: 'vtk/CMakeLists.txt'
+          cmakeListsTxtPath: '${{ github.workspace }}/vtk/CMakeLists.txt'
           cmakeAppendedArgs: | 
             -G ${{ matrix.config.makefiles }} \
             -D CMAKE_BUILD_TYPE=Release \
@@ -205,7 +205,7 @@ jobs:
             -D VTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
             -D BUILD_TESTING=OFF
           buildWithCMake: true
-          buildDirectory: 'vtk/build'
+          buildDirectory: '${{ github.workspace }}/vtk/build'
 
           
       - name: Linux - Install vtk
