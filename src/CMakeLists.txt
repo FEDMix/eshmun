@@ -25,6 +25,7 @@ find_package(VTK
         IOImage
         IOLegacy
         RenderingCore
+        RenderingImage
         ImagingSources)
 
 add_library(libEshmun
