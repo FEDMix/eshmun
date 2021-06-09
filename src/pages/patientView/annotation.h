@@ -1,10 +1,16 @@
 #ifndef ANNOTATION_H
 #define ANNOTATION_H
 
+
+#include <QDebug>
 #include <QDialog>
 #include <QLabel>
 #include <QPixmap>
 #include <QPushButton>
+#include <QDir>
+#include <QListView>
+#include <QSortFilterProxyModel>
+#include <QStandardItemModel>
 
 namespace Ui
 {
@@ -25,6 +31,8 @@ private slots:
 
 private:
     Ui::Annotation *ui;
+    QStandardItemModel *model;
+    QSortFilterProxyModel *proxyModel;
 };
 
 #endif // ANNOTATION_H
