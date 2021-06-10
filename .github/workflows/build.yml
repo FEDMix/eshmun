@@ -252,7 +252,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -G BUILD_SYSTEM \
+          cmake -G "$BUILD_SYSTEM" \
             $FLAGS \
             -DCMAKE_PREFIX_PATH="$HOME/vtk-inst;${{ matrix.config.qt_path }}" \
             -DCMAKE_BUILD_TYPE=Release \
