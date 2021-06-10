@@ -15,6 +15,7 @@ jobs:
             os: windows-latest
             # makefiles: '"MinGW Makefiles"'
             makefiles: 'Ninja'
+            build_command: 'ninja'
             vtk_path: '/vtk/'
             qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
             cc: "cl"
@@ -23,6 +24,7 @@ jobs:
           - name: "Ubuntu Latest - Clang"
             os: ubuntu-latest
             makefiles: 'Unix Makefiles'
+            build_command: 'make'
             vtk_path: /vtk/
             qt_path: "/usr/lib/qt5"
             cc: "clang-11"
@@ -31,6 +33,7 @@ jobs:
           - name: "MacOS Latest - Clang"
             os: macos-latest
             makefiles: 'Unix Makefiles'
+            build_command: 'make'
             qt_path: "/usr/local/opt/qt@5/"
             cc: "clang"
             cxx: "clang++"
@@ -212,11 +215,14 @@ jobs:
           BUILD_SYSTEM: ${{ matrix.config.makefiles }}
         shell: bash
 
-      - name: build with Ninja
+      - name: build
         if: (runner.os == 'Linux' || runner.os == 'Windows')
         run: |
-          make
+          $BUILD_COMMMAND
+        env:
+          BUILD_COMMAND: ${{ matrix.config.build_command }}
         working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
+
         shell: bash
 
       - name: Linux - Install vtk
@@ -230,7 +236,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           cd vtk/build
-          make install
+          ninja install
           echo "C:/Program Files (x86)/VTK/lib/" >> $GITHUB_PATH
           echo "C:/Program Files (x86)/VTK/bin/" >> $GITHUB_PATH
           echo "D:\a\eshmun\Qt\5.15.2\mingw81_64\lib" >> $GITHUB_PATH
@@ -267,7 +273,9 @@ jobs:
       - name: All - Make
         run: |
           cd build
-          make
+          $BUILD_COMMMAND
+        env:
+          BUILD_COMMAND: ${{ matrix.config.build_command }}
         shell: bash
 
       - name: All - Headless Test
