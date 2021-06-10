@@ -193,7 +193,6 @@ jobs:
         run: |
           cmake \
           -B build
-          -S ${{ github.workspace }}${{ matrix.config.vtk_path }}CMakeLists.txt
           -G ${{ matrix.config.makefiles }} \
           -D CMAKE_BUILD_TYPE=Release \
           -D CMAKE_C_COMPILER_LAUNCHER=ccache \
@@ -205,7 +204,8 @@ jobs:
           -D VTK_MODULE_ENABLE_VTK_GUISupportQt=YES \
           -D VTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
           -D VTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
-          -D BUILD_TESTING=OFF
+          -D BUILD_TESTING=OFF \
+          .
         working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}'
         shell: bash
 
