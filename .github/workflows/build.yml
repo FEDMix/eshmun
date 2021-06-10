@@ -193,7 +193,7 @@ jobs:
         uses: lukka/run-cmake@v3.4
         with:
           cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
-          cmakeListsTxtPath: '..'
+          cmakeListsTxtPath: '${{ github.workspace }}${{ matrix.config.vtk_path }}'
           cmakeAppendedArgs: |
             -G ${{ matrix.config.makefiles }} \
             -D CMAKE_BUILD_TYPE=Release \
