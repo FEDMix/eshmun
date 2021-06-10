@@ -15,7 +15,7 @@ jobs:
             os: windows-latest
             # makefiles: '"MinGW Makefiles"'
             makefiles: '"Ninja"'
-            vtk_path: \vtk\
+            vtk_path: '/vtk/'
             qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
             cc: "cl"
             cxx: "cl"
@@ -277,4 +277,4 @@ jobs:
         if: failure()
         with:
           name: screen-dump
-          path: ${{ github.workspace }}build/test/test_dummy.png
+          path: ${{ github.workspace }}/build/test/test_dummy.png
