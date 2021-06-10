@@ -215,12 +215,16 @@ jobs:
           BUILD_SYSTEM: ${{ matrix.config.makefiles }}
         shell: bash
 
-      - name: build
-        if: (runner.os == 'Linux' || runner.os == 'Windows')
+      - name: build vtk Linux
+        if: runner.os == 'Windows'
         run: |
-          $BUILD_COMMMAND
-        env:
-          BUILD_COMMAND: ${{ matrix.config.build_command }}
+          ninja
+        working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
+
+      - name: build vtk Linux
+        if: runner.os == 'Linux'
+        run: |
+          make
         working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
 
         shell: bash
@@ -235,13 +239,13 @@ jobs:
       - name: Windows - Install and Set PATH
         if: runner.os == 'Windows'
         run: |
-          cd vtk/build
           ninja install
           echo "C:/Program Files (x86)/VTK/lib/" >> $GITHUB_PATH
           echo "C:/Program Files (x86)/VTK/bin/" >> $GITHUB_PATH
           echo "D:\a\eshmun\Qt\5.15.2\mingw81_64\lib" >> $GITHUB_PATH
           echo "D:\a\eshmun\Qt\5.15.2\mingw81_64\bin" >> $GITHUB_PATH
         shell: bash
+        working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
 
       - name: Linux - ldconfig
         if: runner.os == 'Linux'
@@ -270,13 +274,20 @@ jobs:
           FLAGS: ${{ matrix.config.cmake_flags }}
         shell: bash
 
-      - name: All - Make
+
+      - name: Windows - Make
+        if: runner.os == 'Windows'
         run: |
-          cd build
-          $BUILD_COMMMAND
-        env:
-          BUILD_COMMAND: ${{ matrix.config.build_command }}
+          ninja
         shell: bash
+        working-directory: '${{ github.workspace }}/build'
+
+      - name: MacOS & Linux - Make
+        if: (runner.os == 'macOS' || runner.os == 'Linux')
+        run: |
+          make
+        shell: bash
+        working-directory: '${{ github.workspace }}/build'
 
       - name: All - Headless Test
         uses: GabrielBB/xvfb-action@v1
