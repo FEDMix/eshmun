@@ -252,13 +252,16 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -G${{ matrix.config.makefiles }} \
-            ${{ matrix.config.cmake_flags }} \
+          cmake -G BUILD_SYSTEM \
+            $FLAGS \
             -DCMAKE_PREFIX_PATH="$HOME/vtk-inst;${{ matrix.config.qt_path }}" \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
             -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
             ..
+        env:
+          BUILD_SYSTEM: ${{ matrix.config.makefiles }}
+          FLAGS: ${{ matrix.config.cmake_flags }}
         shell: bash
 
       - name: All - Make
