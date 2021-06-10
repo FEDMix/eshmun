@@ -75,6 +75,15 @@ void testEshmun::test_vtk_viewer() {
   vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
   sceneWidget->SetImageData(imageData);
 
+  QSize size = sceneWidget->size();
+  std::cerr << "Original Widget Size: " << size.width() << ", " << size.height()
+            << std::endl;
+  sceneWidget->resize(800, 800);
+
+  size = sceneWidget->size();
+  std::cerr << "New Widget Size: " << size.width() << ", " << size.height()
+            << std::endl;
+
   QDir workingDir = QDir{QDir::currentPath()};
 
   std::cerr << "Working directory: " << workingDir.path().toStdString()
