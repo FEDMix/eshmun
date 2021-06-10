@@ -204,7 +204,7 @@ jobs:
           -D VTK_MODULE_ENABLE_VTK_GUISupportQt=YES \
           -D VTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
           -D VTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
-          -D BUILD_TESTING=OFF
+          -D BUILD_TESTING=OFF \
           -B build
         working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}'
         shell: bash
