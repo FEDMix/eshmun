@@ -13,7 +13,9 @@ jobs:
         config:
           - name: "Windows Latest - MSVC"
             os: windows-latest
-            makefiles: '"MinGW Makefiles"'
+            # makefiles: '"MinGW Makefiles"'
+            makefiles: '"Ninja"'
+            vtk_path: \vtk\
             qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
             cc: "cl"
             cxx: "cl"
@@ -21,6 +23,7 @@ jobs:
           - name: "Ubuntu Latest - Clang"
             os: ubuntu-latest
             makefiles: '"Unix Makefiles"'
+            vtk_path: /vtk/
             qt_path: "/usr/lib/qt5"
             cc: "clang-11"
             cxx: "clang++-11"
@@ -146,7 +149,34 @@ jobs:
 
       #   shell: bash
 
+      - name: Windows - Download ccache
+        if: runner.os == 'Windows'
+        id: ccache
+        shell: cmake -P {0}
+        run: |
+          set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v4.2.1/Windows.tar.xz")
+          file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
+          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
+
+      - name: Windows - Prepare ccache timestamp
+        if: runner.os == 'Windows'
+        id: ccache_cache_timestamp
+        shell: cmake -P {0}
+        run: |
+          string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
+          message("::set-output name=timestamp::${current_date}")
+
+      - name: Windows - ccache cache files
+        if: runner.os == 'Windows'
+        uses: actions/cache@v1.1.0
+        with:
+          path: .ccache
+          key: ${{ matrix.config.name }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+          restore-keys: |
+            ${{ matrix.config.name }}-ccache-
+
       - name: ccache
+        if: (runner.os == 'Linux')
         uses: hendrikmuhs/ccache-action@v1
         with:
           key: ${{ matrix.config.name }}
@@ -159,10 +189,11 @@ jobs:
           git checkout v9.0.1
 
       - name: build with cmake
-        uses: lukka/run-cmake@v3
+        if: (runner.os == 'Linux' || runner.os == 'Windows')
+        uses: lukka/run-cmake@v3.4
         with:
           cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
-          cmakeListsTxtPath: 'vtk/CMakeLists.txt'
+          cmakeListsTxtPath: '${{ github.workspace }}${{ matrix.config.vtk_path }}CMakeLists.txt'
           cmakeAppendedArgs: |
             -G ${{ matrix.config.makefiles }} \
             -D CMAKE_BUILD_TYPE=Release \
@@ -177,7 +208,26 @@ jobs:
             -D VTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
             -D BUILD_TESTING=OFF
           buildWithCMake: true
-          buildDirectory: 'vtk/build'
+          buildDirectory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
+
+
+      - name: Linux - Install vtk
+        if: runner.os == 'Linux'
+        run: |
+          cd vtk/build
+          sudo make install
+        shell: bash
+
+      - name: Windows - Install and Set PATH
+        if: runner.os == 'Windows'
+        run: |
+          cd vtk/build
+          make install
+          echo "C:/Program Files (x86)/VTK/lib/" >> $GITHUB_PATH
+          echo "C:/Program Files (x86)/VTK/bin/" >> $GITHUB_PATH
+          echo "D:\a\eshmun\Qt\5.15.2\mingw81_64\lib" >> $GITHUB_PATH
+          echo "D:\a\eshmun\Qt\5.15.2\mingw81_64\bin" >> $GITHUB_PATH
+        shell: bash
 
       - name: Linux - ldconfig
         if: runner.os == 'Linux'
@@ -213,9 +263,8 @@ jobs:
         uses: GabrielBB/xvfb-action@v1
         with:
           run: |
-            cd build
             make test ARGS="-VV"
-
+          working-directory: build
 
       # - name: All - Test
       #   run: |
