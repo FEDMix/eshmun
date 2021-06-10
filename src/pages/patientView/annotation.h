@@ -29,6 +29,10 @@ public:
 private slots:
     void pushButton_initVTK();
 
+    void on_nextScan_clicked();
+
+    void on_prevScan_clicked();
+
 private:
     Ui::Annotation *ui;
     QStandardItemModel *model;

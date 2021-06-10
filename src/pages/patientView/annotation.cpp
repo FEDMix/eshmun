@@ -17,7 +17,8 @@ Annotation::Annotation(QWidget *parent) : QDialog(parent),
     ui->previewScans->setFlow(QListView::LeftToRight);
     ui->previewScans->setResizeMode(QListView::Adjust);
     ui->previewScans->setViewMode(QListView::IconMode);
-    ui->previewScans->setWrapping(true);
+    ui->previewScans->setIconSize(QSize(100,100));
+    ui->previewScans->setWrapping(false);
     ui->previewScans->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     // Create Model
     model = new QStandardItemModel(this);
@@ -46,7 +47,7 @@ Annotation::Annotation(QWidget *parent) : QDialog(parent),
     const int numRows = thumbnails.size();
     model->insertRows(0, numRows);
     for(int i=0;i<numRows;++i){
-         QPixmap thumbnail = QPixmap(thumbnails.at(i)).scaled(150,150);
+         QPixmap thumbnail = QPixmap(thumbnails.at(i));
          model->setData(model->index(i,0),thumbnail,Qt::DecorationRole);
     }
     proxyModel->setSourceModel(model);
@@ -81,3 +82,23 @@ void Annotation::LoadData(std::string path) {
     ui->sceneWidget2->SetImageData(imageData);
     ui->sceneWidget3->SetImageData(imageData);
 }
+
+void Annotation::on_nextScan_clicked()
+{
+    QModelIndex mi = ui->previewScans->currentIndex();
+    if(mi.row() < ui->previewScans->model()->rowCount()-1){
+        ui->previewScans->setCurrentIndex(mi.sibling(mi.row()+1,mi.column()));
+        ui->previewScans->scrollTo(ui->previewScans->currentIndex());
+    }
+}
+
+
+void Annotation::on_prevScan_clicked()
+{
+    QModelIndex mi = ui->previewScans->currentIndex();
+        if(mi.row() > 0) {
+            ui->previewScans->setCurrentIndex(mi.sibling(mi.row()-1,mi.column()));
+            ui->previewScans->scrollTo(ui->previewScans->currentIndex());
+        }
+}
+
