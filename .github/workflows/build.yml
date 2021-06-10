@@ -208,7 +208,7 @@ jobs:
           -D BUILD_TESTING=OFF
         working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}'
         env:
-          SOURCE: ${{ github.workspace }}${{ matrix.config.vtk_path }}CMakeLists.txt
+          SOURCE: ${{ github.workspace }}${{ matrix.config.vtk_path }}
           BUILD_SYSTEM: ${{ matrix.config.makefiles }}
         shell: bash
 
