@@ -109,7 +109,8 @@ bool compareFiles(const std::string &p1, const std::string &p2) {
   }
 
   if (f1.tellg() != f2.tellg()) {
-    std::cerr << "Size mismatch between files" << std::endl;
+    std::cerr << "Size mismatch between files: " << f1.tellg() << " v "
+              << f2.tellg() << std::endl;
     return false; // size mismatch
   }
 
