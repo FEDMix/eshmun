@@ -10,7 +10,6 @@
 #include <vtkImageData.h>
 #include <vtkSmartPointer.h>
 
-
 // add necessary includes here
 
 class testEshmun : public QObject {
@@ -76,7 +75,7 @@ void testEshmun::test_vtk_viewer() {
   vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
   sceneWidget->SetImageData(imageData);
   std::string referenceImagePath = "../test/reference_images/test_dummy.png";
-  std::string currentImagePath = "test/test_dummy.png";
+  std::string currentImagePath = "test_dummy.png";
   sceneWidget->SaveScreenshot(currentImagePath);
   QVERIFY(compareFiles(currentImagePath, referenceImagePath));
 }
