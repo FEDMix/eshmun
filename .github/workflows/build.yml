@@ -206,14 +206,14 @@ jobs:
           -D VTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
           -D BUILD_TESTING=OFF
           -B build
-        working_directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}'
+        working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}'
         shell: bash
 
       - name: build with Ninja
         if: (runner.os == 'Linux' || runner.os == 'Windows')
         run: |
           make
-        working_directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
+        working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
         shell: bash
 
       - name: Linux - Install vtk
