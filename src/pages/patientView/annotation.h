@@ -32,11 +32,14 @@ private slots:
     void on_nextScan_clicked();
 
     void on_prevScan_clicked();
+    void update(const QModelIndex &current, const QModelIndex &previous);
 
 private:
     Ui::Annotation *ui;
     QStandardItemModel *model;
     QSortFilterProxyModel *proxyModel;
+    QItemSelectionModel    *selectionModel;
+    QStringList thumbnails;
 };
 
 #endif // ANNOTATION_H
