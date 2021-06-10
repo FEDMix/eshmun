@@ -74,21 +74,42 @@ void testEshmun::test_vtk_viewer() {
       annotation->findChild<SceneWidget *>("sceneWidget");
   vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
   sceneWidget->SetImageData(imageData);
-  std::string referenceImagePath = "../test/reference_images/test_dummy.png";
-  std::string currentImagePath = "test_dummy.png";
-  sceneWidget->SaveScreenshot(currentImagePath);
-  QVERIFY(compareFiles(currentImagePath, referenceImagePath));
+
+  QDir workingDir = QDir{QDir::currentPath()};
+
+  std::cerr << "Working directory: " << workingDir.path().toStdString()
+            << std::endl;
+
+  QString refImage =
+      workingDir.filePath("../../test/reference_images/test_dummy.png");
+  std::string referenceImagePath =
+      QFileInfo{refImage}.absoluteFilePath().toStdString();
+
+  QString currentImagePath = "test_dummy.png";
+  std::string imagePath = workingDir.filePath(currentImagePath).toStdString();
+
+  sceneWidget->SaveScreenshot(imagePath);
+
+  std::cerr << "Comparing file: " << imagePath << " to " << referenceImagePath
+            << std::endl;
+  QVERIFY(compareFiles(imagePath, referenceImagePath));
 }
 
 bool compareFiles(const std::string &p1, const std::string &p2) {
   std::ifstream f1(p1, std::ifstream::binary | std::ifstream::ate);
   std::ifstream f2(p2, std::ifstream::binary | std::ifstream::ate);
 
-  if (f1.fail() || f2.fail()) {
+  if (f1.fail()) {
+    std::cerr << "file 1 or not found for comparison" << std::endl;
+    return false; // file problem
+  }
+  if (f2.fail()) {
+    std::cerr << "file 2 not found for comparison" << std::endl;
     return false; // file problem
   }
 
   if (f1.tellg() != f2.tellg()) {
+    std::cerr << "Size mismatch between files" << std::endl;
     return false; // size mismatch
   }
 
