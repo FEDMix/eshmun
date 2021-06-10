@@ -188,28 +188,33 @@ jobs:
           cd vtk
           git checkout v9.0.1
 
-      - name: build with cmake
+      - name: configure with cmake
         if: (runner.os == 'Linux' || runner.os == 'Windows')
-        uses: lukka/run-cmake@v3.4
-        with:
-          cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
-          cmakeListsTxtPath: ${{ github.workspace }}${{ matrix.config.vtk_path }}CMakeLists.txt
-          cmakeAppendedArgs: |
-            -G ${{ matrix.config.makefiles }} \
-            -D CMAKE_BUILD_TYPE=Release \
-            -D CMAKE_C_COMPILER_LAUNCHER=ccache \
-            -D CMAKE_CXX_COMPILER_LAUNCHER=ccache \
-            -D VTK_GROUP_ENABLE_Qt=YES \
-            -D VTK_GROUP_ENABLE_Imaging=YES \
-            -D VTK_GROUP_ENABLE_Views=YES \
-            -D VTK_GROUP_ENABLE_Rendering=YES \
-            -D VTK_MODULE_ENABLE_VTK_GUISupportQt=YES \
-            -D VTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
-            -D VTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
-            -D BUILD_TESTING=OFF
-          buildWithCMake: true
-          buildDirectory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
+        run: |
+          cmake \
+          -S ${{ github.workspace }}${{ matrix.config.vtk_path }}
+          -G ${{ matrix.config.makefiles }} \
+          -D CMAKE_BUILD_TYPE=Release \
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache \
+          -D CMAKE_CXX_COMPILER_LAUNCHER=ccache \
+          -D VTK_GROUP_ENABLE_Qt=YES \
+          -D VTK_GROUP_ENABLE_Imaging=YES \
+          -D VTK_GROUP_ENABLE_Views=YES \
+          -D VTK_GROUP_ENABLE_Rendering=YES \
+          -D VTK_MODULE_ENABLE_VTK_GUISupportQt=YES \
+          -D VTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
+          -D VTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
+          -D BUILD_TESTING=OFF
+          -B build
+        working_directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}'
+        shell: bash
 
+      - name: build with Ninja
+        if: (runner.os == 'Linux' || runner.os == 'Windows')
+        run: |
+          make
+        working_directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
+        shell: bash
 
       - name: Linux - Install vtk
         if: runner.os == 'Linux'
