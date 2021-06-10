@@ -193,7 +193,7 @@ jobs:
         run: |
           cmake \
           -B build
-          -S ${{ github.workspace }}${{ matrix.config.vtk_path }}
+          -S ${{ github.workspace }}${{ matrix.config.vtk_path }}CMakeLists.txt
           -G ${{ matrix.config.makefiles }} \
           -D CMAKE_BUILD_TYPE=Release \
           -D CMAKE_C_COMPILER_LAUNCHER=ccache \
