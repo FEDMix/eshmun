@@ -122,7 +122,6 @@ jobs:
       - name: Windows - Check ccache
         if: runner.os == 'Windows'
         working-directory: ${{ github.workspace }}
-        shell: bash
         run: |
           dir
           ccache.exe --version
