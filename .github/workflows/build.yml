@@ -117,13 +117,15 @@ jobs:
           set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v4.2.1/Windows.tar.xz")
           file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
           execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
-          execute_process(COMMAND echo "$HOME" >> $GITHUB_PATH)
+          execute_process(COMMAND echo "$GITHUB_WORKSPACE" >> $GITHUB_PATH)
 
       - name: Windows - Check ccache
         if: runner.os == 'Windows'
         working-directory: ${{ github.workspace }}
         shell: bash
-        run: ccache.exe --version
+        run: |
+          dir
+          ccache.exe --version
 
       # - name: Windows - Prepare ccache timestamp
       #   if: runner.os == 'Windows'
