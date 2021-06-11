@@ -123,9 +123,8 @@ jobs:
         if: runner.os == 'Windows'
         working-directory: ${{ github.workspace }}
         run: |
-          dir
-          echo %GITHUB_PATH%
           ccache.exe --version
+        shell: bash
 
       # - name: Windows - Prepare ccache timestamp
       #   if: runner.os == 'Windows'
