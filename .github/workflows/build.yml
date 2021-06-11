@@ -124,7 +124,7 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: |
           dir
-          $GIHUB_WORKSPACE/ccache.exe --version
+          $GIHUB_WORKSPACE\ccache.exe --version
 
       # - name: Windows - Prepare ccache timestamp
       #   if: runner.os == 'Windows'
