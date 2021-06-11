@@ -110,7 +110,7 @@ jobs:
       - name: Windows - Download ccache
         if: runner.os == 'Windows'
         id: ccache
-        working-directory: ${{ HOME }}
+        working-directory: ${{ home }}
         shell: bash
         run: |
           wget "https://github.com/cristianadam/ccache/releases/download/v4.2.1/Windows.tar.xz"
