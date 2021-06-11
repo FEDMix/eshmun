@@ -107,60 +107,22 @@ jobs:
         if: runner.os == 'Windows'
         uses: jurplel/install-qt-action@v2
 
-      # - name: Linux and Windows - Configure vtk
-      #   if: (runner.os == 'Linux' || runner.os == 'Windows')
-      #   run: |
-      #     git clone --recursive https://gitlab.kitware.com/vtk/vtk.git
-      #     cd vtk
-      #     git checkout v9.0.1
-      #     mkdir build
-      #     cd build
-      #     cmake -G${{ matrix.config.makefiles }} \
-      #           ${{ matrix.config.cmake_flags }} \
-      #           -DVTK_GROUP_ENABLE_Qt=YES \
-      #           -DVTK_GROUP_ENABLE_Imaging=YES \
-      #           -DVTK_GROUP_ENABLE_Views=YES \
-      #           -DVTK_GROUP_ENABLE_Rendering=YES \
-      #           -DVTK_MODULE_ENABLE_VTK_GUISupportQt=YES \
-      #           -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
-      #           -DVTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
-      #           -DBUILD_TESTING=OFF \
-      #           -DCMAKE_BUILD_TYPE=Release \
-      #           -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
-      #           -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
-      #           ..
-      #     ls -l
-      #   shell: bash
+      - name: Windows - Download ccache
+        if: runner.os == 'Windows'
+        id: ccache
+        working-directory: ${{ HOME }}
+        shell: bash
+        run: |
+          wget "https://github.com/cristianadam/ccache/releases/download/v4.2.1/Windows.tar.xz"
+          tar xvf ./Windows.tar.xz
+          ls
+          echo "$HOME/ccache/" >> $GITHUB_PATH
 
-      # - name: Linux - Install vtk
-      #   if: runner.os == 'Linux'
-      #   run: |
-      #     cd vtk/build
-      #     make -j $(($(nproc) - 1))
-      #     sudo make install
-      #   shell: bash
 
-      # - name: Windows - Install vtk
-      #   if: runner.os == 'Windows'
-      #   run: |
-      #     cd vtk/build
-      #     make -j $(($(nproc) - 1))
-      #     make install
-      #     echo "C:/Program Files (x86)/VTK/lib/" >> $GITHUB_PATH
-      #     echo "C:/Program Files (x86)/VTK/bin/" >> $GITHUB_PATH
-      #     echo "D:\a\eshmun\Qt\5.15.2\mingw81_64\lib" >> $GITHUB_PATH
-      #     echo "D:\a\eshmun\Qt\5.15.2\mingw81_64\bin" >> $GITHUB_PATH
-
-      #   shell: bash
-
-      # - name: Windows - Download ccache
-      #   if: runner.os == 'Windows'
-      #   id: ccache
-      #   shell: cmake -P {0}
-      #   run: |
-      #     set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v4.2.1/Windows.tar.xz")
-      #     file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
-      #     execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
+      - name: Windows - Check ccache
+        if: runner.os == 'Windows'
+        shell: bash
+        run: ccache --version
 
       # - name: Windows - Prepare ccache timestamp
       #   if: runner.os == 'Windows'
@@ -216,11 +178,11 @@ jobs:
           EXTRA_FLAGS: ${{ matrix.config.extra_cmake_flags }}
         shell: bash
 
-      - name: Windows - build vtk
-        if: runner.os == 'Windows'
-        run: |
-          ninja
-        working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
+      # - name: Windows - build vtk
+      #   if: runner.os == 'Windows'
+      #   run: |
+      #     ninja
+      #   working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
 
       - name: Linux - build vtk
         if: runner.os == 'Linux'
