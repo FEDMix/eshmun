@@ -111,7 +111,7 @@ jobs:
       - name: Windows - Download ccache
         if: runner.os == 'Windows'
         id: ccache
-        working-directory: ~
+        working-directory: ${{ github.workspace }}
         shell: cmake -P {0}
         run: |
           set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v4.2.1/Windows.tar.xz")
@@ -121,8 +121,9 @@ jobs:
 
       - name: Windows - Check ccache
         if: runner.os == 'Windows'
+        working-directory: ${{ github.workspace }}
         shell: bash
-        run: ~/ccache.exe --version
+        run: ccache.exe --version
 
       # - name: Windows - Prepare ccache timestamp
       #   if: runner.os == 'Windows'
