@@ -152,33 +152,33 @@ jobs:
 
       #   shell: bash
 
-      - name: Windows - Download ccache
-        if: runner.os == 'Windows'
-        id: ccache
-        shell: cmake -P {0}
-        run: |
-          set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v4.2.1/Windows.tar.xz")
-          file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
-          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
+      # - name: Windows - Download ccache
+      #   if: runner.os == 'Windows'
+      #   id: ccache
+      #   shell: cmake -P {0}
+      #   run: |
+      #     set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v4.2.1/Windows.tar.xz")
+      #     file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
+      #     execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
 
-      - name: Windows - Prepare ccache timestamp
-        if: runner.os == 'Windows'
-        id: ccache_cache_timestamp
-        shell: cmake -P {0}
-        run: |
-          string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
-          message("::set-output name=timestamp::${current_date}")
+      # - name: Windows - Prepare ccache timestamp
+      #   if: runner.os == 'Windows'
+      #   id: ccache_cache_timestamp
+      #   shell: cmake -P {0}
+      #   run: |
+      #     string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
+      #     message("::set-output name=timestamp::${current_date}")
 
-      - name: Windows - ccache cache files
-        if: runner.os == 'Windows'
-        uses: actions/cache@v1.1.0
-        with:
-          path: .ccache
-          key: ${{ matrix.config.name }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
-          restore-keys: |
-            ${{ matrix.config.name }}-ccache-
+      # - name: Windows - ccache cache files
+      #   if: runner.os == 'Windows'
+      #   uses: actions/cache@v1.1.0
+      #   with:
+      #     path: .ccache
+      #     key: ${{ matrix.config.name }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+      #     restore-keys: |
+      #       ${{ matrix.config.name }}-ccache-
 
-      - name: ccache
+      - name: Linux - ccache
         if: (runner.os == 'Linux')
         uses: hendrikmuhs/ccache-action@v1
         with:
@@ -215,13 +215,13 @@ jobs:
           BUILD_SYSTEM: ${{ matrix.config.makefiles }}
         shell: bash
 
-      - name: build vtk Linux
+      - name: Windows - build vtk
         if: runner.os == 'Windows'
         run: |
           ninja
         working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
 
-      - name: build vtk Linux
+      - name: Linux - build vtk
         if: runner.os == 'Linux'
         run: |
           make
