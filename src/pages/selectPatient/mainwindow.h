@@ -31,17 +31,9 @@ public:
 
 private slots:
     void pushButton_addPatient();
-    //void pushButton_selectSubject();
-    //void pushButton_goBack();
-    //void pushButton_subject1();
-    //void pushButton_subject2();
-    //void pushButton_subject3();
-    //void pushButton_addSubject();
 
 private:
     Ui::MainWindow *ui;
     Annotation *annotation;
-    //Annotation *annotation2;
-    //Annotation *annotation3;
 };
 #endif // MAINWINDOW_H

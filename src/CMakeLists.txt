@@ -8,6 +8,8 @@ set(PROJECT_SOURCES
         pages/patientView/annotation.ui
         components/VTKWidget/scenewidget.cpp
         components/VTKWidget/scenewidget.h
+        components/dataloader/imageloader.cpp
+        components/dataloader/imageloader.h
 )
 
 # Find package Qt
