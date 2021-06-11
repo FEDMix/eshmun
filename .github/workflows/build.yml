@@ -20,7 +20,7 @@ jobs:
             qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
             cc: "cl"
             cxx: "cl"
-            extra_cmake_flags: -D CMAKE_C_COMPILER_LAUNCHER=$GITHUB_WORKSPACE/ccache.exe -D CMAKE_CXX_COMPILER_LAUNCHER=$GITHUB_WORKSPACE/ccache.exe
+            extra_cmake_flags: -D CMAKE_C_COMPILER_LAUNCHER="$GITHUB_WORKSPACE/ccache.exe" -D CMAKE_CXX_COMPILER_LAUNCHER="$GITHUB_WORKSPACE/ccache.exe"
 
           - name: "Ubuntu Latest - Clang"
             os: ubuntu-latest
@@ -185,6 +185,7 @@ jobs:
         run: |
           ninja
         working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
+        shell: bash
 
       - name: Linux - build vtk
         if: runner.os == 'Linux'
