@@ -20,6 +20,7 @@ jobs:
             qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
             cc: "cl"
             cxx: "cl"
+            extra_cmake_flags: -D CMAKE_C_COMPILER_LAUNCHER=ccache.exe -D CMAKE_CXX_COMPILER_LAUNCHER=ccache.exe
 
           - name: "Ubuntu Latest - Clang"
             os: ubuntu-latest
@@ -111,18 +112,17 @@ jobs:
         if: runner.os == 'Windows'
         id: ccache
         working-directory: ~
-        shell: bash
+        shell: cmake -P {0}
         run: |
-          (new-object System.Net.WebClient).DownloadFile('https://github.com/cristianadam/ccache/releases/download/v4.2.1/Windows.tar.xz','Windows.tar.xz')
-          tar xvf ./Windows.tar.xz
-          ls
-          echo "$HOME/ccache/" >> $GITHUB_PATH
-
+          set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v4.2.1/Windows.tar.xz")
+          file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
+          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
+          execute_process(COMMAND echo "$HOME" >> $GITHUB_PATH)
 
       - name: Windows - Check ccache
         if: runner.os == 'Windows'
         shell: bash
-        run: ccache --version
+        run: ccache.exe --version
 
       # - name: Windows - Prepare ccache timestamp
       #   if: runner.os == 'Windows'
@@ -178,11 +178,11 @@ jobs:
           EXTRA_FLAGS: ${{ matrix.config.extra_cmake_flags }}
         shell: bash
 
-      # - name: Windows - build vtk
-      #   if: runner.os == 'Windows'
-      #   run: |
-      #     ninja
-      #   working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
+      - name: Windows - build vtk
+        if: runner.os == 'Windows'
+        run: |
+          ninja
+        working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
 
       - name: Linux - build vtk
         if: runner.os == 'Linux'
