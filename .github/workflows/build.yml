@@ -113,7 +113,7 @@ jobs:
         working-directory: ~
         shell: bash
         run: |
-          wget "https://github.com/cristianadam/ccache/releases/download/v4.2.1/Windows.tar.xz"
+          (new-object System.Net.WebClient).DownloadFile('https://github.com/cristianadam/ccache/releases/download/v4.2.1/Windows.tar.xz','Windows.tar.xz')
           tar xvf ./Windows.tar.xz
           ls
           echo "$HOME/ccache/" >> $GITHUB_PATH
