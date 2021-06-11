@@ -20,7 +20,7 @@ jobs:
             qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
             cc: "cl"
             cxx: "cl"
-            extra_cmake_flags: -D CMAKE_C_COMPILER_LAUNCHER=ccache.exe -D CMAKE_CXX_COMPILER_LAUNCHER=ccache.exe
+            extra_cmake_flags: -D CMAKE_C_COMPILER_LAUNCHER=$GITHUB_WORKSPACE/ccache.exe -D CMAKE_CXX_COMPILER_LAUNCHER=$GITHUB_WORKSPACE/ccache.exe
 
           - name: "Ubuntu Latest - Clang"
             os: ubuntu-latest
@@ -126,22 +126,22 @@ jobs:
           ./ccache.exe --version
         shell: bash
 
-      # - name: Windows - Prepare ccache timestamp
-      #   if: runner.os == 'Windows'
-      #   id: ccache_cache_timestamp
-      #   shell: cmake -P {0}
-      #   run: |
-      #     string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
-      #     message("::set-output name=timestamp::${current_date}")
+      - name: Windows - Prepare ccache timestamp
+        if: runner.os == 'Windows'
+        id: ccache_cache_timestamp
+        shell: cmake -P {0}
+        run: |
+          string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
+          message("::set-output name=timestamp::${current_date}")
 
-      # - name: Windows - ccache cache files
-      #   if: runner.os == 'Windows'
-      #   uses: actions/cache@v1.1.0
-      #   with:
-      #     path: .ccache
-      #     key: ${{ matrix.config.name }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
-      #     restore-keys: |
-      #       ${{ matrix.config.name }}-ccache-
+      - name: Windows - ccache cache files
+        if: runner.os == 'Windows'
+        uses: actions/cache@v1.1.0
+        with:
+          path: .ccache
+          key: ${{ matrix.config.name }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+          restore-keys: |
+            ${{ matrix.config.name }}-ccache-
 
       - name: Linux - ccache
         if: (runner.os == 'Linux')
