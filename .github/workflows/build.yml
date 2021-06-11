@@ -20,7 +20,7 @@ jobs:
             qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
             cc: "cl"
             cxx: "cl"
-            extra_cmake_flags: -D CMAKE_C_COMPILER_LAUNCHER="$GITHUB_WORKSPACE/ccache.exe" -D CMAKE_CXX_COMPILER_LAUNCHER="$GITHUB_WORKSPACE/ccache.exe"
+            extra_cmake_flags: -D CMAKE_C_COMPILER_LAUNCHER=ccache.exe -D CMAKE_CXX_COMPILER_LAUNCHER=ccache.exe
 
           - name: "Ubuntu Latest - Clang"
             os: ubuntu-latest
@@ -117,13 +117,13 @@ jobs:
           set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v4.2.1/Windows.tar.xz")
           file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
           execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
-          execute_process(COMMAND echo "$GITHUB_WORKSPACE" >> $GITHUB_PATH)
 
       - name: Windows - Check ccache
         if: runner.os == 'Windows'
         working-directory: ${{ github.workspace }}
         run: |
           ./ccache.exe --version
+          echo $GITHUB_WORKSPACE >> $GITHUB_PATH
         shell: bash
 
       - name: Windows - Prepare ccache timestamp
