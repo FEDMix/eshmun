@@ -29,6 +29,7 @@ jobs:
             qt_path: "/usr/lib/qt5"
             cc: "clang-11"
             cxx: "clang++-11"
+            extra_cmake_flags: -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
 
           - name: "MacOS Latest - Clang"
             os: macos-latest
@@ -198,9 +199,8 @@ jobs:
           -B build \
           -S $SOURCE \
           -G "$BUILD_SYSTEM" \
+          $EXTRA_FLAGS \
           -D CMAKE_BUILD_TYPE=Release \
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache \
-          -D CMAKE_CXX_COMPILER_LAUNCHER=ccache \
           -D VTK_GROUP_ENABLE_Qt=YES \
           -D VTK_GROUP_ENABLE_Imaging=YES \
           -D VTK_GROUP_ENABLE_Views=YES \
@@ -213,6 +213,7 @@ jobs:
         env:
           SOURCE: ${{ github.workspace }}${{ matrix.config.vtk_path }}
           BUILD_SYSTEM: ${{ matrix.config.makefiles }}
+          EXTRA_FLAGS: ${{ matrix.config.extra_cmake_flags }}
         shell: bash
 
       - name: Windows - build vtk
