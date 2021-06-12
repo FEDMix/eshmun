@@ -151,6 +151,7 @@ jobs:
 
       - name: Cache vtk
         uses: actions/cache@v2
+        if: (runner.os == 'Linux' || runner.os == 'Windows')
         with:
           path: |
             ${{ github.workspace }}${{ matrix.config.vtk_path }}
@@ -166,7 +167,7 @@ jobs:
       - name: configure with cmake
         if: (runner.os == 'Linux' || runner.os == 'Windows')
         run: |
-          cmake -E env CXXFLAGS="-Werror -Wno-deprecated" \
+          cmake -E env CXXFLAGS="-w" \
           cmake \
           -B build \
           -S $SOURCE \
