@@ -159,6 +159,7 @@ jobs:
       - name: configure with cmake
         if: (runner.os == 'Linux' || runner.os == 'Windows')
         run: |
+          cmake -E env CXXFLAGS="-Werror -Wno-deprecated"
           cmake \
           -B build \
           -S $SOURCE \
@@ -190,7 +191,7 @@ jobs:
       - name: Linux - build vtk
         if: runner.os == 'Linux'
         run: |
-          make
+          make -j $(nproc)
         working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}build'
 
         shell: bash
