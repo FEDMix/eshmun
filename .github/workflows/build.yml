@@ -149,6 +149,13 @@ jobs:
         with:
           key: ${{ matrix.config.name }}
 
+      - name: Cache vtk
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{ github.workspace }}${{ matrix.config.vtk_path }}
+          key: ${{ runner.os }}-vtk
+
       - name: Linux and Windows - Download vtk
         if: (runner.os == 'Linux' || runner.os == 'Windows')
         run: |
@@ -159,6 +166,7 @@ jobs:
       - name: configure with cmake
         if: (runner.os == 'Linux' || runner.os == 'Windows')
         run: |
+          cmake -E env CXXFLAGS="-Werror -Wno-deprecated" \
           cmake \
           -B build \
           -S $SOURCE \
@@ -178,7 +186,7 @@ jobs:
           SOURCE: ${{ github.workspace }}${{ matrix.config.vtk_path }}
           BUILD_SYSTEM: ${{ matrix.config.makefiles }}
           EXTRA_FLAGS: ${{ matrix.config.extra_cmake_flags }}
-        shell: cmake -E env CXXFLAGS="-Werror -Wno-deprecated" cmake -P {0}
+        shell: bash
 
       - name: Windows - build vtk
         if: runner.os == 'Windows'
