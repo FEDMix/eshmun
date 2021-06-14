@@ -90,16 +90,22 @@ Annotation::~Annotation()
     delete ui;
 }
 
-void Annotation::LoadData(std::string path) {
-    vtkSmartPointer<vtkDICOMImageReader> dicomReader =
+void Annotation::LoadData(QString path) {
+    ImageLoader* imageloader = new ImageLoader();
+    // create vtk pointer for patient scan
+    QString path_scan = imageloader->image_scan(path);
+    vtkSmartPointer<vtkDICOMImageReader> dicomReader_scan =
         vtkSmartPointer<vtkDICOMImageReader>::New();
-    dicomReader->SetDirectoryName(path.c_str());
-    dicomReader->Update();
+    dicomReader_scan->SetDirectoryName(path_scan.toStdString().c_str()); //path need to be std::string
+    dicomReader_scan->Update();
 
-    vtkSmartPointer<vtkImageData> imageData = dicomReader->GetOutput();
+    vtkSmartPointer<vtkImageData> imageData = dicomReader_scan->GetOutput();
     ui->sceneWidget->SetImageData(imageData);
     ui->sceneWidget2->SetImageData(imageData);
     ui->sceneWidget3->SetImageData(imageData);
+
+    // create vtk pointer for all annotations
+    QString path_annotation = imageloader->image_annotation(path);
 }
 
 void Annotation::on_nextScan_clicked()

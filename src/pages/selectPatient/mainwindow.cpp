@@ -34,46 +34,13 @@ MainWindow::MainWindow(QWidget *parent)
     // icons
     QPixmap folder(":/img/assets/icons/open_file.png");
     QIcon buttonFolder(folder);
-    ui->buttonSelectSubjects->setIcon(buttonFolder);
+    ui->buttonAddPatient->setIcon(buttonFolder);
     //ui->buttonSelectSubjects->setIconSize();
 
     // push button on welcome page
-    QPushButton *button_selectSubject = MainWindow::findChild<QPushButton *>("buttonSelectSubjects"); // search for a widget by providing a name
-    connect(button_selectSubject, SIGNAL(released()), this,
-            SLOT(pushButton_selectSubject())); // assign signals and slots
-
-    //=========================================================================
-    // setup for select page
-    //=========================================================================
-    // texts, images and icons
-    // texts
-    ui->labelOverview->setText(text_overview);
-    // images
-    ui->labelExample->setPixmap(cover);
-
-    // push button on select page
-    QPushButton *button_goBack = MainWindow::findChild<QPushButton *>("buttonGoBack"); // search for a widget by providing a name
-    connect(button_goBack, SIGNAL(released()), this,
-            SLOT(pushButton_goBack())); // assign signals and slots
-
-    // push button for selection
-    // patient 1
-    QPushButton *button_subject1 = MainWindow::findChild<QPushButton *>("buttonSubject1");
-    connect(button_subject1, SIGNAL(released()), this,
-            SLOT(pushButton_subject1()));
-    // patient 2
-    QPushButton *button_subject2 = MainWindow::findChild<QPushButton *>("buttonSubject2");
-    connect(button_subject2, SIGNAL(released()), this,
-            SLOT(pushButton_subject2()));
-    // patient 3
-    QPushButton *button_subject3 = MainWindow::findChild<QPushButton *>("buttonSubject3");
-    connect(button_subject3, SIGNAL(released()), this,
-            SLOT(pushButton_subject3()));
-
-    // add subject
-    QPushButton *button_addSubject = MainWindow::findChild<QPushButton *>("buttonAddSubject");
-    connect(button_addSubject, SIGNAL(released()), this,
-            SLOT(pushButton_addSubject()));
+    QPushButton *button_addPatient = MainWindow::findChild<QPushButton *>("buttonAddPatient"); // search for a widget by providing a name
+    connect(button_addPatient, SIGNAL(released()), this,
+            SLOT(pushButton_addPatient())); // assign signals and slots
 }
 
 MainWindow::~MainWindow()
@@ -81,48 +48,15 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::pushButton_selectSubject()
+void MainWindow::pushButton_addPatient()
 {
-    ui->stackedWidget->setCurrentIndex(1);
-}
-
-void MainWindow::pushButton_goBack()
-{
-    ui->stackedWidget->setCurrentIndex(0);
-}
-
-void MainWindow::pushButton_subject1()
-{
-    // open a new window and deactivate the old window
-    // Annotation annotation;
-    // annotation.setModal(true);
-    // annotation.exec();
-
-    // open a new window with the old window active
-    annotation1 = new Annotation(this);
-    annotation1->show();
-}
-
-void MainWindow::pushButton_subject2()
-{
-    annotation2 = new Annotation(this);
-    annotation2->show();
-}
-
-void MainWindow::pushButton_subject3()
-{
-    annotation3 = new Annotation(this);
-    annotation3->show();
-}
-
-void MainWindow::pushButton_addSubject(){
     // Select path
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select directory with DICOM data"), "",
                                              QFileDialog::ShowDirsOnly
                                              | QFileDialog::DontResolveSymlinks);
-
+    qInfo( "Directory path to patient images: %s", qUtf8Printable(dir));
     // Load the data viewer for this path
-    Annotation* annotation1 = new Annotation(this);
-    annotation1->show();
-    annotation1->LoadData(dir.toStdString());
+    Annotation* annotation = new Annotation(this);
+    annotation->show();
+    annotation->LoadData(dir);
 }

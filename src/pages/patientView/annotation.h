@@ -5,12 +5,15 @@
 #include <QDebug>
 #include <QDialog>
 #include <QLabel>
+#include <QDir>
+#include <QString>
 #include <QPixmap>
 #include <QPushButton>
-#include <QDir>
 #include <QListView>
 #include <QSortFilterProxyModel>
 #include <QStandardItemModel>
+#include <QDebug>
+#include "../../components/dataloader/imageloader.h"
 
 namespace Ui
 {
@@ -24,7 +27,7 @@ class Annotation : public QDialog
 public:
     explicit Annotation(QWidget *parent = nullptr);
     ~Annotation();
-    void LoadData(std::string);
+    void LoadData(QString);
 
 private slots:
     void pushButton_initVTK();
@@ -40,6 +43,7 @@ private:
     QSortFilterProxyModel *proxyModel;
     QItemSelectionModel    *selectionModel;
     QStringList thumbnails;
+    ImageLoader *imageloader;
 };
 
 #endif // ANNOTATION_H

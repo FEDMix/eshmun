@@ -9,7 +9,9 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QFile>
+#include <QString>
 #include <QIODevice>
+#include <QDebug>
 #include "../patientView/annotation.h"
 
 QT_BEGIN_NAMESPACE
@@ -28,17 +30,10 @@ public:
     ~MainWindow();
 
 private slots:
-    void pushButton_selectSubject();
-    void pushButton_goBack();
-    void pushButton_subject1();
-    void pushButton_subject2();
-    void pushButton_subject3();
-    void pushButton_addSubject();
+    void pushButton_addPatient();
 
 private:
     Ui::MainWindow *ui;
-    Annotation *annotation1;
-    Annotation *annotation2;
-    Annotation *annotation3;
+    Annotation *annotation;
 };
 #endif // MAINWINDOW_H
