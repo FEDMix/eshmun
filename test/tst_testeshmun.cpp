@@ -2,9 +2,13 @@
 #include <QCoreApplication>
 #include <QtTest/QtTest>
 #include <QtWidgets>
+#include <QDebug>
+#include <QString>
+#include <QDir>
 
 #include "../src/pages/patientView/annotation.h"
 #include "../src/components/VTKWidget/scenewidget.h"
+#include "../src/components/dataloader/imageloader.h"
 #include <vtkSmartPointer.h>
 #include <vtkImageData.h>
 #include <QSurfaceFormat>
@@ -27,16 +31,15 @@ private slots:
   // example ui test
   void lineEdit();
   void cleanupTestCase();
-  void test_case1();
-  void test_vtk_viewer();
+  //void test_case1();
+  //void test_vtk_viewer();
+  void test_imageloader();
 
   private:
       MainWindow main_window;
 };
 
 bool compareFiles(const std::string&, const std::string&);
-
-
 
 testEshmun::testEshmun() {
     main_window.show();
@@ -59,27 +62,42 @@ void testEshmun::lineEdit() {
 
 void testEshmun::cleanupTestCase() {}
 
-void testEshmun::test_case1() {
-    QPushButton *ui_selectButton = main_window.findChild<QPushButton*>("buttonSelectSubjects");
-    QPushButton *ui_backButton = main_window.findChild<QPushButton*>("buttonGoBack");
-
-    QCOMPARE(ui_backButton->isVisible(),false);
-    QTest::mouseClick(ui_selectButton, Qt::LeftButton);
-    QCOMPARE(ui_backButton->isVisible(),true);
+void testEshmun::test_imageloader() {
+    ImageLoader* imageloader = new ImageLoader();
+    QString path = QDir::currentPath();
+    QString path_scan = imageloader->image_scan(path);
+    QString path_annotation = imageloader->image_annotation(path);
+    // path for validation
+    QString path_scan_validate = QDir::cleanPath(QDir::currentPath() + QDir::separator()
+                                                 + "scans" + QDir::separator()+ "scan_to_annotate");
+    QString path_annotation_validate = QDir::cleanPath(QDir::currentPath() + QDir::separator()
+                                                       + "annotations" + QDir::separator()+ "annotation1");
+    // QTest
+    QCOMPARE(path_scan, path_scan_validate);
+    QCOMPARE(path_annotation, path_annotation_validate);
 }
 
-void testEshmun::test_vtk_viewer() {
-    QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
-    Annotation* annotation = new Annotation(&main_window);
-    annotation->show();
-    SceneWidget* sceneWidget = annotation->findChild<SceneWidget*>("sceneWidget");
-    vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
-    sceneWidget->SetImageData(imageData);
-    std::string referenceImagePath = "../test/reference_images/test_dummy.png";
-    std::string currentImagePath = "test/test_dummy.png";
-    sceneWidget->SaveScreenshot(currentImagePath);
-    QVERIFY(compareFiles(currentImagePath, referenceImagePath));
-}
+//void testEshmun::test_case1() {
+//    QPushButton *ui_selectButton = main_window.findChild<QPushButton*>("buttonSelectSubjects");
+//    QPushButton *ui_backButton = main_window.findChild<QPushButton*>("buttonGoBack");
+
+//    QCOMPARE(ui_backButton->isVisible(),false);
+//    QTest::mouseClick(ui_selectButton, Qt::LeftButton);
+//    QCOMPARE(ui_backButton->isVisible(),true);
+//}
+
+//void testEshmun::test_vtk_viewer() {
+//    QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
+//    Annotation* annotation = new Annotation(&main_window);
+//    annotation->show();
+//    SceneWidget* sceneWidget = annotation->findChild<SceneWidget*>("sceneWidget");
+//    vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
+//    sceneWidget->SetImageData(imageData);
+//    std::string referenceImagePath = "../test/reference_images/test_dummy.png";
+//    std::string currentImagePath = "test/test_dummy.png";
+//    sceneWidget->SaveScreenshot(currentImagePath);
+//    QVERIFY(compareFiles(currentImagePath, referenceImagePath));
+//}
 
 bool compareFiles(const std::string& p1, const std::string& p2) {
   std::ifstream f1(p1, std::ifstream::binary|std::ifstream::ate);
