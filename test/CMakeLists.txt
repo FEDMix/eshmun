@@ -30,8 +30,4 @@ target_link_libraries(test_eshmun PRIVATE
     ${VTK_LIBRARIES}
 )
 
-# If you register a test, then ctest and make test will run it.
-# Adding test parameters so the tests can run without a screen on ci
-# set (test_parameters -platform offscreen)
-# add_test(NAME test_eshmun COMMAND test_eshmun ${test_parameters})
 add_test(NAME test_eshmun COMMAND test_eshmun)

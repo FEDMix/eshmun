@@ -67,6 +67,8 @@ void testEshmun::test_case1() {
 }
 
 void testEshmun::test_vtk_viewer() {
+  QSKIP("Skipping vtk test till we have a better test");
+
   QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
   Annotation *annotation = new Annotation(&main_window);
   annotation->show();
