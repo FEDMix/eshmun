@@ -58,5 +58,5 @@ void MainWindow::pushButton_addPatient()
     // Load the data viewer for this path
     Annotation* annotation = new Annotation(this);
     annotation->show();
-    annotation->LoadData(dir); //dir.toStdString()
+    annotation->LoadData(dir);
 }
