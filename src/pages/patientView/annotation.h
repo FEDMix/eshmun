@@ -7,13 +7,10 @@
 #include <QLabel>
 #include <QDir>
 #include <QString>
-#include <QPixmap>
 #include <QPushButton>
-#include <QListView>
-#include <QSortFilterProxyModel>
-#include <QStandardItemModel>
 #include <QDebug>
 #include "../../components/dataloader/imageloader.h"
+#include "../../components/AnnotationPreview/annotationpreview.h"
 
 namespace Ui
 {
@@ -32,18 +29,10 @@ public:
 private slots:
     void pushButton_initVTK();
 
-    void on_nextScan_clicked();
-
-    void on_prevScan_clicked();
-    void update(const QModelIndex &current, const QModelIndex &previous);
-
 private:
     Ui::Annotation *ui;
-    QStandardItemModel *model;
-    QSortFilterProxyModel *proxyModel;
-    QItemSelectionModel    *selectionModel;
-    QStringList thumbnails;
     ImageLoader *imageloader;
+    AnnotationPreview *preview = new AnnotationPreview();
 };
 
 #endif // ANNOTATION_H
