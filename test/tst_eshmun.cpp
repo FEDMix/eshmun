@@ -92,11 +92,11 @@ void testEshmun::test_vtk_viewer() {
             << std::endl;
 
   QString refImage =
-      workingDir.filePath("../../test/reference_images/test_dummy.png");
+      workingDir.filePath("../../test/reference_images/test_noise_source.png");
   std::string referenceImagePath =
       QFileInfo{refImage}.absoluteFilePath().toStdString();
 
-  QString currentImagePath = "test_dummy.png";
+  QString currentImagePath = "test_noise_source.png";
   std::string imagePath = workingDir.filePath(currentImagePath).toStdString();
 
   sceneWidget->SaveScreenshot(imagePath);
