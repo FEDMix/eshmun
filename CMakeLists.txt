@@ -18,30 +18,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Packages for main program
-find_package(QT NAMES Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
-find_package(Qt5OpenGL REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-
-# Packages for test code
-find_package(QT NAMES Qt5 COMPONENTS Gui Test REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Gui Test REQUIRED)
-
-# Find package VTK
-find_package(VTK
-    9.0
-    REQUIRED
-    COMPONENTS
-        CommonCore
-        GUISupportQt
-        InteractionStyle
-        IOImage
-        IOLegacy
-        RenderingCore
-        RenderingImage
-        ImagingSources)
-
 enable_testing(true)
 
 # The executable code is here
