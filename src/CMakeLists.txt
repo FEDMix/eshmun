@@ -10,6 +10,12 @@ set(PROJECT_SOURCES
         components/VTKWidget/scenewidget.h
         components/dataloader/imageloader.cpp
         components/dataloader/imageloader.h
+        components/PreviewAnnotation/previewannotation.h
+        components/PreviewAnnotation/previewannotation.cpp
+        components/PreviewAnnotation/previewannotation.ui
+        components/AnnotationPreview/annotationpreview.h
+        components/AnnotationPreview/annotationpreview.cpp
+        components/AnnotationPreview/annotationpreview.ui
 )
 
 # Find package Qt
