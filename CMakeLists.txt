@@ -18,14 +18,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Packages for main program
-find_package(QT NAMES Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
-
-# Packages for test code
-find_package(QT NAMES Qt5 COMPONENTS Gui Test REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Gui Test REQUIRED)
-
 enable_testing(true)
 
 # The executable code is here

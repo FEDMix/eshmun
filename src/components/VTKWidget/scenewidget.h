@@ -7,7 +7,8 @@
 #include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkImageData.h>
-#include <vtkImagePlaneWidget.h>
+#include <vtkImageResliceMapper.h>
+#include <vtkImageSlice.h>
 
 class SceneWidget : public QVTKOpenGLNativeWidget {
     Q_OBJECT
@@ -19,9 +20,9 @@ public:
     void SaveScreenshot(std::string path);
 
 public slots:
-    void SetPlaneOrientationToXAxis();
-    void SetPlaneOrientationToYAxis();
-    void SetPlaneOrientationToZAxis();
+    void SetPlaneOrientationToAxial();
+    void SetPlaneOrientationToCoronal();
+    void SetPlaneOrientationToSagittal();
     void SetSliceIndex(int position);
 
     void ResetCamera();
@@ -31,8 +32,9 @@ private:
     vtkSmartPointer<vtkCamera> camera;
     vtkSmartPointer<vtkRenderer> renderer;
     vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor;
-    vtkSmartPointer<vtkImagePlaneWidget> ipw;
     vtkSmartPointer<vtkImageData> imageData;
+    vtkSmartPointer<vtkImageResliceMapper> imageMapper;
+    vtkSmartPointer<vtkImageSlice> image;
 
     void GetCenterAndDimensions(float*, float*);
 };

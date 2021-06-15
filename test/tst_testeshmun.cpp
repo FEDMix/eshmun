@@ -77,27 +77,19 @@ void testEshmun::test_imageloader() {
     QCOMPARE(path_annotation, path_annotation_validate);
 }
 
-//void testEshmun::test_case1() {
-//    QPushButton *ui_selectButton = main_window.findChild<QPushButton*>("buttonSelectSubjects");
-//    QPushButton *ui_backButton = main_window.findChild<QPushButton*>("buttonGoBack");
-
-//    QCOMPARE(ui_backButton->isVisible(),false);
-//    QTest::mouseClick(ui_selectButton, Qt::LeftButton);
-//    QCOMPARE(ui_backButton->isVisible(),true);
-//}
-
-//void testEshmun::test_vtk_viewer() {
-//    QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
-//    Annotation* annotation = new Annotation(&main_window);
-//    annotation->show();
-//    SceneWidget* sceneWidget = annotation->findChild<SceneWidget*>("sceneWidget");
-//    vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
-//    sceneWidget->SetImageData(imageData);
-//    std::string referenceImagePath = "../test/reference_images/test_dummy.png";
-//    std::string currentImagePath = "test/test_dummy.png";
-//    sceneWidget->SaveScreenshot(currentImagePath);
-//    QVERIFY(compareFiles(currentImagePath, referenceImagePath));
-//}
+void testEshmun::test_vtk_viewer() {
+    QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
+    Annotation* annotation = new Annotation(&main_window);
+    annotation->show();
+    SceneWidget* sceneWidget = annotation->findChild<SceneWidget*>("mainSceneAxial");
+    vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
+    sceneWidget->SetImageData(imageData);
+    sceneWidget->SetPlaneOrientationToAxial();
+    std::string referenceImagePath = "../test/reference_images/test_dummy.png";
+    std::string currentImagePath = "test/test_dummy.png";
+    sceneWidget->SaveScreenshot(currentImagePath);
+    QVERIFY(compareFiles(currentImagePath, referenceImagePath));
+}
 
 bool compareFiles(const std::string& p1, const std::string& p2) {
   std::ifstream f1(p1, std::ifstream::binary|std::ifstream::ate);
