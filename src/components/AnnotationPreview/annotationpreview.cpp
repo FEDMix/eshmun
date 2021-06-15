@@ -12,51 +12,12 @@ AnnotationPreview::AnnotationPreview(QWidget *parent) :
     // Set up List View
        ui->previewScans->setFlow(QListView::LeftToRight);
        ui->previewScans->setResizeMode(QListView::Adjust);
-       ui->previewScans->setViewMode(QListView::IconMode);
+       ui->previewScans->setViewMode(QListView::ListMode);
        ui->previewScans->setIconSize(QSize(150,130));
        ui->previewScans->setWrapping(false);
        ui->previewScans->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    //Make Data
-    QDir directory("/Users/pushpanjali/eScience/FedMix/ExampleData/");
-    // read file paths from images directory
-    const QString folderPath = directory.filePath("images/");
-    if(!folderPath.isEmpty()){
-        QDir dir(folderPath);
-        QStringList filter;
-        filter << QLatin1String("*.png");
-        filter << QLatin1String("*.jpeg");
-        filter << QLatin1String("*.jpg");
-        dir.setNameFilters(filter);
-        QFileInfoList filelistinfo = dir.entryInfoList();
 
-        foreach (const QFileInfo &fileinfo, filelistinfo) {
-            // push image paths into thumbnails array
-            thumbnails << fileinfo.absoluteFilePath();
-        }
-    }
-
-
-//    model->insertColumn(0);
-//    const int numRows = thumbnails.size();
-//    model->insertRows(0, numRows);
-//    // Iterate through imagepaths & create an image/preview from each image path
-//    for(int i=0;i<numRows;++i){
-//        // This will be replaced by creating sceneWidget
-//         QPixmap thumbnail = QPixmap(thumbnails.at(i)).scaled(140,120);
-
-//         model->setData(model->index(i,0),thumbnail,Qt::DecorationRole);
-//    }
-
-//    proxyModel->setSourceModel(model);
-//    proxyModel->setFilterKeyColumn(0);
-//    ui->previewScans->setModel(model);
-//    selectionModel = ui->previewScans->selectionModel();
-//    QModelIndex currentIndex = ui->previewScans->currentIndex();
-//    selectionModel->setCurrentIndex(model->index(1,currentIndex.column()),QItemSelectionModel::SelectCurrent);
-//    selectionModel->select(model->index(1,currentIndex.column()),QItemSelectionModel::SelectCurrent);
-//    // emit the selection change event
-//    connect(selectionModel, &QItemSelectionModel::currentChanged, this,&AnnotationPreview::update);
 }
 void AnnotationPreview::loadPreview(QString path){
     if(!path.isEmpty()){
@@ -72,6 +33,38 @@ void AnnotationPreview::loadPreview(QString path){
             }
         }
     qDebug() << "Scans" << thumbnails.size();
+//    // Create Model
+//    model = new QStandardItemModel(this);
+//    proxyModel = new QSortFilterProxyModel(this);
+//    model->insertColumn(0);
+//    const int numRows = thumbnails.size();
+//    model->insertRows(0, numRows);
+
+//    // Iterate through imagepaths & create an image/preview from each image path
+
+//    for(int i=0;i<numRows;++i){
+//        vtkSmartPointer<vtkDICOMImageReader> dicomReader_scan =
+//            vtkSmartPointer<vtkDICOMImageReader>::New();
+//        dicomReader_scan->SetDirectoryName(thumbnails.at(i).toStdString().c_str()); //path need to be std::string
+//        dicomReader_scan->Update();
+
+//        vtkSmartPointer<vtkImageData> imageData = dicomReader_scan->GetOutput();
+//        SceneWidget scene1 = SceneWidget();
+//        scene1.SetImageData(imageData);
+
+////        model->setData(model->index(i,0),scene1,Qt::DecorationRole);
+//    }
+
+//    proxyModel->setSourceModel(model);
+//    proxyModel->setFilterKeyColumn(0);
+//    ui->previewScans->setModel(model);
+//    selectionModel = ui->previewScans->selectionModel();
+//    QModelIndex currentIndex = ui->previewScans->currentIndex();
+
+// selectionModel->setCurrentIndex(model->index(1,currentIndex.column()),QItemSelectionModel::SelectCurrent);
+// selectionModel->select(model->index(1,currentIndex.column()),QItemSelectionModel::SelectCurrent);
+// // emit the selection change event
+// connect(selectionModel, &QItemSelectionModel::currentChanged, this,&AnnotationPreview::update);
 }
 
 AnnotationPreview::~AnnotationPreview()

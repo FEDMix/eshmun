@@ -10,7 +10,7 @@
 #include <QPushButton>
 #include <QDebug>
 #include "../../components/dataloader/imageloader.h"
-#include "../../components/AnnotationPreview/annotationpreview.h"
+#include "../../components/PreviewAnnotation/previewannotation.h"
 
 namespace Ui
 {
@@ -32,7 +32,7 @@ private slots:
 private:
     Ui::Annotation *ui;
     ImageLoader *imageloader;
-    AnnotationPreview *preview = new AnnotationPreview();
+    PreviewAnnotation *preview = new PreviewAnnotation();
 };
 
 #endif // ANNOTATION_H
