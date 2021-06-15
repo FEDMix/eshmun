@@ -14,7 +14,7 @@ QString ImageLoader::image_scan(QString path) {
 QString ImageLoader::image_annotation(QString path) {
     // Use OS dependent separator
     QString path_annotation = QDir::cleanPath(path + QDir::separator()
-                                        + "annotations" + QDir::separator()+ "annotation1");
+                                        + "annotations");
     qInfo( "Directory path to annotation images: %s", qUtf8Printable(path_annotation));
 
     return path_annotation;
