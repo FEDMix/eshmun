@@ -20,6 +20,7 @@ PreviewAnnotation::PreviewAnnotation(QWidget *parent) :
     ui->previewWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     ui->previewWidget->setWrapping(false);
 
+    ui->previewWidget->setAutoScroll(false);
     //Set picture size in item
      ui->previewWidget->setIconSize(QSize(100,100));
     //Set layout policy (Adjust to, Fixed not to)
@@ -94,7 +95,8 @@ void PreviewAnnotation::on_nextButton_clicked()
 }
 void PreviewAnnotation::on_previewWidget_itemClicked(QListWidgetItem *item)
 {
-    qDebug() << "item" << item ;
+    int clikedItemIndex = ui->previewWidget->row(item);
+    qDebug() << "item" << thumbnails.at(clikedItemIndex);
 }
 
 void PreviewAnnotation::on_prevButton_clicked()
