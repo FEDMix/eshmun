@@ -18,7 +18,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="pageMain">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -77,7 +77,7 @@
         <item>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="2" column="1">
-           <widget class="QPushButton" name="buttonSelectSubjects">
+           <widget class="QPushButton" name="buttonAddPatient">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -85,7 +85,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>Select Subjects</string>
+             <string>Add Patient</string>
             </property>
            </widget>
           </item>

@@ -2,7 +2,11 @@
 #include <QCoreApplication>
 #include <QtTest/QtTest>
 #include <QtWidgets>
+#include <QDebug>
+#include <QString>
+#include <QDir>
 
+#include "../src/components/dataloader/imageloader.h"
 #include "../src/components/VTKWidget/scenewidget.h"
 #include "../src/pages/patientView/annotation.h"
 #include <QSurfaceFormat>
@@ -27,8 +31,9 @@ private slots:
   // example ui test
   void lineEdit();
   void cleanupTestCase();
-  void test_case1();
+  //void test_case1();
   void test_vtk_viewer();
+  void test_imageloader();
 
 private:
   MainWindow main_window;
@@ -55,16 +60,31 @@ void testEshmun::lineEdit() {
 
 void testEshmun::cleanupTestCase() {}
 
-void testEshmun::test_case1() {
-  QPushButton *ui_selectButton =
-      main_window.findChild<QPushButton *>("buttonSelectSubjects");
-  QPushButton *ui_backButton =
-      main_window.findChild<QPushButton *>("buttonGoBack");
-
-  QCOMPARE(ui_backButton->isVisible(), false);
-  QTest::mouseClick(ui_selectButton, Qt::LeftButton);
-  QCOMPARE(ui_backButton->isVisible(), true);
+void testEshmun::test_imageloader() {
+    ImageLoader* imageloader = new ImageLoader();
+    QString path = QDir::currentPath();
+    QString path_scan = imageloader->image_scan(path);
+    QString path_annotation = imageloader->image_annotation(path);
+    // path for validation
+    QString path_scan_validate = QDir::cleanPath(QDir::currentPath() + QDir::separator()
+                                                 + "scans" + QDir::separator()+ "scan_to_annotate");
+    QString path_annotation_validate = QDir::cleanPath(QDir::currentPath() + QDir::separator()
+                                                       + "annotations" + QDir::separator()+ "annotation1");
+    // QTest
+    QCOMPARE(path_scan, path_scan_validate);
+    QCOMPARE(path_annotation, path_annotation_validate);
 }
+
+//void testEshmun::test_case1() {
+//  QPushButton *ui_selectButton =
+//      main_window.findChild<QPushButton *>("buttonSelectSubjects");
+//  QPushButton *ui_backButton =
+//      main_window.findChild<QPushButton *>("buttonAddPatient");
+
+//  QCOMPARE(ui_backButton->isVisible(), false);
+//  QTest::mouseClick(ui_selectButton, Qt::LeftButton);
+//  QCOMPARE(ui_backButton->isVisible(), true);
+//}
 
 void testEshmun::test_vtk_viewer() {
   QSKIP("Skipping vtk test till we have a better test");

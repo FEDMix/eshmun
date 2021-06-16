@@ -15,6 +15,7 @@ find_package(VTK
         IOImage
         IOLegacy
         RenderingCore
+        RenderingImage
         ImagingSources)
 
 add_library(EshmunCore
@@ -27,6 +28,8 @@ add_library(EshmunCore
     pages/patientView/annotation.ui
     components/VTKWidget/scenewidget.cpp
     components/VTKWidget/scenewidget.h
+    components/dataloader/imageloader.cpp
+    components/dataloader/imageloader.h
 )
 
 target_compile_features(EshmunCore PRIVATE cxx_std_17)

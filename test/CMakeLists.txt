@@ -20,6 +20,7 @@ find_package(VTK
         IOImage
         IOLegacy
         RenderingCore
+        RenderingImage
         ImagingSources)
 
 target_link_libraries(test_eshmun PRIVATE
