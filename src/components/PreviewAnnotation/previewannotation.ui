@@ -19,11 +19,51 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton {
+	border-radius: 5px;
+	width: 80px;
+	height:40px;
+	background-color: #ddd;
+}
+QListWidget::item:selected{ 
+border: 2px solid blue; 
+}
+QScrollBar {
+	height: 5px;
+	border-radius:10px;
+}</string>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
+    <widget class="QPushButton" name="prevButton">
+     <property name="maximumSize">
+      <size>
+       <width>80</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Prev</string>
+     </property>
+    </widget>
+   </item>
+   <item alignment="Qt::AlignVCenter">
     <widget class="QListWidget" name="previewWidget">
+     <property name="styleSheet">
+      <string notr="true">QListWidget::item:selected{
+	border: 1px solid red;
+}
+</string>
+     </property>
      <property name="verticalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="autoScroll">
+      <bool>false</bool>
+     </property>
+     <property name="autoScrollMargin">
+      <number>0</number>
      </property>
      <property name="iconSize">
       <size>
@@ -52,8 +92,27 @@
      <property name="viewMode">
       <enum>QListView::IconMode</enum>
      </property>
+     <property name="selectionRectVisible">
+      <bool>true</bool>
+     </property>
      <property name="currentRow">
       <number>-1</number>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="nextButton">
+     <property name="maximumSize">
+      <size>
+       <width>80</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>next</string>
      </property>
     </widget>
    </item>

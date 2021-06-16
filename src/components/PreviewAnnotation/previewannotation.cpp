@@ -10,27 +10,35 @@ PreviewAnnotation::PreviewAnnotation(QWidget *parent) :
     ui(new Ui::PreviewAnnotation)
 {
     ui->setupUi(this);
-    ui->previewWidget->setSpacing(10);
-    //Set the display mode, picture on top, name on bottom
+    ui->previewWidget->setSpacing(5);
+
+    //Set the display mode
     ui->previewWidget->setViewMode(QListWidget::IconMode);
+    // set flow to horizontal only
     ui->previewWidget->setFlow(QListWidget::LeftToRight);
+    ui->previewWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->previewWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    ui->previewWidget->setWrapping(false);
+
     //Set picture size in item
      ui->previewWidget->setIconSize(QSize(100,100));
     //Set layout policy (Adjust to, Fixed not to)
      ui->previewWidget->setResizeMode(QListWidget::Fixed);
-     ui->previewWidget->setCurrentRow(1);
+     // set the selection mode
+     ui->previewWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+     ui->previewWidget->setSelectionRectVisible(true);
 
-       ui->previewWidget->setWrapping(false);
-    //Set cell item cannot be dragged
-     ui->previewWidget->setMovement(QListWidget::Static);
-    //Set scroll bar not to display
-     ui->previewWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-     ui->previewWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+     selectionModel = ui->previewWidget->selectionModel();
+     selectionModel->setCurrentIndex(ui->previewWidget->currentIndex(),QItemSelectionModel::SelectCurrent);
+     selectionModel->setCurrentIndex(ui->previewWidget->currentIndex(),QItemSelectionModel::SelectCurrent);
+     selectionModel->select(ui->previewWidget->currentIndex(),QItemSelectionModel::SelectCurrent);
+     connect(selectionModel, &QItemSelectionModel::currentChanged, this,&PreviewAnnotation::update);
 
 
-     ui->previewWidget->setVerticalScrollMode(QListWidget::ScrollPerPixel);
+
 
 }
+
 void PreviewAnnotation::loadPreview(QString path){
     QDir directory(path);
     qDebug() << "Path" << path;
@@ -67,3 +75,46 @@ PreviewAnnotation::~PreviewAnnotation()
 {
     delete ui;
 }
+
+
+
+
+void PreviewAnnotation::on_nextButton_clicked()
+{
+     int currentIndex = ui->previewWidget->currentRow();
+    qDebug() << "next index" << currentIndex << thumbnails.size();
+
+    if(currentIndex >= thumbnails.size() - 1) {
+        ui->nextButton->setDisabled(true);
+        ui->prevButton->setDisabled(false);
+    } else {
+        ui->previewWidget->setCurrentRow(currentIndex+1);
+    }
+
+}
+void PreviewAnnotation::on_previewWidget_itemClicked(QListWidgetItem *item)
+{
+    qDebug() << "item" << item ;
+}
+
+void PreviewAnnotation::on_prevButton_clicked()
+{
+    int currentIndex = ui->previewWidget->currentRow();
+    if(currentIndex <= 0) {
+        ui->prevButton->setDisabled(true);
+        ui->nextButton->setDisabled(false);
+    } else {
+        ui->previewWidget->setCurrentRow(currentIndex-1);
+    }
+
+}
+
+void PreviewAnnotation::update(const QModelIndex &current, const QModelIndex &previous){
+    ui->previewWidget->scrollTo(ui->previewWidget->currentIndex());
+    ui->previewWidget->selectionModel()->select(ui->previewWidget->currentIndex(),QItemSelectionModel::Select);
+    qDebug() << "changed" << "current" << thumbnails.at(current.row()) << "previous" << previous.row();
+
+}
+
+
+

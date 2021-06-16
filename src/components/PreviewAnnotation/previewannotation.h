@@ -2,9 +2,11 @@
 #define PREVIEWANNOTATION_H
 
 #include <QWidget>
+#include <QListWidget>
 #include <QDir>
 #include <QString>
 #include <QDebug>
+#include <QItemSelectionModel>
 namespace Ui {
 class PreviewAnnotation;
 }
@@ -18,9 +20,16 @@ public:
     ~PreviewAnnotation();
     void loadPreview(QString);
 
+private slots:
+    void on_nextButton_clicked();
+    void on_prevButton_clicked();
+    void update(const QModelIndex &current, const QModelIndex &previous);
+    void on_previewWidget_itemClicked(QListWidgetItem *item);
+
 private:
     Ui::PreviewAnnotation *ui;
     QStringList thumbnails;
+    QItemSelectionModel *selectionModel;
 };
 
 #endif // PREVIEWANNOTATION_H
