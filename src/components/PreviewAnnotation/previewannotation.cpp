@@ -93,11 +93,6 @@ void PreviewAnnotation::on_nextButton_clicked()
     }
 
 }
-void PreviewAnnotation::on_previewWidget_itemClicked(QListWidgetItem *item)
-{
-    int clikedItemIndex = ui->previewWidget->row(item);
-    qDebug() << "item" << thumbnails.at(clikedItemIndex);
-}
 
 void PreviewAnnotation::on_prevButton_clicked()
 {
@@ -111,6 +106,13 @@ void PreviewAnnotation::on_prevButton_clicked()
 
 }
 
+// Get the path of annotation clicked
+void PreviewAnnotation::on_previewWidget_itemClicked(QListWidgetItem *item)
+{
+    int clikedItemIndex = ui->previewWidget->row(item);
+    qDebug() << "item" << thumbnails.at(clikedItemIndex);
+}
+// Get the path of annotation when selection is updated on prev,next click
 void PreviewAnnotation::update(const QModelIndex &current, const QModelIndex &previous){
     ui->previewWidget->scrollTo(ui->previewWidget->currentIndex());
     ui->previewWidget->selectionModel()->select(ui->previewWidget->currentIndex(),QItemSelectionModel::Select);
