@@ -32,6 +32,8 @@ private slots:
   void lineEdit();
   void cleanupTestCase();
   //void test_case1();
+  std::string GetCurrentImagePath(std::string name);
+  std::string GetReferenceImagePath(std::string name);
   void test_vtk_viewer();
   void test_imageloader();
 
@@ -86,47 +88,58 @@ void testEshmun::test_imageloader() {
 //  QCOMPARE(ui_backButton->isVisible(), true);
 //}
 
+std::string testEshmun::GetCurrentImagePath(std::string name) {
+    QDir workingDir = QDir{QDir::currentPath()};
+    std::cerr << "Working directory: " << workingDir.path().toStdString()
+            << std::endl;
+
+    QString currentImagePath = QString::fromStdString(name + ".png");
+    return workingDir.filePath(currentImagePath).toStdString();
+}
+
+std::string testEshmun::GetReferenceImagePath(std::string name) {
+    QDir workingDir = QDir{QDir::currentPath()};
+    std::cerr << "Working directory: " << workingDir.path().toStdString()
+            << std::endl;
+
+    QString refImage =
+        workingDir.filePath(QString::fromStdString("../test/reference_images/" + name + ".png"));
+    return QFileInfo{refImage}.absoluteFilePath().toStdString();
+}
+
 void testEshmun::test_vtk_viewer() {
-  QSKIP("Skipping vtk test till we have a better test");
+  //QSKIP("Skipping vtk test till we have a better test");
 
   QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
   Annotation *annotation = new Annotation(&main_window);
   annotation->show();
   SceneWidget *sceneWidget =
-      annotation->findChild<SceneWidget *>("sceneWidget");
+      annotation->findChild<SceneWidget *>("mainSceneAxial");
   vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
   sceneWidget->SetImageData(imageData);
 
-  QSize size = sceneWidget->size();
-  std::cerr << "Original Widget Size: " << size.width() << ", " << size.height()
-            << std::endl;
-  sceneWidget->resize(800, 800);
+//   QSize size = sceneWidget->size();
+//   std::cerr << "Original Widget Size: " << size.width() << ", " << size.height()
+//             << std::endl;
+//   sceneWidget->resize(800, 800);
 
-  size = sceneWidget->size();
-  std::cerr << "New Widget Size: " << size.width() << ", " << size.height()
-            << std::endl;
+//   size = sceneWidget->size();
+//   std::cerr << "New Widget Size: " << size.width() << ", " << size.height()
+//             << std::endl;
 
-  QDir workingDir = QDir{QDir::currentPath()};
+    std::string name = "test_scenewidget";
+    std::string imagePath = GetCurrentImagePath(name);
+    std::string referenceImagePath = GetReferenceImagePath(name);
 
-  std::cerr << "Working directory: " << workingDir.path().toStdString()
-            << std::endl;
+    sceneWidget->SaveScreenshot(imagePath);
 
-  QString refImage =
-      workingDir.filePath("../../test/reference_images/test_dummy.png");
-  std::string referenceImagePath =
-      QFileInfo{refImage}.absoluteFilePath().toStdString();
-
-  QString currentImagePath = "test_dummy.png";
-  std::string imagePath = workingDir.filePath(currentImagePath).toStdString();
-
-  sceneWidget->SaveScreenshot(imagePath);
-
-  std::cerr << "Comparing file: " << imagePath << " to " << referenceImagePath
-            << std::endl;
-  QVERIFY(compareFiles(imagePath, referenceImagePath));
+    QVERIFY(compareFiles(imagePath, referenceImagePath));
 }
 
 bool compareFiles(const std::string &p1, const std::string &p2) {
+  std::cerr << "Comparing file: " << p1 << " to " << p2
+            << std::endl;
+
   std::ifstream f1(p1, std::ifstream::binary | std::ifstream::ate);
   std::ifstream f2(p2, std::ifstream::binary | std::ifstream::ate);
 

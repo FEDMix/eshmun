@@ -56,6 +56,7 @@ SceneWidget::SceneWidget(QWidget* parent)
 void SceneWidget::SetImageData(vtkSmartPointer<vtkImageData> imageData) {
     this->imageData = imageData;
     this->imageMapper->SetInputData(imageData);
+    SetPlaneOrientationToAxial();
     Refresh();
 }
 
