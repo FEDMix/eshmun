@@ -1,6 +1,8 @@
 #ifndef SCENEWIDGET_H
 #define SCENEWIDGET_H
 
+#include "linkedinteractorstyle.h"
+
 #include <QVTKOpenGLNativeWidget.h>
 #include <vtkSmartPointer.h>
 #include <vtkCamera.h>
@@ -9,6 +11,7 @@
 #include <vtkImageData.h>
 #include <vtkImageResliceMapper.h>
 #include <vtkImageSlice.h>
+#include <vtkImageProperty.h>
 
 class SceneWidget : public QVTKOpenGLNativeWidget {
     Q_OBJECT
@@ -18,13 +21,16 @@ public:
     void SetImageData(vtkSmartPointer<vtkImageData> imageData);
     vtkSmartPointer<vtkImageData> GetDummyData();
     void SaveScreenshot(std::string path);
+    void AddLinkedSceneWidget(SceneWidget* sceneWidget, bool twoWay);
 
 public slots:
     void SetPlaneOrientationToAxial();
     void SetPlaneOrientationToCoronal();
     void SetPlaneOrientationToSagittal();
     void SetSliceIndex(int position);
-
+    double GetColorWindow();
+    double GetColorLevel();
+    void SetWindowLevel(double window, double level);
     void ResetCamera();
     void Refresh();
 
@@ -32,6 +38,7 @@ private:
     vtkSmartPointer<vtkCamera> camera;
     vtkSmartPointer<vtkRenderer> renderer;
     vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor;
+    vtkSmartPointer<LinkedInteractorStyle> style;
     vtkSmartPointer<vtkImageData> imageData;
     vtkSmartPointer<vtkImageResliceMapper> imageMapper;
     vtkSmartPointer<vtkImageSlice> image;

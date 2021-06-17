@@ -45,6 +45,10 @@ void Annotation::LoadData(QString path) {
     ui->mainSceneCoronal->SetPlaneOrientationToCoronal();
     ui->mainSceneSagittal->SetPlaneOrientationToSagittal();
 
+    ui->mainSceneAxial->AddLinkedSceneWidget(ui->mainSceneCoronal, true);
+    ui->mainSceneAxial->AddLinkedSceneWidget(ui->mainSceneSagittal, true);
+    ui->mainSceneCoronal->AddLinkedSceneWidget(ui->mainSceneSagittal, true);
+
     // create vtk pointer for all annotations
     QString path_annotation = imageloader->image_annotation(path);
 }

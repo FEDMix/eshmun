@@ -1,5 +1,6 @@
 #include "scenewidget.h"
 
+#include "linkedinteractorstyle.h"
 #include <vtkDataSetMapper.h>
 #include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkProperty.h>
@@ -33,15 +34,16 @@ SceneWidget::SceneWidget(QWidget* parent)
     renderWindowInteractor->SetRenderWindow(renderWindow());
 
     // Interactor style
-    vtkSmartPointer<vtkInteractorStyleImage> style = 
-        vtkSmartPointer<vtkInteractorStyleImage>::New();
+    style = vtkSmartPointer<LinkedInteractorStyle>::New();
     renderWindowInteractor->SetInteractorStyle(style);
+    style->SetBaseWidget(this);
     style->SetInteractionModeToImageSlicing();
 
     // Image reslice mapper
     imageMapper = vtkSmartPointer<vtkImageResliceMapper>::New();
     imageMapper->SliceFacesCameraOn();
     imageMapper->SliceAtFocalPointOn();
+    imageMapper->JumpToNearestSliceOn();
     
     // Image slice prop
     image = vtkSmartPointer<vtkImageSlice>::New();
@@ -110,6 +112,20 @@ void SceneWidget::SetSliceIndex(int position) {
     Refresh();
 }
 
+double SceneWidget::GetColorWindow() {
+    return image->GetProperty()->GetColorWindow();
+}
+
+double SceneWidget::GetColorLevel() {
+    return image->GetProperty()->GetColorLevel();
+}
+
+void SceneWidget::SetWindowLevel(double window, double level) {
+    image->GetProperty()->SetColorWindow(window);
+    image->GetProperty()->SetColorLevel(level);
+    Refresh();
+}
+
 void SceneWidget::ResetCamera()
 {
     renderer->ResetCamera();
@@ -147,4 +163,11 @@ void SceneWidget::SaveScreenshot(std::string path)
     writer->SetFileName(path.c_str());
     writer->SetInputConnection(windowToImageFilter->GetOutputPort());
     writer->Write();
+}
+
+void SceneWidget::AddLinkedSceneWidget(SceneWidget* linkedWidget, bool twoWay) {
+    style->AddLinkedWidget(linkedWidget);
+    if (twoWay) {
+        linkedWidget->AddLinkedSceneWidget(this, false);
+    }
 }

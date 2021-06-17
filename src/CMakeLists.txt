@@ -26,6 +26,8 @@ add_library(EshmunCore
     pages/patientView/annotation.cpp
     pages/patientView/annotation.h
     pages/patientView/annotation.ui
+    components/VTKWidget/linkedinteractorstyle.cpp
+    components/VTKWidget/linkedinteractorstyle.h
     components/VTKWidget/scenewidget.cpp
     components/VTKWidget/scenewidget.h
     components/dataloader/imageloader.cpp
