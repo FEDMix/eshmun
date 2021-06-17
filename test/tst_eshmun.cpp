@@ -32,10 +32,10 @@ private slots:
   void lineEdit();
   void cleanupTestCase();
   //void test_case1();
-  std::string GetCurrentImagePath(std::string name);
-  std::string GetReferenceImagePath(std::string name);
+  void screenshotAndVerify(std::string name, SceneWidget* SceneWidget);
   void test_scene_widget();
   void test_orthogonal_views();
+  void test_window_level_syncing();
   void test_imageloader();
 
 private:
@@ -89,23 +89,30 @@ void testEshmun::test_imageloader() {
 //  QCOMPARE(ui_backButton->isVisible(), true);
 //}
 
-std::string testEshmun::GetCurrentImagePath(std::string name) {
+void testEshmun::screenshotAndVerify(std::string name, SceneWidget* sceneWidget) {
     QDir workingDir = QDir{QDir::currentPath()};
     std::cerr << "Working directory: " << workingDir.path().toStdString()
             << std::endl;
 
     QString currentImagePath = QString::fromStdString(name + ".png");
-    return workingDir.filePath(currentImagePath).toStdString();
-}
-
-std::string testEshmun::GetReferenceImagePath(std::string name) {
-    QDir workingDir = QDir{QDir::currentPath()};
-    std::cerr << "Working directory: " << workingDir.path().toStdString()
-            << std::endl;
+    std::string imagePath = workingDir.filePath(currentImagePath).toStdString();
 
     QString refImage =
         workingDir.filePath(QString::fromStdString("../test/reference_images/" + name + ".png"));
-    return QFileInfo{refImage}.absoluteFilePath().toStdString();
+    std::string referenceImagePath = QFileInfo{refImage}.absoluteFilePath().toStdString();
+
+//   QSize size = sceneWidget->size();
+//   std::cerr << "Original Widget Size: " << size.width() << ", " << size.height()
+//             << std::endl;
+//   sceneWidget->resize(800, 800);
+
+//   size = sceneWidget->size();
+//   std::cerr << "New Widget Size: " << size.width() << ", " << size.height()
+//             << std::endl;
+
+    sceneWidget->SaveScreenshot(imagePath);
+
+    QVERIFY(compareFiles(imagePath, referenceImagePath));
 }
 
 void testEshmun::test_scene_widget() {
@@ -118,23 +125,7 @@ void testEshmun::test_scene_widget() {
       annotation->findChild<SceneWidget *>("mainSceneAxial");
   vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
   sceneWidget->SetImageData(imageData);
-
-//   QSize size = sceneWidget->size();
-//   std::cerr << "Original Widget Size: " << size.width() << ", " << size.height()
-//             << std::endl;
-//   sceneWidget->resize(800, 800);
-
-//   size = sceneWidget->size();
-//   std::cerr << "New Widget Size: " << size.width() << ", " << size.height()
-//             << std::endl;
-
-    std::string name = "test_scenewidget";
-    std::string imagePath = GetCurrentImagePath(name);
-    std::string referenceImagePath = GetReferenceImagePath(name);
-
-    sceneWidget->SaveScreenshot(imagePath);
-
-    QVERIFY(compareFiles(imagePath, referenceImagePath));
+  screenshotAndVerify("test_scenewidget", sceneWidget);
 }
 
 void testEshmun::test_orthogonal_views() {
@@ -148,27 +139,35 @@ void testEshmun::test_orthogonal_views() {
     vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
     sceneWidget->SetImageData(imageData);
     sceneWidget->SetPlaneOrientationToAxial();
-    std::string name = "test_orthogonal_views_axial";
-    std::string imagePath = GetCurrentImagePath(name);
-    std::string referenceImagePath = GetReferenceImagePath(name);
-    sceneWidget->SaveScreenshot(imagePath);
-    QVERIFY(compareFiles(imagePath, referenceImagePath));
+    screenshotAndVerify("test_orthogonal_views_axial", sceneWidget);
 
     // Coronal
     sceneWidget->SetPlaneOrientationToCoronal();
-    name = "test_orthogonal_views_coronal";
-    imagePath = GetCurrentImagePath(name);
-    referenceImagePath = GetReferenceImagePath(name);
-    sceneWidget->SaveScreenshot(imagePath);
-    QVERIFY(compareFiles(imagePath, referenceImagePath));
+    screenshotAndVerify("test_orthogonal_views_coronal", sceneWidget);
 
     // Sagittal
     sceneWidget->SetPlaneOrientationToSagittal();
-    name = "test_orthogonal_views_sagittal";
-    imagePath = GetCurrentImagePath(name);
-    referenceImagePath = GetReferenceImagePath(name);
-    sceneWidget->SaveScreenshot(imagePath);
-    QVERIFY(compareFiles(imagePath, referenceImagePath));
+    screenshotAndVerify("test_orthogonal_views_sagittal", sceneWidget);
+}
+
+void testEshmun::test_window_level_syncing() {
+    QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
+    Annotation *annotation = new Annotation(&main_window);
+    annotation->show();
+
+    SceneWidget *sceneWidget =
+        annotation->findChild<SceneWidget *>("mainSceneAxial");
+    vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
+    sceneWidget->SetImageData(imageData);
+
+    SceneWidget* sceneWidget2 =
+        annotation->findChild<SceneWidget *>("mainSceneCoronal");
+    sceneWidget2->SetImageData(imageData);
+
+    sceneWidget->SetWindowLevel(999, 501);
+
+    screenshotAndVerify("test_set_window_level", sceneWidget);
+    screenshotAndVerify("test_sync_window_level", sceneWidget2);
 }
 
 bool compareFiles(const std::string &p1, const std::string &p2) {
