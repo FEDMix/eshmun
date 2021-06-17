@@ -34,7 +34,8 @@ private slots:
   //void test_case1();
   std::string GetCurrentImagePath(std::string name);
   std::string GetReferenceImagePath(std::string name);
-  void test_vtk_viewer();
+  void test_scene_widget();
+  void test_orthogonal_views();
   void test_imageloader();
 
 private:
@@ -107,7 +108,7 @@ std::string testEshmun::GetReferenceImagePath(std::string name) {
     return QFileInfo{refImage}.absoluteFilePath().toStdString();
 }
 
-void testEshmun::test_vtk_viewer() {
+void testEshmun::test_scene_widget() {
   //QSKIP("Skipping vtk test till we have a better test");
 
   QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
@@ -133,6 +134,40 @@ void testEshmun::test_vtk_viewer() {
 
     sceneWidget->SaveScreenshot(imagePath);
 
+    QVERIFY(compareFiles(imagePath, referenceImagePath));
+}
+
+void testEshmun::test_orthogonal_views() {
+    QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
+    Annotation *annotation = new Annotation(&main_window);
+    annotation->show();
+
+    // Axial
+    SceneWidget *sceneWidget =
+        annotation->findChild<SceneWidget *>("mainSceneAxial");
+    vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
+    sceneWidget->SetImageData(imageData);
+    sceneWidget->SetPlaneOrientationToAxial();
+    std::string name = "test_orthogonal_views_axial";
+    std::string imagePath = GetCurrentImagePath(name);
+    std::string referenceImagePath = GetReferenceImagePath(name);
+    sceneWidget->SaveScreenshot(imagePath);
+    QVERIFY(compareFiles(imagePath, referenceImagePath));
+
+    // Coronal
+    sceneWidget->SetPlaneOrientationToCoronal();
+    name = "test_orthogonal_views_coronal";
+    imagePath = GetCurrentImagePath(name);
+    referenceImagePath = GetReferenceImagePath(name);
+    sceneWidget->SaveScreenshot(imagePath);
+    QVERIFY(compareFiles(imagePath, referenceImagePath));
+
+    // Sagittal
+    sceneWidget->SetPlaneOrientationToSagittal();
+    name = "test_orthogonal_views_sagittal";
+    imagePath = GetCurrentImagePath(name);
+    referenceImagePath = GetReferenceImagePath(name);
+    sceneWidget->SaveScreenshot(imagePath);
     QVERIFY(compareFiles(imagePath, referenceImagePath));
 }
 
