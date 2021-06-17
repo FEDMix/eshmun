@@ -12,6 +12,7 @@ PreviewAnnotation::PreviewAnnotation(QWidget *parent) :
     ui->setupUi(this);
     ui->previewWidget->setSpacing(5);
 
+    ui->previewWidget->setStyleSheet("QListWidget::item { border: 1px solid black; padding:5px; margin-top:5px; } QListWidget::item:selected { border: 1px solid blue; }");
     //Set the display mode
     ui->previewWidget->setViewMode(QListWidget::IconMode);
     // set flow to horizontal only
@@ -30,7 +31,6 @@ PreviewAnnotation::PreviewAnnotation(QWidget *parent) :
      ui->previewWidget->setSelectionRectVisible(true);
 
      selectionModel = ui->previewWidget->selectionModel();
-     selectionModel->setCurrentIndex(ui->previewWidget->currentIndex(),QItemSelectionModel::SelectCurrent);
      selectionModel->setCurrentIndex(ui->previewWidget->currentIndex(),QItemSelectionModel::SelectCurrent);
      selectionModel->select(ui->previewWidget->currentIndex(),QItemSelectionModel::SelectCurrent);
      connect(selectionModel, &QItemSelectionModel::currentChanged, this,&PreviewAnnotation::update);
@@ -116,7 +116,7 @@ void PreviewAnnotation::on_previewWidget_itemClicked(QListWidgetItem *item)
 void PreviewAnnotation::update(const QModelIndex &current, const QModelIndex &previous){
     ui->previewWidget->scrollTo(ui->previewWidget->currentIndex());
     ui->previewWidget->selectionModel()->select(ui->previewWidget->currentIndex(),QItemSelectionModel::Select);
-    qDebug() << "changed" << "current" << thumbnails.at(current.row()) << "previous" << previous.row();
+    qDebug() << "changed" << "current" << ui->previewWidget->selectedItems();
 
 }
 

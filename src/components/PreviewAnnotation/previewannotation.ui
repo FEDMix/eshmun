@@ -51,10 +51,7 @@ QScrollBar {
    <item alignment="Qt::AlignVCenter">
     <widget class="QListWidget" name="previewWidget">
      <property name="styleSheet">
-      <string notr="true">QListWidget::item:selected{
-	border: 1px solid red;
-}
-</string>
+      <string notr="true"/>
      </property>
      <property name="verticalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOff</enum>
