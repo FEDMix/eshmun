@@ -3,6 +3,7 @@
 #include <vtkSmartPointer.h>
 #include <vtkImageData.h>
 #include <vtkDICOMImageReader.h>
+
 Annotation::Annotation(QWidget *parent) : QDialog(parent),
                                           ui(new Ui::Annotation)
 {
@@ -12,8 +13,9 @@ Annotation::Annotation(QWidget *parent) : QDialog(parent),
     connect(button_initVTK, SIGNAL(released()), this,
             SLOT(pushButton_initVTK())); // assign signals and slots
 
-
     ui->previewContainer->layout()->addWidget(preview);
+    // signal from annotation preview -> slot update the othogonal view
+    connect(preview,SIGNAL(sync_path_signal(QString)),this,SLOT(SyncPreview(QString)));
 }
 
 void Annotation::pushButton_initVTK()
@@ -46,7 +48,18 @@ void Annotation::LoadData(QString path) {
     // create vtk pointer for all annotations
     QString path_annotation = imageloader->image_annotation(path);
     preview->loadPreview(path_annotation);
-
 }
+
+void Annotation::SyncPreview(QString path) {
+    qInfo( "Directory path to annotation images to sync preview: %s", qUtf8Printable(path));
+    vtkSmartPointer<vtkDICOMImageReader> dicomReader =
+        vtkSmartPointer<vtkDICOMImageReader>::New();
+    dicomReader->SetDirectoryName(path.toStdString().c_str()); //path need to be std::string
+    dicomReader->Update();
+
+    vtkSmartPointer<vtkImageData> imageData = dicomReader->GetOutput();
+    ui->sceneWidget->SetImageData(imageData);
+}
+
 
 

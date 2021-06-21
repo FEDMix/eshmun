@@ -7,6 +7,7 @@
 #include <QString>
 #include <QDebug>
 #include <QItemSelectionModel>
+
 namespace Ui {
 class PreviewAnnotation;
 }
@@ -25,6 +26,9 @@ private slots:
     void on_prevButton_clicked();
     void update(const QModelIndex &current, const QModelIndex &previous);
     void on_previewWidget_itemClicked(QListWidgetItem *item);
+
+signals:
+    void sync_path_signal(QString);
 
 private:
     Ui::PreviewAnnotation *ui;

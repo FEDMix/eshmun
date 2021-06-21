@@ -9,6 +9,7 @@
 #include <QString>
 #include <QPushButton>
 #include <QDebug>
+#include <QListWidgetItem>
 #include "../../components/dataloader/imageloader.h"
 #include "../../components/PreviewAnnotation/previewannotation.h"
 
@@ -28,6 +29,7 @@ public:
 
 private slots:
     void pushButton_initVTK();
+    void SyncPreview(QString);
 
 private:
     Ui::Annotation *ui;

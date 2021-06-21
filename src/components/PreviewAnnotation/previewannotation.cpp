@@ -1,6 +1,7 @@
 #include "previewannotation.h"
 #include "ui_previewannotation.h"
 #include "../../components/VTKWidget/scenewidget.h"
+//#include "../../pages/patientView/annotation.h"
 #include <vtkSmartPointer.h>
 #include <vtkImageData.h>
 #include <vtkDICOMImageReader.h>
@@ -25,19 +26,15 @@ PreviewAnnotation::PreviewAnnotation(QWidget *parent) :
     //Set picture size in item
      ui->previewWidget->setIconSize(QSize(100,100));
     //Set layout policy (Adjust to, Fixed not to)
-     ui->previewWidget->setResizeMode(QListWidget::Fixed);
-     // set the selection mode
-     ui->previewWidget->setSelectionMode(QAbstractItemView::SingleSelection);
-     ui->previewWidget->setSelectionRectVisible(true);
+    ui->previewWidget->setResizeMode(QListWidget::Fixed);
+    // set the selection mode
+    ui->previewWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->previewWidget->setSelectionRectVisible(true);
 
-     selectionModel = ui->previewWidget->selectionModel();
-     selectionModel->setCurrentIndex(ui->previewWidget->currentIndex(),QItemSelectionModel::SelectCurrent);
-     selectionModel->select(ui->previewWidget->currentIndex(),QItemSelectionModel::SelectCurrent);
-     connect(selectionModel, &QItemSelectionModel::currentChanged, this,&PreviewAnnotation::update);
-
-
-
-
+    selectionModel = ui->previewWidget->selectionModel();
+    selectionModel->setCurrentIndex(ui->previewWidget->currentIndex(),QItemSelectionModel::SelectCurrent);
+    selectionModel->select(ui->previewWidget->currentIndex(),QItemSelectionModel::SelectCurrent);
+    connect(selectionModel, &QItemSelectionModel::currentChanged, this,&PreviewAnnotation::update);
 }
 
 void PreviewAnnotation::loadPreview(QString path){
@@ -77,9 +74,6 @@ PreviewAnnotation::~PreviewAnnotation()
     delete ui;
 }
 
-
-
-
 void PreviewAnnotation::on_nextButton_clicked()
 {
      int currentIndex = ui->previewWidget->currentRow();
@@ -103,7 +97,6 @@ void PreviewAnnotation::on_prevButton_clicked()
     } else {
         ui->previewWidget->setCurrentRow(currentIndex-1);
     }
-
 }
 
 // Get the path of annotation clicked
@@ -111,6 +104,8 @@ void PreviewAnnotation::on_previewWidget_itemClicked(QListWidgetItem *item)
 {
     int clikedItemIndex = ui->previewWidget->row(item);
     qDebug() << "item" << thumbnails.at(clikedItemIndex);
+    QString path_sync = thumbnails.at(clikedItemIndex);
+    emit sync_path_signal(path_sync);
 }
 // Get the path of annotation when selection is updated on prev,next click
 void PreviewAnnotation::update(const QModelIndex &current, const QModelIndex &previous){
