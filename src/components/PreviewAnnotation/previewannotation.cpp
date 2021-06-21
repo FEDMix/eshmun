@@ -113,6 +113,11 @@ void PreviewAnnotation::update(const QModelIndex &current, const QModelIndex &pr
     ui->previewWidget->selectionModel()->select(ui->previewWidget->currentIndex(),QItemSelectionModel::Select);
     qDebug() << "changed" << "current" << ui->previewWidget->selectedItems();
 
+    int clikedItemIndex = ui->previewWidget->row(ui->previewWidget->currentItem());
+    qDebug() << "item" << thumbnails.at(clikedItemIndex);
+    QString path_sync = thumbnails.at(clikedItemIndex);
+    emit sync_path_signal(path_sync);
+
 }
 
 
