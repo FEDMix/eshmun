@@ -16,19 +16,18 @@ void LinkedInteractorStyle::WindowLevel() {
     // Call super
     vtkInteractorStyleImage::WindowLevel();
 
-    SceneWidget* sceneWidget = dynamic_cast<SceneWidget*>(baseWidget);
-    double window = sceneWidget->GetColorWindow();
-    double level = sceneWidget->GetColorLevel();
+    double window = baseWidget->GetColorWindow();
+    double level = baseWidget->GetColorLevel();
     for(int i=0; i < linkedWidgets.size(); i++){
-        SceneWidget* sceneWidget = dynamic_cast<SceneWidget*>(linkedWidgets[i]);
+        SceneWidget* sceneWidget = linkedWidgets[i];
         sceneWidget->SetWindowLevel(window, level);
     }
 }
 
-void LinkedInteractorStyle::SetBaseWidget(QWidget* sceneWidget) {
+void LinkedInteractorStyle::SetBaseWidget(SceneWidget* sceneWidget) {
     baseWidget = sceneWidget;
 }
 
-void LinkedInteractorStyle::AddLinkedWidget(QWidget* sceneWidget) {
+void LinkedInteractorStyle::AddLinkedWidget(SceneWidget* sceneWidget) {
     linkedWidgets.push_back(sceneWidget);
 }

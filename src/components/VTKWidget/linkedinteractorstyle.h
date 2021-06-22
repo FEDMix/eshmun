@@ -2,10 +2,16 @@
 #define LINKEDINTERACTIONSTYLE_H
 
 #include <vtkInteractorStyleImage.h>
-//#include <vtkTypeMacro.h>
 #include <vector>
-#include <qwidget.h>
 
+class SceneWidget;
+
+/** Interactor style that enables synchronization of properties like
+ *  window/level, slice position, cursors, between SceneWidgets.
+ *  Use SetBaseWidget to set the SceneWidget it is being used in as an
+ *  actual interactor style,
+ *  and AddLinkedWidget to link to other SceneWidgets.
+ */
 class LinkedInteractorStyle : public vtkInteractorStyleImage {
 
 public:
@@ -16,11 +22,11 @@ public:
     ~LinkedInteractorStyle();
 
     virtual void WindowLevel() override;
-    virtual void SetBaseWidget(QWidget* sceneWidget);
-    virtual void AddLinkedWidget(QWidget* sceneWidget);
+    virtual void SetBaseWidget(SceneWidget* sceneWidget);
+    virtual void AddLinkedWidget(SceneWidget* sceneWidget);
 private:
-    std::vector<QWidget*> linkedWidgets;
-    QWidget* baseWidget;
+    std::vector<SceneWidget*> linkedWidgets;
+    SceneWidget* baseWidget;
 };
 
 #endif // LINKEDINTERACTIONSTYLE_H

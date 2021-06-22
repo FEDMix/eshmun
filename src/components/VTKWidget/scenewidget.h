@@ -21,6 +21,11 @@ public:
     void SetImageData(vtkSmartPointer<vtkImageData> imageData);
     vtkSmartPointer<vtkImageData> GetDummyData();
     void SaveScreenshot(std::string path);
+
+    /** Link and synchronize (window-level, slice position)
+     *  the provided SceneWidget with this one.
+     *  @param twoWay   also call AddLinkedSceneWidget on the provided SceneWidget
+     */
     void AddLinkedSceneWidget(SceneWidget* sceneWidget, bool twoWay);
 
 public slots:
