@@ -9,6 +9,7 @@
 #include <QString>
 #include <QPushButton>
 #include <QDebug>
+#include <QPixmap>
 #include <QListWidgetItem>
 #include "../../components/dataloader/imageloader.h"
 #include "../../components/PreviewAnnotation/previewannotation.h"

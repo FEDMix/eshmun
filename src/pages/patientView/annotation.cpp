@@ -20,10 +20,10 @@ Annotation::Annotation(QWidget *parent) : QDialog(parent),
 
 void Annotation::pushButton_initVTK()
 {
-    vtkSmartPointer<vtkImageData> dummyData = ui->sceneWidget->GetDummyData();
-    ui->sceneWidget->SetImageData(dummyData);
-    ui->sceneWidget2->SetImageData(dummyData);
-    ui->sceneWidget3->SetImageData(dummyData);
+    vtkSmartPointer<vtkImageData> dummyData = ui->mainSceneAxial->GetDummyData();
+    ui->mainSceneAxial->SetImageData(dummyData);
+    ui->mainSceneCoronal->SetImageData(dummyData);
+    ui->mainSceneSagittal->SetImageData(dummyData);
 }
 
 Annotation::~Annotation()
@@ -41,9 +41,12 @@ void Annotation::LoadData(QString path) {
     dicomReader_scan->Update();
 
     vtkSmartPointer<vtkImageData> imageData = dicomReader_scan->GetOutput();
-    ui->sceneWidget->SetImageData(imageData);
-    ui->sceneWidget2->SetImageData(imageData);
-    ui->sceneWidget3->SetImageData(imageData);
+    ui->mainSceneAxial->SetImageData(imageData);
+    ui->mainSceneCoronal->SetImageData(imageData);
+    ui->mainSceneSagittal->SetImageData(imageData);
+    ui->mainSceneAxial->SetPlaneOrientationToAxial();
+    ui->mainSceneCoronal->SetPlaneOrientationToCoronal();
+    ui->mainSceneSagittal->SetPlaneOrientationToSagittal();
 
     // create vtk pointer for all annotations
     QString path_annotation = imageloader->image_annotation(path);
@@ -58,7 +61,7 @@ void Annotation::SyncPreview(QString path) {
     dicomReader->Update();
 
     vtkSmartPointer<vtkImageData> imageData = dicomReader->GetOutput();
-    ui->sceneWidget->SetImageData(imageData);
+    ui->mainSceneAxial->SetImageData(imageData);
 }
 
 

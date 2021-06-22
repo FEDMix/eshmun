@@ -1,6 +1,9 @@
+find_package(QT NAMES Qt5 COMPONENTS Widgets Gui Test REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Gui Test REQUIRED)
+
 # Tests need to be added as executables first
 add_executable(test_eshmun
-    tst_testeshmun.cpp
+    tst_eshmun.cpp
 )
 
 # Using C++17
@@ -17,16 +20,15 @@ find_package(VTK
         IOImage
         IOLegacy
         RenderingCore
+        RenderingImage
         ImagingSources)
 
 target_link_libraries(test_eshmun PRIVATE
-    libEshmun
+    EshmunCore
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Test
     Qt${QT_VERSION_MAJOR}::Widgets
     ${VTK_LIBRARIES}
 )
 
-# If you register a test, then ctest and make test will run it.
-# You can also run examples and check the output, as well.
 add_test(NAME test_eshmun COMMAND test_eshmun)
