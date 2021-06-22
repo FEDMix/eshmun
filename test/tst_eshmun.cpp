@@ -69,7 +69,7 @@ void testEshmun::test_imageloader() {
     QString path_scan_validate = QDir::cleanPath(QDir::currentPath() + QDir::separator()
                                                  + "scans" + QDir::separator()+ "scan_to_annotate");
     QString path_annotation_validate = QDir::cleanPath(QDir::currentPath() + QDir::separator()
-                                                       + "annotations" + QDir::separator()+ "annotation1");
+                                                       + "annotations");
     // QTest
     QCOMPARE(path_scan, path_scan_validate);
     QCOMPARE(path_annotation, path_annotation_validate);
