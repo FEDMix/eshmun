@@ -32,7 +32,10 @@ private slots:
   void lineEdit();
   void cleanupTestCase();
   //void test_case1();
-  void test_vtk_viewer();
+  void screenshotAndVerify(std::string name, SceneWidget* SceneWidget);
+  void test_scene_widget();
+  void test_orthogonal_views();
+  void test_window_level_syncing();
   void test_imageloader();
 
 private:
@@ -86,47 +89,93 @@ void testEshmun::test_imageloader() {
 //  QCOMPARE(ui_backButton->isVisible(), true);
 //}
 
-void testEshmun::test_vtk_viewer() {
+void testEshmun::screenshotAndVerify(std::string name, SceneWidget* sceneWidget) {
+    QDir workingDir = QDir{QDir::currentPath()};
+    std::cerr << "Working directory: " << workingDir.path().toStdString()
+            << std::endl;
+
+    QString currentImagePath = QString::fromStdString(name + ".png");
+    std::string imagePath = workingDir.filePath(currentImagePath).toStdString();
+
+    QString refImage =
+        workingDir.filePath(QString::fromStdString("../test/reference_images/" + name + ".png"));
+    std::string referenceImagePath = QFileInfo{refImage}.absoluteFilePath().toStdString();
+
+//   QSize size = sceneWidget->size();
+//   std::cerr << "Original Widget Size: " << size.width() << ", " << size.height()
+//             << std::endl;
+//   sceneWidget->resize(800, 800);
+
+//   size = sceneWidget->size();
+//   std::cerr << "New Widget Size: " << size.width() << ", " << size.height()
+//             << std::endl;
+
+    sceneWidget->SaveScreenshot(imagePath);
+
+    QVERIFY(compareFiles(imagePath, referenceImagePath));
+}
+
+void testEshmun::test_scene_widget() {
   QSKIP("Skipping vtk test till we have a better test");
 
   QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
   Annotation *annotation = new Annotation(&main_window);
   annotation->show();
   SceneWidget *sceneWidget =
-      annotation->findChild<SceneWidget *>("sceneWidget");
+      annotation->findChild<SceneWidget *>("mainSceneAxial");
   vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
   sceneWidget->SetImageData(imageData);
+  screenshotAndVerify("test_scenewidget", sceneWidget);
+}
 
-  QSize size = sceneWidget->size();
-  std::cerr << "Original Widget Size: " << size.width() << ", " << size.height()
-            << std::endl;
-  sceneWidget->resize(800, 800);
+void testEshmun::test_orthogonal_views() {
+    QSKIP("Skipping vtk test till we have a better test");
+    QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
+    Annotation *annotation = new Annotation(&main_window);
+    annotation->show();
 
-  size = sceneWidget->size();
-  std::cerr << "New Widget Size: " << size.width() << ", " << size.height()
-            << std::endl;
+    // Axial
+    SceneWidget *sceneWidget =
+        annotation->findChild<SceneWidget *>("mainSceneAxial");
+    vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
+    sceneWidget->SetImageData(imageData);
+    sceneWidget->SetPlaneOrientationToAxial();
+    screenshotAndVerify("test_orthogonal_views_axial", sceneWidget);
 
-  QDir workingDir = QDir{QDir::currentPath()};
+    // Coronal
+    sceneWidget->SetPlaneOrientationToCoronal();
+    screenshotAndVerify("test_orthogonal_views_coronal", sceneWidget);
 
-  std::cerr << "Working directory: " << workingDir.path().toStdString()
-            << std::endl;
+    // Sagittal
+    sceneWidget->SetPlaneOrientationToSagittal();
+    screenshotAndVerify("test_orthogonal_views_sagittal", sceneWidget);
+}
 
-  QString refImage =
-      workingDir.filePath("../../test/reference_images/test_dummy.png");
-  std::string referenceImagePath =
-      QFileInfo{refImage}.absoluteFilePath().toStdString();
+void testEshmun::test_window_level_syncing() {
+    QSKIP("Skipping vtk test till we have a better test");
+    QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
+    Annotation *annotation = new Annotation(&main_window);
+    annotation->show();
 
-  QString currentImagePath = "test_dummy.png";
-  std::string imagePath = workingDir.filePath(currentImagePath).toStdString();
+    SceneWidget *sceneWidget =
+        annotation->findChild<SceneWidget *>("mainSceneAxial");
+    vtkSmartPointer<vtkImageData> imageData = sceneWidget->GetDummyData();
+    sceneWidget->SetImageData(imageData);
 
-  sceneWidget->SaveScreenshot(imagePath);
+    SceneWidget* sceneWidget2 =
+        annotation->findChild<SceneWidget *>("mainSceneCoronal");
+    sceneWidget2->SetImageData(imageData);
 
-  std::cerr << "Comparing file: " << imagePath << " to " << referenceImagePath
-            << std::endl;
-  QVERIFY(compareFiles(imagePath, referenceImagePath));
+    sceneWidget->SetWindowLevel(999, 501);
+
+    screenshotAndVerify("test_set_window_level", sceneWidget);
+    screenshotAndVerify("test_sync_window_level", sceneWidget2);
 }
 
 bool compareFiles(const std::string &p1, const std::string &p2) {
+  std::cerr << "Comparing file: " << p1 << " to " << p2
+            << std::endl;
+
   std::ifstream f1(p1, std::ifstream::binary | std::ifstream::ate);
   std::ifstream f2(p2, std::ifstream::binary | std::ifstream::ate);
 
