@@ -11,7 +11,7 @@
 #include <vtkImageData.h>
 #include <vtkImageMapper.h>
 #include <vtkImageSlice.h>
-#include <vtkImageViewer2.h>
+#include <vtkResliceImageViewer.h>
 #include <vtkImageProperty.h>
 
 class SceneWidget : public QVTKOpenGLNativeWidget {
@@ -49,7 +49,7 @@ private:
     vtkSmartPointer<LinkedInteractorStyle> style;
     vtkSmartPointer<vtkImageData> imageData;
     vtkSmartPointer<vtkImageMapper> imageMapper;
-    vtkSmartPointer<vtkImageViewer2> imageViewer;
+    vtkSmartPointer<vtkResliceImageViewer> imageViewer;
 
     void GetCenterAndDimensions(float*, float*);
 };

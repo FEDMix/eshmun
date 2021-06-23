@@ -10,7 +10,7 @@
 #include <vtkWindowToImageFilter.h>
 #include <vtkPNGWriter.h>
 #include <vtkDICOMImageReader.h>
-#include <vtkImageViewer2.h>
+#include <vtkResliceImageViewer.h>
 
 SceneWidget::SceneWidget(QWidget* parent)
     : QVTKOpenGLNativeWidget(parent)
@@ -19,7 +19,7 @@ SceneWidget::SceneWidget(QWidget* parent)
     setRenderWindow(window.Get());
 
     // Image viewer
-    imageViewer = vtkSmartPointer<vtkImageViewer2>::New();
+    imageViewer = vtkSmartPointer<vtkResliceImageViewer>::New();
     imageViewer->SetRenderWindow(window);
     imageViewer->SetupInteractor(window->GetInteractor());
 
@@ -39,6 +39,7 @@ SceneWidget::SceneWidget(QWidget* parent)
     camera->SetParallelProjection(true);
 
     // Interactor style
+    imageViewer->SetSliceScrollOnMouseWheel(true);
     style = vtkSmartPointer<LinkedInteractorStyle>::New();
     style->SetBaseWidget(this);
     renderWindowInteractor->SetInteractorStyle(style);
