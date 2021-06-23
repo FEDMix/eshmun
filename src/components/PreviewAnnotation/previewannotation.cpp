@@ -21,7 +21,10 @@ PreviewAnnotation::PreviewAnnotation(QWidget *parent) :
     ui->previewWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->previewWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     ui->previewWidget->setWrapping(false);
-
+    // disable drag & drop
+    ui->previewWidget->setDragEnabled(false);
+    // disable moving icons
+    ui->previewWidget->setMovement(QListView::Static);
     ui->previewWidget->setAutoScroll(false);
     //Set picture size in item
      ui->previewWidget->setIconSize(QSize(100,100));
