@@ -1,8 +1,10 @@
 #include "scenewidget.h"
 
+#include "linkedinteractorstyle.h"
 #include <vtkDataSetMapper.h>
 #include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkProperty.h>
+#include <vtkImageProperty.h>
 #include <vtkInteractorStyleImage.h>
 #include <vtkImageNoiseSource.h>
 #include <vtkWindowToImageFilter.h>
@@ -32,70 +34,66 @@ SceneWidget::SceneWidget(QWidget* parent)
     renderWindowInteractor->SetRenderWindow(renderWindow());
 
     // Interactor style
-    vtkSmartPointer<vtkInteractorStyleImage> style = 
-        vtkSmartPointer<vtkInteractorStyleImage>::New();
+    style = vtkSmartPointer<LinkedInteractorStyle>::New();
     renderWindowInteractor->SetInteractorStyle(style);
+    style->SetBaseWidget(this);
+    style->SetInteractionModeToImageSlicing();
 
-    ipw = vtkSmartPointer<vtkImagePlaneWidget>::New();
-    ipw->SetInteractor(renderWindowInteractor);
-    ipw->RestrictPlaneToVolumeOn();
-    ipw->DisplayTextOn();
+    // Image reslice mapper
+    imageMapper = vtkSmartPointer<vtkImageResliceMapper>::New();
+    imageMapper->SliceFacesCameraOn();
+    imageMapper->SliceAtFocalPointOn();
+    imageMapper->JumpToNearestSliceOn();
+    
+    // Image slice prop
+    image = vtkSmartPointer<vtkImageSlice>::New();
+    image->SetMapper(imageMapper);
+    image->GetProperty()->SetColorWindow(2000.0);
+    image->GetProperty()->SetColorLevel(1000.0);
+    renderer->AddViewProp(image);
 }
 
 void SceneWidget::SetImageData(vtkSmartPointer<vtkImageData> imageData) {
     this->imageData = imageData;
-    ipw->SetInputData(imageData);
-    //ipw->SetWindowLevel(5500, 1000);
-    SetPlaneOrientationToZAxis();
-    ipw->UpdatePlacement();
-    ipw->On();
-
+    this->imageMapper->SetInputData(imageData);
+    SetPlaneOrientationToAxial();
     Refresh();
 }
 
-void SceneWidget::SetPlaneOrientationToXAxis() {
+void SceneWidget::SetPlaneOrientationToSagittal() {
     float center[3], dim[3];
     GetCenterAndDimensions(center, dim);
-    int* extent = imageData->GetExtent();
-
-    ipw->SetPlaneOrientationToXAxes();
-    ipw->SetSliceIndex(0.5 * (extent[0] + extent[1]));
 
     camera->SetParallelScale(0.5f * static_cast<float>(dim[1]));
     camera->SetFocalPoint(center[0], center[1], center[2]);
     camera->SetPosition(center[0] + dim[0], center[1], center[2]);
-    camera->SetViewUp(0, 1, 0);
+    camera->SetViewUp(0, 0, 1);
     renderer->ResetCameraClippingRange();
+    Refresh();
 }
 
-void SceneWidget::SetPlaneOrientationToYAxis() {
+void SceneWidget::SetPlaneOrientationToCoronal() {
     float center[3], dim[3];
     GetCenterAndDimensions(center, dim);
-    int* extent = imageData->GetExtent();
-
-    ipw->SetPlaneOrientationToYAxes();
-    ipw->SetSliceIndex(0.5 * (extent[2] + extent[3]));
 
     camera->SetParallelScale(0.5f * static_cast<float>(dim[2]));
     camera->SetFocalPoint(center[0], center[1], center[2]);
     camera->SetPosition(center[0], center[1] + dim[1], center[2]);
     camera->SetViewUp(0, 0, -1);
     renderer->ResetCameraClippingRange();
+    Refresh();
 }
 
-void SceneWidget::SetPlaneOrientationToZAxis() {
+void SceneWidget::SetPlaneOrientationToAxial() {
     float center[3], dim[3];
     GetCenterAndDimensions(center, dim);
-    int* extent = imageData->GetExtent();
-
-    ipw->SetPlaneOrientationToZAxes();
-    ipw->SetSliceIndex(0.5 * (extent[4] + extent[5]));
 
     camera->SetParallelScale(0.5f * static_cast<float>(dim[1]));
     camera->SetFocalPoint(center[0], center[1], center[2]);
     camera->SetPosition(center[0], center[1], center[2] + dim[2]);
     camera->SetViewUp(0, 1, 0);
     renderer->ResetCameraClippingRange();
+    Refresh();
 }
 
 void SceneWidget::GetCenterAndDimensions(float* center, float* dim) {
@@ -111,7 +109,21 @@ void SceneWidget::GetCenterAndDimensions(float* center, float* dim) {
 }
 
 void SceneWidget::SetSliceIndex(int position) {
-    ipw->SetSliceIndex(position);
+    //TODO: ipw->SetSliceIndex(position);
+    Refresh();
+}
+
+double SceneWidget::GetColorWindow() {
+    return image->GetProperty()->GetColorWindow();
+}
+
+double SceneWidget::GetColorLevel() {
+    return image->GetProperty()->GetColorLevel();
+}
+
+void SceneWidget::SetWindowLevel(double window, double level) {
+    image->GetProperty()->SetColorWindow(window);
+    image->GetProperty()->SetColorLevel(level);
     Refresh();
 }
 
@@ -152,4 +164,11 @@ void SceneWidget::SaveScreenshot(std::string path)
     writer->SetFileName(path.c_str());
     writer->SetInputConnection(windowToImageFilter->GetOutputPort());
     writer->Write();
+}
+
+void SceneWidget::AddLinkedSceneWidget(SceneWidget* linkedWidget, bool twoWay) {
+    style->AddLinkedWidget(linkedWidget);
+    if (twoWay) {
+        linkedWidget->AddLinkedSceneWidget(this, false);
+    }
 }
