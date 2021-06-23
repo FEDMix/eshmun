@@ -42,7 +42,6 @@ PreviewAnnotation::PreviewAnnotation(QWidget *parent) :
 
 void PreviewAnnotation::loadPreview(QString path){
     QDir directory(path);
-    qDebug() << "Path" << path;
     directory.setFilter(QDir::AllDirs | QDir::NoDotAndDotDot);
 
     QFileInfoList filelistinfo = directory.entryInfoList();
@@ -50,18 +49,15 @@ void PreviewAnnotation::loadPreview(QString path){
         // push image paths into thumbnails array
         thumbnails << fileinfo.absoluteFilePath();
     }
-    qDebug() << "Scans" << thumbnails;
     const int numRows = thumbnails.size();
     for(int i=0;i<numRows;++i) {
 
         vtkSmartPointer<vtkDICOMImageReader> dicomReader_scan =
             vtkSmartPointer<vtkDICOMImageReader>::New();
-        qDebug() << "item" << thumbnails.at(i);
         dicomReader_scan->SetDirectoryName(thumbnails.at(i).toStdString().c_str()); //path need to be std::string
         dicomReader_scan->Update();
 
         vtkSmartPointer<vtkImageData> imageData = dicomReader_scan->GetOutput();
-        qDebug() << "imageDta" << imageData;
         auto item = new QListWidgetItem();
         SceneWidget *widget = new SceneWidget(this);
         widget->show();
@@ -80,7 +76,6 @@ PreviewAnnotation::~PreviewAnnotation()
 void PreviewAnnotation::on_nextButton_clicked()
 {
      int currentIndex = ui->previewWidget->currentRow();
-    qDebug() << "next index" << currentIndex << thumbnails.size();
 
     if(currentIndex >= thumbnails.size() - 1) {
         ui->nextButton->setDisabled(true);
@@ -106,7 +101,6 @@ void PreviewAnnotation::on_prevButton_clicked()
 void PreviewAnnotation::on_previewWidget_itemClicked(QListWidgetItem *item)
 {
     int clikedItemIndex = ui->previewWidget->row(item);
-    qDebug() << "item" << thumbnails.at(clikedItemIndex);
     QString path_sync = thumbnails.at(clikedItemIndex);
     emit sync_path_signal(path_sync);
 }
@@ -114,10 +108,9 @@ void PreviewAnnotation::on_previewWidget_itemClicked(QListWidgetItem *item)
 void PreviewAnnotation::update(const QModelIndex &current, const QModelIndex &previous){
     ui->previewWidget->scrollTo(ui->previewWidget->currentIndex());
     ui->previewWidget->selectionModel()->select(ui->previewWidget->currentIndex(),QItemSelectionModel::Select);
-    qDebug() << "changed" << "current" << ui->previewWidget->selectedItems();
+    
 
     int clikedItemIndex = ui->previewWidget->row(ui->previewWidget->currentItem());
-    qDebug() << "item" << thumbnails.at(clikedItemIndex);
     QString path_sync = thumbnails.at(clikedItemIndex);
     emit sync_path_signal(path_sync);
 
