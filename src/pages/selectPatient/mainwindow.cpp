@@ -14,6 +14,10 @@ QString text_overview = "Subject Overview";
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
+    // Set locale for reading of DCM images
+    std::setlocale(LC_ALL, "C");
+    qInfo("LOCALE %s",std::setlocale(LC_ALL, NULL));
+
     ui->setupUi(this);
 
     ui->stackedWidget->setCurrentIndex(0);

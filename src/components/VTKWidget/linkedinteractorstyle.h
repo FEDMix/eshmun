@@ -22,8 +22,14 @@ public:
     ~LinkedInteractorStyle();
 
     virtual void WindowLevel() override;
+    virtual void OnMouseWheelForward() override;
+    virtual void OnMouseWheelBackward() override;
+    virtual void OnKeyDown() override;
     virtual void SetBaseWidget(SceneWidget* sceneWidget);
     virtual void AddLinkedWidget(SceneWidget* sceneWidget);
+protected:
+    void MoveSliceForward();
+    void MoveSliceBackward();
 private:
     std::vector<SceneWidget*> linkedWidgets;
     SceneWidget* baseWidget;

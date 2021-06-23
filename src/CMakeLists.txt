@@ -12,6 +12,7 @@ find_package(VTK
         CommonCore
         GUISupportQt
         InteractionStyle
+        InteractionImage
         IOImage
         IOLegacy
         RenderingCore
