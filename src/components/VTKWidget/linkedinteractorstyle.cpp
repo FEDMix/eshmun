@@ -15,9 +15,8 @@ LinkedInteractorStyle::~LinkedInteractorStyle()
 void LinkedInteractorStyle::WindowLevel() {
     // Call super
     vtkInteractorStyleImage::WindowLevel();
-
-    double window = baseWidget->GetColorWindow();
-    double level = baseWidget->GetColorLevel();
+    double window = GetCurrentImageProperty()->GetColorWindow();
+    double level = GetCurrentImageProperty()->GetColorLevel();
     for(size_t i=0; i < linkedWidgets.size(); i++){
         SceneWidget* sceneWidget = linkedWidgets[i];
         sceneWidget->SetWindowLevel(window, level);
