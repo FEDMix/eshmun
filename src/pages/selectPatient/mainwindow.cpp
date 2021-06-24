@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+#include <locale.h>
+
 QString text_welcome = "Welcome to the FEDMix Viewer";
 QString text_description = "This viewer can be used to browse various\n"
                            "prostate annotations, select the preferred\n"
@@ -55,9 +57,10 @@ MainWindow::~MainWindow()
 void MainWindow::pushButton_addPatient()
 {
     // Select path
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Select directory with DICOM data"), "",
+    /*QString dir = QFileDialog::getExistingDirectory(this, tr("Select directory with DICOM data"), "",
                                              QFileDialog::ShowDirsOnly
-                                             | QFileDialog::DontResolveSymlinks);
+      */
+    QString dir="/home/anton/Documents/eshmun/ExampleData/Patient-1";
     qInfo( "Directory path to patient images: %s", qUtf8Printable(dir));
     // Load the data viewer for this path
     Annotation* annotation = new Annotation(this);
