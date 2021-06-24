@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
-#include <locale.h>
-
 QString text_welcome = "Welcome to the FEDMix Viewer";
 QString text_description = "This viewer can be used to browse various\n"
                            "prostate annotations, select the preferred\n"
@@ -17,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     // Set locale for reading of DCM images
-    std::setlocale(LC_ALL, "C");
+    setlocale(LC_ALL, "C");
     qInfo("LOCALE %s",std::setlocale(LC_ALL, NULL));
 
     ui->setupUi(this);
