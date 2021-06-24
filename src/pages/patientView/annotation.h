@@ -1,14 +1,17 @@
 #ifndef ANNOTATION_H
 #define ANNOTATION_H
 
+
+#include <QDebug>
 #include <QDialog>
 #include <QLabel>
 #include <QDir>
 #include <QString>
-#include <QPixmap>
 #include <QPushButton>
 #include <QDebug>
+#include <QListWidgetItem>
 #include "../../components/dataloader/imageloader.h"
+#include "../../components/PreviewAnnotation/previewannotation.h"
 
 namespace Ui
 {
@@ -26,10 +29,12 @@ public:
 
 private slots:
     void pushButton_initVTK();
+    void SyncPreview(QString);
 
 private:
     Ui::Annotation *ui;
     ImageLoader *imageloader;
+    PreviewAnnotation *preview = new PreviewAnnotation();
 };
 
 #endif // ANNOTATION_H
