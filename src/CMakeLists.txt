@@ -1,3 +1,5 @@
+
+
 # Find package Qt
 
 # Packages for main program
@@ -33,6 +35,9 @@ add_library(EshmunCore
     components/VTKWidget/scenewidget.h
     components/dataloader/imageloader.cpp
     components/dataloader/imageloader.h
+    components/PreviewAnnotation/previewannotation.h
+    components/PreviewAnnotation/previewannotation.cpp
+    components/PreviewAnnotation/previewannotation.ui
 )
 
 target_compile_features(EshmunCore PRIVATE cxx_std_17)
