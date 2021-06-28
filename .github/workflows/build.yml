@@ -173,7 +173,7 @@ jobs:
         env:
           BUILD_SYSTEM: ${{ matrix.config.makefiles }}
           EXTRA_FLAGS: ${{ matrix.config.extra_cmake_flags }}
-
+        shell: bash
 
       - name: Linux and Windows - Download vtk
         if: (runner.os == 'Linux' || runner.os == 'Windows')
