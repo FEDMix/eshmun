@@ -11,16 +11,16 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          # - name: "Windows Latest - MSVC"
-          #   os: windows-latest
-          #   # makefiles: '"MinGW Makefiles"'
-          #   makefiles: 'Ninja'
-          #   build_command: 'ninja'
-          #   vtk_path: '/vtk/'
-          #   qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
-          #   cc: "cl"
-          #   cxx: "cl"
-          #   extra_cmake_flags: -D CMAKE_C_COMPILER_LAUNCHER=ccache.exe -D CMAKE_CXX_COMPILER_LAUNCHER=ccache.exe
+          - name: "Windows Latest - MSVC"
+            os: windows-latest
+            # makefiles: '"MinGW Makefiles"'
+            makefiles: 'Ninja'
+            build_command: 'ninja'
+            vtk_path: '/vtk/'
+            qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
+            cc: "cl"
+            cxx: "cl"
+            extra_cmake_flags: -D CMAKE_C_COMPILER_LAUNCHER=ccache.exe -D CMAKE_CXX_COMPILER_LAUNCHER=ccache.exe
 
           - name: "Ubuntu Latest - Clang"
             os: ubuntu-latest
