@@ -166,6 +166,7 @@ jobs:
           -S . \
           $EXTRA_FLAGS \
           -G "$BUILD_SYSTEM"
+
           cd build
           ninja
           ninja install
