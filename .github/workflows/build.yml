@@ -149,6 +149,31 @@ jobs:
         with:
           key: ${{ matrix.config.name }}
 
+      - name: Windows - download hdf5
+        if: runner.os == 'Windows'
+        working-directory: ${{ github.workspace }}
+        run: |
+          git clone --recursive https://github.com/HDFGroup/hdf5.git
+          cd hdf5
+          git checkout hdf5-1_12_0
+
+      - name: Windows - configure and build hdf5
+        if: runner.os == 'Windows'
+        working-directory: ${{ github.workspace }}/hdf5
+        run: |
+          cmake \
+          -B build \
+          -S . \
+          $EXTRA_FLAGS \
+          -G "$BUILD_SYSTEM"
+          cd build
+          ninja
+          ninja install
+        env:
+          BUILD_SYSTEM: ${{ matrix.config.makefiles }}
+          EXTRA_FLAGS: ${{ matrix.config.extra_cmake_flags }}
+
+
       - name: Linux and Windows - Download vtk
         if: (runner.os == 'Linux' || runner.os == 'Windows')
         run: |
