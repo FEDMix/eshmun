@@ -4,7 +4,7 @@
 
 Eshmun is part of the FEDMix project: Fusible evolutionary deep neural network mixture learning. See project's page information: https://www.esciencecenter.nl/projects/fedmix/
 
-![image](https://user-images.githubusercontent.com/4195550/111743278-ba27ce00-8889-11eb-94ec-faa8ddec4b01.png)
+![image](https://user-images.githubusercontent.com/4195550/123606584-53f20600-d7fd-11eb-8a19-b34b459d00ef.png)
 
 
 'Eshmun' is a standalone, and robust medical image analysis developed with C++, Qt, and VTK that you can use, collaborate with the development and extend.
