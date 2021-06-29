@@ -298,7 +298,7 @@ jobs:
       - name: Windows - Test
         if: runner.os == 'Windows'
         run: |
-          make test ARGS="-VV"
+          ninja test ARGS="-VV"
         shell: bash
         working-directory: '${{ github.workspace }}/build'
 
