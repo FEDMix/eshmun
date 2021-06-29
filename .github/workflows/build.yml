@@ -201,9 +201,9 @@ jobs:
           -D VTK_MODULE_ENABLE_VTK_GUISupportQt=YES \
           -D VTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
           -D VTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
-          -D VTK_MODULE_USE_EXTERNAL_VTK_tiff=YES \
-          -D VTK_MODULE_USE_EXTERNAL_VTK_libxml2=YES \
-          -D VTK_MODULE_ENABLE_VTK_hdf5=NO \
+          -D VTK_MODULE_USE_EXTERNAL_VTK_tiff=NO \
+          -D VTK_MODULE_USE_EXTERNAL_VTK_libxml2=NO \
+          -D VTK_MODULE_ENABLE_VTK_hdf5=YES \
           -D BUILD_TESTING=OFF
         working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}'
         env:
