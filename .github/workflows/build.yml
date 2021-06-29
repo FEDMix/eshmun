@@ -287,19 +287,20 @@ jobs:
         shell: bash
         working-directory: '${{ github.workspace }}/build'
 
-      - name: All - Headless Test
+      - name: MacOS & Linux - Headless Test
+        if: (runner.os == 'macOS' || runner.os == 'Linux')
         uses: GabrielBB/xvfb-action@v1
         with:
           run: |
             make test ARGS="-VV"
+          working-directory: '${{ github.workspace }}/build'
+
+      - name: Windows - Test
+        if: runner.os == 'Windows'
+        run: |
+          make test ARGS="-VV"
         shell: bash
         working-directory: '${{ github.workspace }}/build'
-
-      # - name: All - Test
-      #   run: |
-      #     cd build
-      #     make test ARGS="-VV"
-      #   shell: bash
 
       - name: Upload Test Image
         uses: actions/upload-artifact@v2
