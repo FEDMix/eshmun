@@ -47,9 +47,9 @@ jobs:
         with:
           submodules: "recursive"
 
-      # - name: Windows - Set ENV
-      #   if: runner.os == 'Windows'
-      #   uses: ilammy/msvc-dev-cmd@v1
+      - name: Windows - Set ENV
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
 
       - name: Windows - Install LLVM and Clang
         if: runner.os == 'Windows'
