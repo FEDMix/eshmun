@@ -14,9 +14,11 @@ QString text_overview = "Subject Overview";
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
+#ifdef LC_ALL
     // Set locale for reading of DCM images
     setlocale(LC_ALL, "C");
     qInfo("LOCALE %s",std::setlocale(LC_ALL, NULL));
+#endif
 
     ui->setupUi(this);
 
@@ -55,10 +57,9 @@ MainWindow::~MainWindow()
 void MainWindow::pushButton_addPatient()
 {
     // Select path
-    /*QString dir = QFileDialog::getExistingDirectory(this, tr("Select directory with DICOM data"), "",
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Select directory with DICOM data"), "",
                                              QFileDialog::ShowDirsOnly
-      */
-    QString dir="/home/anton/Documents/eshmun/ExampleData/Patient-1";
+                                             | QFileDialog::DontResolveSymlinks);
     qInfo( "Directory path to patient images: %s", qUtf8Printable(dir));
     // Load the data viewer for this path
     Annotation* annotation = new Annotation(this);
