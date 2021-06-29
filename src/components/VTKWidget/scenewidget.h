@@ -10,7 +10,9 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkImageData.h>
 #include <vtkImageMapper.h>
+#include <vtkImageMapper3D.h>
 #include <vtkImageSlice.h>
+#include <vtkImageActor.h>
 #include <vtkResliceImageViewer.h>
 #include <vtkImageProperty.h>
 
@@ -20,6 +22,7 @@ public:
     explicit SceneWidget(QWidget* parent = nullptr);
 
     void SetImageData(vtkSmartPointer<vtkImageData> imageData);
+    void AnnotationOverlay(vtkSmartPointer<vtkImageData> imageData);
     void SetImageDataConnection(vtkSmartPointer<vtkAlgorithmOutput> connection);
     vtkSmartPointer<vtkImageData> GetDummyData();
     void SaveScreenshot(std::string path);

@@ -64,7 +64,8 @@ void Annotation::SyncPreview(QString path) {
     dicomReader->Update();
 
     vtkSmartPointer<vtkImageData> imageData = dicomReader->GetOutput();
-    ui->mainSceneAxial->SetImageData(imageData);
+    //ui->mainSceneAxial->SetImageData(imageData);
+    ui->mainSceneAxial->AnnotationOverlay(imageData);
 }
 
 

@@ -53,6 +53,20 @@ void SceneWidget::SetImageData(vtkSmartPointer<vtkImageData> imageData) {
     Refresh();
 }
 
+void SceneWidget::AnnotationOverlay(vtkSmartPointer<vtkImageData> imageData) {
+    //this->imageData = imageData;
+    //this->imageViewer->SetInputData(imageData);
+    // create actor for annotation
+    vtkSmartPointer<vtkImageActor> imageActor = vtkSmartPointer<vtkImageActor>::New();
+    imageActor->GetMapper()->SetInputData(imageData);
+    //imageActor->SetInputData(imageData);
+    //imageActor->GetMapper()->SetInputConnection(imageViewer->GetOutputPort());
+    // add actor to render
+    renderer->AddActor(imageActor);
+    //SetPlaneOrientationToAxial();
+    Refresh();
+}
+
 void SceneWidget::SetPlaneOrientationToSagittal() {    
     float center[3], dim[3];
     GetCenterAndDimensions(center, dim);
