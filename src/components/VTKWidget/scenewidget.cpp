@@ -9,6 +9,8 @@
 #include <vtkImageNoiseSource.h>
 #include <vtkWindowToImageFilter.h>
 #include <vtkPNGWriter.h>
+#include <vtkDICOMImageReader.h>
+#include <vtkResliceImageViewer.h>
 
 SceneWidget::SceneWidget(QWidget* parent)
     : QVTKOpenGLNativeWidget(parent)
@@ -16,70 +18,61 @@ SceneWidget::SceneWidget(QWidget* parent)
     vtkNew<vtkGenericOpenGLRenderWindow> window;
     setRenderWindow(window.Get());
 
+    // Image viewer
+    imageViewer = vtkSmartPointer<vtkResliceImageViewer>::New();
+    imageViewer->SetRenderWindow(window);
+    imageViewer->SetupInteractor(window->GetInteractor());
+
+    // Render window interactor
+    renderWindowInteractor = imageViewer->GetRenderWindow()->GetInteractor();
+    imageViewer->SetupInteractor(renderWindowInteractor);
+
+    // Renderer
+    renderer = imageViewer->GetRenderer();
+    renderer->SetBackground(0.5, 0.5, 0.5);
+
     // Camera
-    camera = vtkSmartPointer<vtkCamera>::New();
+    camera = renderer->GetActiveCamera();
     camera->SetViewUp(0, 1, 0);
     camera->SetPosition(0, 0, 1000);
     camera->SetFocalPoint(0, 0, 0);
     camera->SetParallelProjection(true);
 
-    // Renderer
-    renderer = vtkSmartPointer<vtkRenderer>::New();
-    renderer->SetActiveCamera(camera);
-    renderer->SetBackground(0.5, 0.5, 0.5);
-    renderWindow()->AddRenderer(renderer);
-
-    // Render window interactor
-    renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-    renderWindowInteractor->SetRenderWindow(renderWindow());
-
     // Interactor style
+    imageViewer->SetSliceScrollOnMouseWheel(true);
     style = vtkSmartPointer<LinkedInteractorStyle>::New();
-    renderWindowInteractor->SetInteractorStyle(style);
     style->SetBaseWidget(this);
-    style->SetInteractionModeToImageSlicing();
-
-    // Image reslice mapper
-    imageMapper = vtkSmartPointer<vtkImageResliceMapper>::New();
-    imageMapper->SliceFacesCameraOn();
-    imageMapper->SliceAtFocalPointOn();
-    imageMapper->JumpToNearestSliceOn();
-    
-    // Image slice prop
-    image = vtkSmartPointer<vtkImageSlice>::New();
-    image->SetMapper(imageMapper);
-    image->GetProperty()->SetColorWindow(2000.0);
-    image->GetProperty()->SetColorLevel(1000.0);
-    renderer->AddViewProp(image);
+    renderWindowInteractor->SetInteractorStyle(style);
+    renderWindowInteractor->Initialize();
 }
 
 void SceneWidget::SetImageData(vtkSmartPointer<vtkImageData> imageData) {
     this->imageData = imageData;
-    this->imageMapper->SetInputData(imageData);
+    this->imageViewer->SetInputData(imageData);
     SetPlaneOrientationToAxial();
     Refresh();
 }
 
-void SceneWidget::SetPlaneOrientationToSagittal() {
+void SceneWidget::SetPlaneOrientationToSagittal() {    
     float center[3], dim[3];
     GetCenterAndDimensions(center, dim);
 
     camera->SetParallelScale(0.5f * static_cast<float>(dim[1]));
     camera->SetFocalPoint(center[0], center[1], center[2]);
     camera->SetPosition(center[0] + dim[0], center[1], center[2]);
-    camera->SetViewUp(0, 0, 1);
+    imageViewer->SetSliceOrientationToXZ();
     renderer->ResetCameraClippingRange();
     Refresh();
 }
 
-void SceneWidget::SetPlaneOrientationToCoronal() {
+void SceneWidget::SetPlaneOrientationToCoronal() {    
     float center[3], dim[3];
     GetCenterAndDimensions(center, dim);
 
     camera->SetParallelScale(0.5f * static_cast<float>(dim[2]));
     camera->SetFocalPoint(center[0], center[1], center[2]);
     camera->SetPosition(center[0], center[1] + dim[1], center[2]);
-    camera->SetViewUp(0, 0, -1);
+    imageViewer->SetSliceOrientationToYZ();
     renderer->ResetCameraClippingRange();
     Refresh();
 }
@@ -91,7 +84,7 @@ void SceneWidget::SetPlaneOrientationToAxial() {
     camera->SetParallelScale(0.5f * static_cast<float>(dim[1]));
     camera->SetFocalPoint(center[0], center[1], center[2]);
     camera->SetPosition(center[0], center[1], center[2] + dim[2]);
-    camera->SetViewUp(0, 1, 0);
+    imageViewer->SetSliceOrientationToXY();
     renderer->ResetCameraClippingRange();
     Refresh();
 }
@@ -109,21 +102,26 @@ void SceneWidget::GetCenterAndDimensions(float* center, float* dim) {
 }
 
 void SceneWidget::SetSliceIndex(int position) {
-    //TODO: ipw->SetSliceIndex(position);
+    if( position <= imageViewer->GetSliceMax() && position >= imageViewer->GetSliceMin() )
+        imageViewer->SetSlice(position);
     Refresh();
 }
 
+int SceneWidget::GetSliceIndex() {
+    return imageViewer->GetSlice();
+}
+
 double SceneWidget::GetColorWindow() {
-    return image->GetProperty()->GetColorWindow();
+    return imageViewer->GetColorWindow();
 }
 
 double SceneWidget::GetColorLevel() {
-    return image->GetProperty()->GetColorLevel();
+    return imageViewer->GetColorLevel();
 }
 
 void SceneWidget::SetWindowLevel(double window, double level) {
-    image->GetProperty()->SetColorWindow(window);
-    image->GetProperty()->SetColorLevel(level);
+    imageViewer->SetColorWindow(window);
+    imageViewer->SetColorLevel(level);
     Refresh();
 }
 
@@ -135,7 +133,7 @@ void SceneWidget::ResetCamera()
 
 void SceneWidget::Refresh()
 {
-    renderWindow()->Render();
+    imageViewer->Render();
     renderer->ResetCameraClippingRange();
     update();
 }

@@ -9,8 +9,9 @@
 #include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkImageData.h>
-#include <vtkImageResliceMapper.h>
+#include <vtkImageMapper.h>
 #include <vtkImageSlice.h>
+#include <vtkResliceImageViewer.h>
 #include <vtkImageProperty.h>
 
 class SceneWidget : public QVTKOpenGLNativeWidget {
@@ -19,6 +20,7 @@ public:
     explicit SceneWidget(QWidget* parent = nullptr);
 
     void SetImageData(vtkSmartPointer<vtkImageData> imageData);
+    void SetImageDataConnection(vtkSmartPointer<vtkAlgorithmOutput> connection);
     vtkSmartPointer<vtkImageData> GetDummyData();
     void SaveScreenshot(std::string path);
 
@@ -33,6 +35,7 @@ public slots:
     void SetPlaneOrientationToCoronal();
     void SetPlaneOrientationToSagittal();
     void SetSliceIndex(int position);
+    int GetSliceIndex();
     double GetColorWindow();
     double GetColorLevel();
     void SetWindowLevel(double window, double level);
@@ -45,8 +48,8 @@ private:
     vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor;
     vtkSmartPointer<LinkedInteractorStyle> style;
     vtkSmartPointer<vtkImageData> imageData;
-    vtkSmartPointer<vtkImageResliceMapper> imageMapper;
-    vtkSmartPointer<vtkImageSlice> image;
+    vtkSmartPointer<vtkImageMapper> imageMapper;
+    vtkSmartPointer<vtkResliceImageViewer> imageViewer;
 
     void GetCenterAndDimensions(float*, float*);
 };
