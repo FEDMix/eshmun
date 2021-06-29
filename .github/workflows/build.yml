@@ -149,30 +149,31 @@ jobs:
         with:
           key: ${{ matrix.config.name }}
 
-      - name: Windows - download hdf5
-        if: runner.os == 'Windows'
-        working-directory: ${{ github.workspace }}
-        run: |
-          git clone --recursive https://github.com/HDFGroup/hdf5.git
-          cd hdf5
-          git checkout hdf5-1_12_0
+      # - name: Windows - download hdf5
+      #   if: runner.os == 'Windows'
+      #   working-directory: ${{ github.workspace }}
+      #   run: |
+      #     git clone --recursive https://github.com/HDFGroup/hdf5.git
+      #     cd hdf5
+      #     git checkout hdf5-1_12_0
 
-      - name: Windows - configure and build hdf5
-        if: runner.os == 'Windows'
-        working-directory: ${{ github.workspace }}/hdf5
-        run: |
-          cmake \
-          -B build \
-          -S . \
-          -G "$BUILD_SYSTEM"
+      # - name: Windows - configure and build hdf5
+      #   if: runner.os == 'Windows'
+      #   working-directory: ${{ github.workspace }}/hdf5
+      #   run: |
+      #     cmake \
+      #     -B build \
+      #     -S . \
+      #     -G "$BUILD_SYSTEM" \
+      #     -DCMAKE_BUILD_TYPE=Release \
 
-          cd build
-          ninja
-          ninja install
-        env:
-          BUILD_SYSTEM: ${{ matrix.config.makefiles }}
-          EXTRA_FLAGS: ${{ matrix.config.extra_cmake_flags }}
-        shell: bash
+      #     cd build
+      #     ninja
+      #     ninja install
+      #   env:
+      #     BUILD_SYSTEM: ${{ matrix.config.makefiles }}
+      #     EXTRA_FLAGS: ${{ matrix.config.extra_cmake_flags }}
+      #   shell: bash
 
       - name: Linux and Windows - Download vtk
         if: (runner.os == 'Linux' || runner.os == 'Windows')
@@ -199,7 +200,7 @@ jobs:
           -D VTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
           -D VTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
           -D VTK_MODULE_USE_EXTERNAL_VTK_tiff=YES \
-          -D VTK_MODULE_USE_EXTERNAL_VTK_hdf5=YES \
+          -D VTK_MODULE_ENABLE_VTK_hdf5=NO \
           -D BUILD_TESTING=OFF
         working-directory: '${{ github.workspace }}${{ matrix.config.vtk_path }}'
         env:
