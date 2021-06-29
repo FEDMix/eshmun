@@ -292,7 +292,8 @@ jobs:
         with:
           run: |
             make test ARGS="-VV"
-          working-directory: '${{ github.workspace }}/build'
+        shell: bash
+        working-directory: '${{ github.workspace }}/build'
 
       # - name: All - Test
       #   run: |
