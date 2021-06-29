@@ -296,9 +296,17 @@ jobs:
           working-directory: '${{ github.workspace }}/build'
 
       - name: Windows - Test
+        continue-on-error: true
         if: runner.os == 'Windows'
         run: |
-          ninja test ARGS="-VV"
+          ninja test
+        shell: bash
+        working-directory: '${{ github.workspace }}/build'
+
+      - name: Windows - Test2
+        if: runner.os == 'Windows'
+        run: |
+          ctest -vv
         shell: bash
         working-directory: '${{ github.workspace }}/build'
 
