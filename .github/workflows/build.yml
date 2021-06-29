@@ -182,7 +182,7 @@ jobs:
           cd vtk
           git checkout v9.0.1
 
-      - name: configure with cmake
+      - name: Linux and Windows - configure vtk with cmake
         if: (runner.os == 'Linux' || runner.os == 'Windows')
         run: |
           cmake -E env CXXFLAGS="-w" \
@@ -192,6 +192,8 @@ jobs:
           -G "$BUILD_SYSTEM" \
           $EXTRA_FLAGS \
           -D CMAKE_BUILD_TYPE=Release \
+          -D CMAKE_C_COMPILER=${{ matrix.config.cc }} \
+          -D CMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
           -D VTK_GROUP_ENABLE_Qt=YES \
           -D VTK_GROUP_ENABLE_Imaging=YES \
           -D VTK_GROUP_ENABLE_Views=YES \
