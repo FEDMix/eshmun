@@ -14,6 +14,7 @@ jobs:
           - name: "Windows Latest - MSVC"
             os: windows-latest
             # makefiles: '"MinGW Makefiles"'
+            generator: "-G \"Visual Studio 16 2019\" -A x64"
             makefiles: 'Ninja'
             build_command: 'ninja'
             vtk_path: '/vtk/'
@@ -46,10 +47,29 @@ jobs:
         with:
           submodules: "recursive"
 
-      - name: Windows - Set ENV
-        if: runner.os == 'Windows'
-        uses: ilammy/msvc-dev-cmd@v1
+      # - name: Windows - Set ENV
+      #   if: runner.os == 'Windows'
+      #   uses: ilammy/msvc-dev-cmd@v1
 
+      - name: Windows - Install LLVM and Clang
+        if: runner.os == 'Windows'
+        uses: KyleMayes/install-llvm-action@v1
+        with:
+          version: "11.1.0"
+          force-version: true
+          directory: ${{ runner.temp }}/llvm
+
+      - name: Windows - Set environment for MSVC (Windows)
+        if:  runner.os == 'Windows'
+        run: |
+          # Set these env vars so cmake picks the correct compiler
+          echo "CXX=${{ matrix.config.cxx }}" >> $GITHUB_ENV
+          echo "CC=${{ matrix.config.cc }}" >> $GITHUB_ENV
+
+      - name: Install Dependencies (Windows)
+        if:  runner.os == 'Windows'
+        run: choco install ninja
+        
       - name: Linux - Install Dependencies
         if: runner.os == 'Linux'
         run: |
@@ -64,14 +84,6 @@ jobs:
                                   libswscale-dev libtheora-dev libtiff-dev libxml2-dev libxt-dev qtbase5-dev \
                                   qttools5-dev zlib1g-dev
         shell: bash
-
-      - name: Windows - Install LLVM and Clang
-        if: runner.os == 'Windows'
-        uses: KyleMayes/install-llvm-action@v1
-        with:
-          version: "11.1.0"
-          force-version: true
-          directory: ${{ runner.temp }}/llvm
 
       - name: Linux - Install LLVM and Clang
         if: runner.os == 'Linux'
@@ -161,16 +173,23 @@ jobs:
         if: runner.os == 'Windows'
         working-directory: ${{ github.workspace }}/hdf5
         run: |
-          cmake \
-          -B build \
-          -S . \
-          -G "$BUILD_SYSTEM"
-
+          cmake ${{ matrix.generator }} \
+            -D CMAKE_BUILD_TYPE="Release" \
+            -D CMAKE_TOOLCHAIN_FILE="" \
+            -D BUILD_SHARED_LIBS=ON \
+            -D HDF5_ENABLE_ALL_WARNINGS=ON \
+            -D HDF5_ENABLE_THREADSAFE:BOOL=OFF \
+            -D HDF5_BUILD_HL_LIB:BOOL=ON \
+            -D HDF5_ENABLE_PARALLEL:BOOL=OFF \
+            -D HDF5_BUILD_CPP_LIB:BOOL=ON \ 
+            -D HDF5_BUILD_FORTRAN=OFF \
+            -D HDF5_BUILD_JAVA=ON \
+            -B build \
+            -S . \
           cd build
-          ninja
           ninja install
         env:
-          BUILD_SYSTEM: ${{ matrix.config.makefiles }}
+          # BUILD_SYSTEM: ${{ matrix.config.makefiles }}
           EXTRA_FLAGS: ${{ matrix.config.extra_cmake_flags }}
         shell: bash
 
