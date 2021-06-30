@@ -94,7 +94,7 @@ void testEshmun::screenshotAndVerify(std::string name, SceneWidget* sceneWidget)
     std::cerr << "Working directory: " << workingDir.path().toStdString()
             << std::endl;
 
-    QString currentImagePath = QString::fromStdString(name + ".png");
+    QString currentImagePath = QString::fromStdString("../test/output_images/" +name + ".png");
     std::string imagePath = workingDir.filePath(currentImagePath).toStdString();
 
     QString refImage =
@@ -116,8 +116,6 @@ void testEshmun::screenshotAndVerify(std::string name, SceneWidget* sceneWidget)
 }
 
 void testEshmun::test_scene_widget() {
-  QSKIP("Skipping vtk test till we have a better test");
-
   QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
   Annotation *annotation = new Annotation(&main_window);
   annotation->show();
@@ -129,7 +127,6 @@ void testEshmun::test_scene_widget() {
 }
 
 void testEshmun::test_orthogonal_views() {
-    QSKIP("Skipping vtk test till we have a better test");
     QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
     Annotation *annotation = new Annotation(&main_window);
     annotation->show();
@@ -152,7 +149,6 @@ void testEshmun::test_orthogonal_views() {
 }
 
 void testEshmun::test_window_level_syncing() {
-    QSKIP("Skipping vtk test till we have a better test");
     QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
     Annotation *annotation = new Annotation(&main_window);
     annotation->show();
