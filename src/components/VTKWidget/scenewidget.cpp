@@ -19,7 +19,7 @@ SceneWidget::SceneWidget(QWidget* parent)
     setRenderWindow(window.Get());
 
     // Image viewer
-    imageViewer = vtkSmartPointer<vtkResliceImageViewer>::New();
+    imageViewer = vtkSmartPointer<OverlayViewer>::New();
     imageViewer->SetRenderWindow(window);
     imageViewer->SetupInteractor(window->GetInteractor());
 
@@ -30,6 +30,12 @@ SceneWidget::SceneWidget(QWidget* parent)
     // Renderer
     renderer = imageViewer->GetRenderer();
     renderer->SetBackground(0.5, 0.5, 0.5);
+
+    renderWindow()->SetAlphaBitPlanes(1);
+    renderWindow()->SetMultiSamples(0);
+    renderer->SetUseDepthPeeling(1);
+    renderer->SetMaximumNumberOfPeels(10);
+    renderer->SetOcclusionRatio(0.1);
 
     // Camera
     camera = renderer->GetActiveCamera();
@@ -57,13 +63,13 @@ void SceneWidget::AnnotationOverlay(vtkSmartPointer<vtkImageData> imageData) {
     //this->imageData = imageData;
     //this->imageViewer->SetInputData(imageData);
     // create actor for annotation
-    vtkSmartPointer<vtkImageActor> imageActor = vtkSmartPointer<vtkImageActor>::New();
-    imageActor->GetMapper()->SetInputData(imageData);
-    //imageActor->SetInputData(imageData);
-    //imageActor->GetMapper()->SetInputConnection(imageViewer->GetOutputPort());
-    // add actor to render
-    renderer->AddActor(imageActor);
-    //SetPlaneOrientationToAxial();
+    // imageViewer->GetImageActor()->SetOpacity(0);
+
+    // vtkSmartPointer<vtkImageActor> imageActor = vtkSmartPointer<vtkImageActor>::New();
+    // imageActor->SetInputData(imageData);
+    // renderer->AddActor(imageActor);
+
+    this->imageViewer->SetOverlay(imageData);
     Refresh();
 }
 

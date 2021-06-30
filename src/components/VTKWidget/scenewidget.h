@@ -15,6 +15,7 @@
 #include <vtkImageActor.h>
 #include <vtkResliceImageViewer.h>
 #include <vtkImageProperty.h>
+#include "overlayviewer.h"
 
 class SceneWidget : public QVTKOpenGLNativeWidget {
     Q_OBJECT
@@ -52,7 +53,7 @@ private:
     vtkSmartPointer<LinkedInteractorStyle> style;
     vtkSmartPointer<vtkImageData> imageData;
     vtkSmartPointer<vtkImageMapper> imageMapper;
-    vtkSmartPointer<vtkResliceImageViewer> imageViewer;
+    vtkSmartPointer<OverlayViewer> imageViewer;
 
     void GetCenterAndDimensions(float*, float*);
 };
