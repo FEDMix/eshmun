@@ -275,7 +275,8 @@ jobs:
 
       - name: Upload Test Image
         uses: actions/upload-artifact@v2
-        if: failure()
+        if: success()
         with:
-          name: 'screen-dump-${{ matrix.config.os }}'
-          path: ${{ github.workspace }}/build/test/test_dummy.png
+          name: 'eshmun-${{ matrix.config.os }}'
+          path: ${{ github.workspace }}/build/src/eshmun*
+          if-no-files-found: warn
