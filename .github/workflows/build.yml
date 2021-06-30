@@ -21,6 +21,7 @@ jobs:
             cc: "cl"
             cxx: "cl"
             extra_cmake_flags: -D CMAKE_C_COMPILER_LAUNCHER=ccache.exe -D CMAKE_CXX_COMPILER_LAUNCHER=ccache.exe
+            artifact_name: eshmun.exe
 
           - name: "Ubuntu Latest - Clang"
             os: ubuntu-latest
@@ -31,6 +32,7 @@ jobs:
             cc: "clang-11"
             cxx: "clang++-11"
             extra_cmake_flags: -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+            artifact_name: eshmun
 
           - name: "MacOS Latest - Clang"
             os: macos-latest
@@ -39,6 +41,7 @@ jobs:
             qt_path: "/usr/local/opt/qt@5/"
             cc: "clang"
             cxx: "clang++"
+            artifact_name: eshmun
 
     steps:
       - name: All - Checkout project
@@ -273,10 +276,10 @@ jobs:
         shell: bash
         working-directory: '${{ github.workspace }}/build'
 
-      - name: Upload Test Image
+      - name: Upload Eshmun Binary
         uses: actions/upload-artifact@v2
         if: success()
         with:
           name: 'eshmun-${{ matrix.config.os }}'
-          path: ${{ github.workspace }}/build/src/eshmun*
+          path: ${{ github.workspace }}/build/src/${{ matrix.config.artifact_name }}
           if-no-files-found: warn
