@@ -11,16 +11,16 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          # - name: "Windows Latest - MSVC"
-          #   os: windows-latest
-          #   # makefiles: '"MinGW Makefiles"'
-          #   makefiles: 'Ninja'
-          #   build_command: 'ninja'
-          #   vtk_path: '/vtk/'
-          #   qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
-          #   cc: "cl"
-          #   cxx: "cl"
-          #   extra_cmake_flags: -D CMAKE_C_COMPILER_LAUNCHER=ccache.exe -D CMAKE_CXX_COMPILER_LAUNCHER=ccache.exe
+          - name: "Windows Latest - MSVC"
+            os: windows-latest
+            # makefiles: '"MinGW Makefiles"'
+            makefiles: 'Ninja'
+            build_command: 'ninja'
+            vtk_path: '/vtk/'
+            qt_path: 'D:\a\eshmun\Qt\5.15.2\msvc2019_64'
+            cc: "cl"
+            cxx: "cl"
+            extra_cmake_flags: -D CMAKE_C_COMPILER_LAUNCHER=ccache.exe -D CMAKE_CXX_COMPILER_LAUNCHER=ccache.exe
 
           - name: "Ubuntu Latest - Clang"
             os: ubuntu-latest
@@ -156,7 +156,7 @@ jobs:
           cd vtk
           git checkout v9.0.1
 
-      - name: configure with cmake
+      - name: Linux and Windows - configure vtk with cmake
         if: (runner.os == 'Linux' || runner.os == 'Windows')
         run: |
           cmake -E env CXXFLAGS="-w" \
@@ -166,6 +166,8 @@ jobs:
           -G "$BUILD_SYSTEM" \
           $EXTRA_FLAGS \
           -D CMAKE_BUILD_TYPE=Release \
+          -D CMAKE_C_COMPILER=${{ matrix.config.cc }} \
+          -D CMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
           -D VTK_GROUP_ENABLE_Qt=YES \
           -D VTK_GROUP_ENABLE_Imaging=YES \
           -D VTK_GROUP_ENABLE_Views=YES \
@@ -256,18 +258,20 @@ jobs:
         shell: bash
         working-directory: '${{ github.workspace }}/build'
 
-      - name: All - Headless Test
+      - name: MacOS & Linux - Headless Test
+        if: (runner.os == 'macOS' || runner.os == 'Linux')
         uses: GabrielBB/xvfb-action@v1
         with:
           run: |
             make test ARGS="-VV"
-          working-directory: build
+          working-directory: '${{ github.workspace }}/build'
 
-      # - name: All - Test
-      #   run: |
-      #     cd build
-      #     make test ARGS="-VV"
-      #   shell: bash
+      - name: Windows - Test
+        if: runner.os == 'Windows'
+        run: |
+          ctest -VV
+        shell: bash
+        working-directory: '${{ github.workspace }}/build'
 
       - name: Upload Test Image
         uses: actions/upload-artifact@v2
