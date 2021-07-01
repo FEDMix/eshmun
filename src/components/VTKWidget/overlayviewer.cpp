@@ -22,15 +22,17 @@ OverlayViewer::OverlayViewer() {
     this->pColorTable = vtkSmartPointer<vtkLookupTable>::New();
     pColorTable->SetNumberOfColors(3);
     pColorTable->SetTableRange(0, 2);
-    pColorTable->SetTableValue(0, 0.0, 0.0, 1.0, 0.0);
-    pColorTable->SetTableValue(1, 1, 0, 0, 1.0);
-    pColorTable->SetTableValue(2, 0, 1, 0, 1.0);
-    pColorTable->Build(); 
+    pColorTable->SetTableValue(0, 0, 0, 1, 0);
+    pColorTable->SetTableValue(1, 1, 0, 0, 0.5);
+    pColorTable->SetTableValue(2, 0, 1, 0, 0.5);
+    pColorTable->Build();
 
-    this->ImageActor2 = vtkSmartPointer<vtkImageActor>::New();
+    imageMapToColors = vtkSmartPointer<vtkImageMapToColors>::New();
+    imageMapToColors->SetLookupTable(pColorTable);
+    imageMapToColors->PassAlphaToOutputOn();
+
+    ImageActor2 = vtkSmartPointer<vtkImageActor>::New();
     ImageActor2->SetInterpolate(false);
-    ImageActor2->GetProperty()->SetLookupTable(pColorTable);
-    ImageActor2->GetProperty()->SetDiffuse(0.0);
     ImageActor2->SetPickable(false);
 }
 
@@ -39,8 +41,8 @@ OverlayViewer::~OverlayViewer() {
 }
 
 void OverlayViewer::SetOverlay(vtkSmartPointer<vtkImageData> imageData) {
-    this->ImageActor2->SetInputData(imageData);
-    this->UpdateDisplayExtent();
+    imageMapToColors->SetInputData(imageData);
+    UpdateDisplayExtent();
 }
 
 void OverlayViewer::InstallPipeline() {
@@ -49,10 +51,19 @@ void OverlayViewer::InstallPipeline() {
     if (this->Renderer && this->ImageActor2) {
         this->Renderer->AddViewProp(this->ImageActor2);
     }
+
+    if (this->ImageActor2 && this->imageMapToColors)
+    {
+        this->ImageActor2->GetMapper()->SetInputConnection(this->imageMapToColors->GetOutputPort());
+    }
 }
 
 void OverlayViewer::UnInstallPipeline() {
     vtkResliceImageViewer::UnInstallPipeline();
+
+    if (this->ImageActor2) {
+        this->ImageActor2->GetMapper()->SetInputConnection(nullptr);
+    }
 
     if (this->Renderer && this->ImageActor2) {
         this->Renderer->RemoveViewProp(this->ImageActor2);

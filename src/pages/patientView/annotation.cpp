@@ -56,6 +56,7 @@ void Annotation::LoadData(QString path) {
         QString path_annotation = imageloader->image_annotation(path);
         preview->loadPreview(path_annotation);
 }
+
 void Annotation::SyncPreview(QString path) {
     qInfo( "Directory path to annotation images to sync preview: %s", qUtf8Printable(path));
     vtkSmartPointer<vtkDICOMImageReader> dicomReader =
@@ -64,10 +65,7 @@ void Annotation::SyncPreview(QString path) {
     dicomReader->Update();
 
     vtkSmartPointer<vtkImageData> imageData = dicomReader->GetOutput();
-    //ui->mainSceneAxial->SetImageData(imageData);
     ui->mainSceneAxial->AnnotationOverlay(imageData);
+    ui->mainSceneCoronal->AnnotationOverlay(imageData);
+    ui->mainSceneSagittal->AnnotationOverlay(imageData);
 }
-
-
-
-

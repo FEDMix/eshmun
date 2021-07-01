@@ -5,6 +5,7 @@
 #include <vtkSmartPointer.h>
 #include <vtkImageActor.h>
 #include "vtkLookupTable.h"
+#include "vtkImageMapToColors.h"
 
 class OverlayViewer : public vtkResliceImageViewer {
 
@@ -23,7 +24,7 @@ public:
 private:
     vtkSmartPointer<vtkImageActor> ImageActor2;
     vtkSmartPointer<vtkLookupTable> pColorTable;
-
+    vtkSmartPointer<vtkImageMapToColors> imageMapToColors;
 };
 
 #endif // OVERLAYVIEWER_H
