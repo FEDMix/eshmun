@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
             SLOT(pushButton_addPatient())); // assign signals and slots
 
     button_addPatient->setStyleSheet(
-       "QPushButton { background-color: #525252; font-size: 18px; border-radius:5px;}"
+       "QPushButton { background-color: #525252; font-size: 18px; color:#ebebeb; border-radius:5px;}"
     );
 }
 
