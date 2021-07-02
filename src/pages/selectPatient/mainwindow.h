@@ -32,6 +32,10 @@ public:
 private slots:
     void pushButton_addPatient();
 
+    void on_pageSelect_windowTitleChanged(const QString &title);
+
+    void on_pageSelect_customContextMenuRequested(const QPoint &pos);
+
 private:
     Ui::MainWindow *ui;
     Annotation *annotation;

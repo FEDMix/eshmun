@@ -11,3 +11,6 @@ CMakeLists.txt.user*
 .idea
 /cmake-build-debug/CMakeCache.txt
 /cmake-build-debug/CMakeFiles/
+VTK-9.0.1
+VTK_BUILD
+VTK-9.0.1.tar.gz
