@@ -22,20 +22,11 @@ SceneWidget::SceneWidget(QWidget* parent)
     imageViewer = vtkSmartPointer<OverlayViewer>::New();
     imageViewer->SetRenderWindow(window);
     imageViewer->SetupInteractor(window->GetInteractor());
-
-    // Render window interactor
-    renderWindowInteractor = imageViewer->GetRenderWindow()->GetInteractor();
-    imageViewer->SetupInteractor(renderWindowInteractor);
+    imageViewer->SetSliceScrollOnMouseWheel(true);
 
     // Renderer
     renderer = imageViewer->GetRenderer();
     renderer->SetBackground(0.5, 0.5, 0.5);
-
-    renderWindow()->SetAlphaBitPlanes(1);
-    renderWindow()->SetMultiSamples(0);
-    renderer->SetUseDepthPeeling(1);
-    renderer->SetMaximumNumberOfPeels(10);
-    renderer->SetOcclusionRatio(0.1);
 
     // Camera
     camera = renderer->GetActiveCamera();
@@ -45,11 +36,8 @@ SceneWidget::SceneWidget(QWidget* parent)
     camera->SetParallelProjection(true);
 
     // Interactor style
-    imageViewer->SetSliceScrollOnMouseWheel(true);
     style = vtkSmartPointer<LinkedInteractorStyle>::New();
     style->SetBaseWidget(this);
-    renderWindowInteractor->SetInteractorStyle(style);
-    renderWindowInteractor->Initialize();
 }
 
 void SceneWidget::SetImageData(vtkSmartPointer<vtkImageData> imageData) {
@@ -180,7 +168,8 @@ void SceneWidget::SaveScreenshot(std::string path)
 }
 
 void SceneWidget::AddLinkedSceneWidget(SceneWidget* linkedWidget, bool twoWay) {
-    style->AddLinkedWidget(linkedWidget);
+    OverlayViewer* linkedViewer = linkedWidget->GetImageViewer();
+    imageViewer->AddLinkedViewer(linkedViewer);
     if (twoWay) {
         linkedWidget->AddLinkedSceneWidget(this, false);
     }

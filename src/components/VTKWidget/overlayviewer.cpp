@@ -142,3 +142,58 @@ void OverlayViewer::UpdateDisplayExtent()
     }
   }
 }
+
+
+void OverlayViewer::SetSlice(int slice) {
+    SetSlice(slice, true);
+}
+
+void OverlayViewer::SetSlice(int slice, bool doSync) {
+    vtkResliceImageViewer::SetSlice(slice);
+
+    if (doSync) {
+        for(size_t i=0; i < linkedViewers.size(); i++){
+            OverlayViewer* viewer = linkedViewers[i];
+            if (viewer->GetSliceOrientation() == SliceOrientation) {
+                viewer->SetSlice(slice, false);
+            }
+        }
+    }
+}
+
+void OverlayViewer::SetColorWindow(double s) {
+    SetColorWindow(s, true);
+}
+
+void OverlayViewer::SetColorWindow(double s, bool doSync) {
+    vtkResliceImageViewer::SetColorWindow(s);
+
+    if (doSync) {
+        for(size_t i=0; i < linkedViewers.size(); i++){
+            OverlayViewer* viewer = linkedViewers[i];
+            viewer->SetColorWindow(s, false);
+            viewer->Render();
+        }
+    }
+}
+
+void OverlayViewer::SetColorLevel(double s) {
+    SetColorLevel(s, true);
+}
+
+void OverlayViewer::SetColorLevel(double s, bool doSync) {
+    vtkResliceImageViewer::SetColorLevel(s);
+
+    if (doSync) {
+        for(size_t i=0; i < linkedViewers.size(); i++){
+            OverlayViewer* viewer = linkedViewers[i];
+            viewer->SetColorLevel(s, false);
+            viewer->Render();
+        }
+    }
+}
+
+void OverlayViewer::AddLinkedViewer(OverlayViewer* viewer) {
+    linkedViewers.push_back(viewer);
+}
+

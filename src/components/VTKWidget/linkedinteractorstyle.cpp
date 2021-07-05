@@ -27,13 +27,15 @@ void LinkedInteractorStyle::Slice() {
     // Call super
     vtkInteractorStyleImage::Slice();
 
-    int slice = baseWidget->GetSliceNumber();
+    int slice = baseWidget->GetSliceIndex();
+    cout <<" flag" << slice <<"\n";
     SceneWidget::Orientation orientation = baseWidget->GetOrientation();
     for(int i=0; i < linkedWidgets.size(); i++){
         SceneWidget* linkedSceneWidget = linkedWidgets[i];
         SceneWidget::Orientation linkedOrientation = linkedSceneWidget->GetOrientation();
+        cout <<" flag\n";
         if (linkedOrientation == orientation) {
-            linkedSceneWidget->SetSliceNumber(slice);
+            linkedSceneWidget->SetSliceIndex(slice);
         }
     }
 }

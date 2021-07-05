@@ -38,6 +38,8 @@ public:
      */
     void AddLinkedSceneWidget(SceneWidget* sceneWidget, bool twoWay);
 
+    OverlayViewer* GetImageViewer() { return imageViewer; };
+
     SceneWidget::Orientation GetOrientation() { return orientation; };
 
 public slots:
