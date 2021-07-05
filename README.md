@@ -22,6 +22,10 @@ Eshmun is part of the FEDMix project: Fusible evolutionary deep neural network m
 - clang v11.1 (clang-format - Google style, AStyle)
 - VTK v9
 
+![image](https://user-images.githubusercontent.com/4195550/124457449-1c9ad080-dd8c-11eb-8819-f6e37bfcbe71.png)
+![image](https://user-images.githubusercontent.com/4195550/124457679-58359a80-dd8c-11eb-9382-1582f055d013.png)
+![image](https://user-images.githubusercontent.com/4195550/124457772-7a2f1d00-dd8c-11eb-9cb2-2e9110de12be.png)
+
 # Development
 You can clone this repository
 ```git clone https://github.com/FEDMix/eshmun.git```
