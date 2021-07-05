@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>992</width>
-    <height>695</height>
+    <width>1083</width>
+    <height>770</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
   </property>
   <property name="styleSheet">
    <string notr="true">#Annotation{
@@ -30,19 +33,28 @@ border-image: url(:/img/assets/bg.png) 0 0 0 0 stretch stretch;
       <enum>QTabWidget::North</enum>
      </property>
      <property name="tabShape">
-      <enum>QTabWidget::Triangular</enum>
+      <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
       <number>0</number>
+     </property>
+     <property name="documentMode">
+      <bool>false</bool>
      </property>
      <property name="movable">
       <bool>false</bool>
      </property>
      <widget class="QWidget" name="single_view_tab">
+      <property name="styleSheet">
+       <string notr="true">background: rgba(255,255,255,.01)</string>
+      </property>
       <attribute name="title">
        <string>Single View</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
+       <property name="topMargin">
+        <number>9</number>
+       </property>
        <item row="2" column="0" colspan="2">
         <widget class="QFrame" name="previewContainer">
          <property name="sizePolicy">
