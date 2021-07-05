@@ -55,20 +55,11 @@ SceneWidget::SceneWidget(QWidget* parent)
 void SceneWidget::SetImageData(vtkSmartPointer<vtkImageData> imageData) {
     this->imageData = imageData;
     this->imageViewer->SetInputData(imageData);
-    SetPlaneOrientationToAxial();
     Refresh();
+    SetPlaneOrientationToAxial();
 }
 
 void SceneWidget::AnnotationOverlay(vtkSmartPointer<vtkImageData> imageData) {
-    //this->imageData = imageData;
-    //this->imageViewer->SetInputData(imageData);
-    // create actor for annotation
-    // imageViewer->GetImageActor()->SetOpacity(0);
-
-    // vtkSmartPointer<vtkImageActor> imageActor = vtkSmartPointer<vtkImageActor>::New();
-    // imageActor->SetInputData(imageData);
-    // renderer->AddActor(imageActor);
-
     this->imageViewer->SetOverlay(imageData);
     Refresh();
 }
