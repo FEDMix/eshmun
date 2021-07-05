@@ -2,5 +2,14 @@
     <qresource prefix="/img">
         <file>assets/cover.png</file>
         <file>assets/icons/open_file.png</file>
+        <file>assets/bg.png</file>
+        <file>assets/logos.png</file>
+        <file>assets/annotation.png</file>
+        <file>assets/assets</file>
+        <file>assets/deformed.png</file>
+        <file>assets/entities.png</file>
+        <file>assets/logo.png</file>
+        <file>assets/stroke.png</file>
+        <file>assets/treatment.png</file>
     </qresource>
 </RCC>
