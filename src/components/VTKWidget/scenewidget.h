@@ -20,6 +20,10 @@
 class SceneWidget : public QVTKOpenGLNativeWidget {
     Q_OBJECT
 public:
+    enum class Orientation {
+        AXIAL, CORONAL, SAGITTAL
+    };
+
     explicit SceneWidget(QWidget* parent = nullptr);
 
     void SetImageData(vtkSmartPointer<vtkImageData> imageData);
@@ -33,6 +37,8 @@ public:
      *  @param twoWay   also call AddLinkedSceneWidget on the provided SceneWidget
      */
     void AddLinkedSceneWidget(SceneWidget* sceneWidget, bool twoWay);
+
+    SceneWidget::Orientation GetOrientation() { return orientation; };
 
 public slots:
     void SetPlaneOrientationToAxial();
@@ -54,6 +60,7 @@ private:
     vtkSmartPointer<vtkImageData> imageData;
     vtkSmartPointer<vtkImageMapper> imageMapper;
     vtkSmartPointer<OverlayViewer> imageViewer;
+    SceneWidget::Orientation orientation;
 
     void GetCenterAndDimensions(float*, float*);
 };

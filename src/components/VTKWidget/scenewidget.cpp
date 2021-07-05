@@ -64,7 +64,8 @@ void SceneWidget::AnnotationOverlay(vtkSmartPointer<vtkImageData> imageData) {
     Refresh();
 }
 
-void SceneWidget::SetPlaneOrientationToSagittal() {    
+void SceneWidget::SetPlaneOrientationToSagittal() {
+    orientation = SceneWidget::Orientation::SAGITTAL;
     float center[3], dim[3];
     GetCenterAndDimensions(center, dim);
 
@@ -76,7 +77,8 @@ void SceneWidget::SetPlaneOrientationToSagittal() {
     Refresh();
 }
 
-void SceneWidget::SetPlaneOrientationToCoronal() {    
+void SceneWidget::SetPlaneOrientationToCoronal() {
+    orientation = SceneWidget::Orientation::CORONAL;
     float center[3], dim[3];
     GetCenterAndDimensions(center, dim);
 
@@ -89,6 +91,7 @@ void SceneWidget::SetPlaneOrientationToCoronal() {
 }
 
 void SceneWidget::SetPlaneOrientationToAxial() {
+    orientation = SceneWidget::Orientation::AXIAL;
     float center[3], dim[3];
     GetCenterAndDimensions(center, dim);
 
@@ -113,8 +116,9 @@ void SceneWidget::GetCenterAndDimensions(float* center, float* dim) {
 }
 
 void SceneWidget::SetSliceIndex(int position) {
-    if( position <= imageViewer->GetSliceMax() && position >= imageViewer->GetSliceMin() )
+    if( position <= imageViewer->GetSliceMax() && position >= imageViewer->GetSliceMin() ) {
         imageViewer->SetSlice(position);
+    }
     Refresh();
 }
 

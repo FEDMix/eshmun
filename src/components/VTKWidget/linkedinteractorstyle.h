@@ -22,6 +22,7 @@ public:
     ~LinkedInteractorStyle();
 
     virtual void WindowLevel() override;
+    virtual void Slice() override;
     virtual void SetBaseWidget(SceneWidget* sceneWidget);
     virtual void AddLinkedWidget(SceneWidget* sceneWidget);
 private:
