@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 #ifdef LC_ALL
     // Set locale for reading of DCM images
     setlocale(LC_ALL, "C");
-    qInfo("LOCALE %s",std::setlocale(LC_ALL, NULL));
+    qInfo("LOCALE %s",setlocale(LC_ALL, NULL));
 #endif
 
     //=========================================================================

@@ -16,6 +16,7 @@ Annotation::Annotation(QWidget *parent) : QDialog(parent),
     ui->previewContainer->layout()->addWidget(preview);
     // signal from annotation preview -> slot update the othogonal view
     connect(preview,SIGNAL(sync_path_signal(QString)),this,SLOT(SyncPreview(QString)));
+    preview->SetMainSceneWidget(ui->mainSceneAxial);
 }
 
 void Annotation::pushButton_initVTK()

@@ -7,6 +7,7 @@
 #include <QString>
 #include <QDebug>
 #include <QItemSelectionModel>
+#include "../../components/VTKWidget/scenewidget.h"
 
 namespace Ui {
 class PreviewAnnotation;
@@ -20,6 +21,7 @@ public:
     explicit PreviewAnnotation(QWidget *parent = nullptr);
     ~PreviewAnnotation();
     void loadPreview(QString);
+    void SetMainSceneWidget(SceneWidget* sceneWidget) { mainSceneWidget = sceneWidget; };
 
 private slots:
     void on_nextButton_clicked();
@@ -34,6 +36,7 @@ private:
     Ui::PreviewAnnotation *ui;
     QStringList thumbnails;
     QItemSelectionModel *selectionModel;
+    SceneWidget* mainSceneWidget;
 };
 
 #endif // PREVIEWANNOTATION_H

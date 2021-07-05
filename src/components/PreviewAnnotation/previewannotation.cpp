@@ -1,6 +1,5 @@
 #include "previewannotation.h"
 #include "ui_previewannotation.h"
-#include "../../components/VTKWidget/scenewidget.h"
 //#include "../../pages/patientView/annotation.h"
 #include <vtkSmartPointer.h>
 #include <vtkImageData.h>
@@ -60,6 +59,7 @@ void PreviewAnnotation::loadPreview(QString path){
         vtkSmartPointer<vtkImageData> imageData = dicomReader_scan->GetOutput();
         auto item = new QListWidgetItem();
         SceneWidget *widget = new SceneWidget(this);
+        mainSceneWidget->AddLinkedSceneWidget(widget, false);
         widget->show();
         widget->SetImageData(imageData);
         item->setSizeHint(QSize(100,120));
