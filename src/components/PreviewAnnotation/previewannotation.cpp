@@ -51,17 +51,34 @@ void PreviewAnnotation::loadPreview(QString path){
     }
     const int numRows = thumbnails.size();
     for(int i=0;i<numRows;++i) {
-
+        // load base image
+        // get parent path
+        QDir current_path = QDir::cleanPath(path);
+        current_path.cdUp();
+        QString parent_path = current_path.path();
+        qInfo( "Check this: %s", qUtf8Printable(parent_path));
+        QString path_scan = QDir::cleanPath(parent_path + QDir::separator()
+                                            + "scans" + QDir::separator()+ "scan_to_annotate");
         vtkSmartPointer<vtkDICOMImageReader> dicomReader_scan =
             vtkSmartPointer<vtkDICOMImageReader>::New();
-        dicomReader_scan->SetDirectoryName(thumbnails.at(i).toStdString().c_str()); //path need to be std::string
+        dicomReader_scan->SetDirectoryName(path_scan.toStdString().c_str());
         dicomReader_scan->Update();
+        vtkSmartPointer<vtkImageData> imageData_scan = dicomReader_scan->GetOutput();
 
-        vtkSmartPointer<vtkImageData> imageData = dicomReader_scan->GetOutput();
+        // load annotation
+        vtkSmartPointer<vtkDICOMImageReader> dicomReader_annotation =
+            vtkSmartPointer<vtkDICOMImageReader>::New();
+        dicomReader_annotation->SetDirectoryName(thumbnails.at(i).toStdString().c_str()); //path need to be std::string
+        dicomReader_annotation->Update();
+
+        vtkSmartPointer<vtkImageData> imageData_annotation = dicomReader_annotation->GetOutput();
+
+        // Set-up list widget
         auto item = new QListWidgetItem();
         SceneWidget *widget = new SceneWidget(this);
         widget->show();
-        widget->SetImageData(imageData);
+        widget->SetImageData(imageData_scan);
+        widget->AnnotationOverlay(imageData_annotation);
         item->setSizeHint(QSize(100,120));
 
         ui->previewWidget->insertItem(i,item);
