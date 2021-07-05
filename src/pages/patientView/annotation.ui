@@ -6,12 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1083</width>
-    <height>770</height>
+    <width>1300</width>
+    <height>683</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>1300</width>
+    <height>800</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Annotation</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -52,8 +64,8 @@ border-image: url(:/img/assets/bg.png) 0 0 0 0 stretch stretch;
        <string>Single View</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
-       <property name="topMargin">
-        <number>9</number>
+       <property name="bottomMargin">
+        <number>10</number>
        </property>
        <item row="2" column="0" colspan="2">
         <widget class="QFrame" name="previewContainer">
@@ -63,10 +75,16 @@ border-image: url(:/img/assets/bg.png) 0 0 0 0 stretch stretch;
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>200</height>
+          </size>
+         </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>300</height>
+           <height>200</height>
           </size>
          </property>
          <property name="styleSheet">
@@ -258,7 +276,10 @@ color:#fff;</string>
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="styleSheet">
-             <string notr="true">background:#333</string>
+             <string notr="true">background-color: #525252; 
+font-size: 18px;
+ color:#ebebeb; 
+border-radius:5px;</string>
             </property>
             <property name="text">
              <string>init VTK</string>
