@@ -13,7 +13,7 @@ PreviewAnnotation::PreviewAnnotation(QWidget *parent) :
     ui->setupUi(this);
     ui->previewWidget->setSpacing(5);
 
-    ui->previewWidget->setStyleSheet("QListWidget::item { border: 1px solid black; padding:5px; margin-top:5px; } QListWidget::item:selected { border: 1px solid blue; }");
+    ui->previewWidget->setStyleSheet("QListWidget::item { border: 1px solid black; } QListWidget::item:selected { border: 1px solid blue; }");
     //Set the display mode
     ui->previewWidget->setViewMode(QListWidget::IconMode);
     // set flow to horizontal only
@@ -26,8 +26,7 @@ PreviewAnnotation::PreviewAnnotation(QWidget *parent) :
     // disable moving icons
     ui->previewWidget->setMovement(QListView::Static);
     ui->previewWidget->setAutoScroll(false);
-    //Set picture size in item
-     ui->previewWidget->setIconSize(QSize(100,100));
+
     //Set layout policy (Adjust to, Fixed not to)
     ui->previewWidget->setResizeMode(QListWidget::Fixed);
     // set the selection mode
@@ -62,7 +61,7 @@ void PreviewAnnotation::loadPreview(QString path){
         SceneWidget *widget = new SceneWidget(this);
         widget->show();
         widget->SetImageData(imageData);
-        item->setSizeHint(QSize(100,120));
+        item->setSizeHint(QSize(190,180));
 
         ui->previewWidget->insertItem(i,item);
         ui->previewWidget->setItemWidget(item,widget);
